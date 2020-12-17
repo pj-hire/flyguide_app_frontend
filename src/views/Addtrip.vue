@@ -98,12 +98,20 @@
             <b-modal id="modal-3" title="Add Report" ok-only ok-title="Save Report" @ok="saveReport">
 
               <div><b>Location:</b></div>
+              <select v-model="newTrip.reports.location.spotId">
+                <option disabled value="">Choose a Location</option>
+                <option v-for="spot in newTrip.reports.mySpots" :key="spot.spotId" :value="spot.spotId">
+                    {{ spot.locationName }} at {{ spot.subLocationName }}
+                </option>
+              </select>
+
+              <!-- <div><b>Location:</b></div>
               <select v-model="newTrip.reports.location.name" @change="selectLocation(index)">
                 <option disabled value="">Choose a Location</option>
                 <option v-for="(spot, index) in newTrip.reports.mySpots" :key="spot.spotId">
                     {{ spot.locationName }} at {{ spot.subLocationName }} {{ index }}
                 </option>
-              </select>
+              </select> -->
 
               <div><b>Hot Flies:</b></div>
               <div class="box">
@@ -150,8 +158,20 @@
 
               <div><b>Fish Caught:</b></div>
               <div class="box">
-                <button>Add a fish +</button>
-                <p>This where a list of fish caught will be.</p>
+
+                <!-- dropdown with species from fishSpecies table. -->
+                <select v-model="newTrip.reports.newFishCaught.species">
+                  <option disabled value="">Species</option>
+                  <option v-for="species in newTrip.reports.fishSpecies" :key="species.fishSpeciesId">{{ species.fishSpeciesName }}</option>
+                </select>
+
+                <b-button @click="addFishSpeciesCaught">Add</b-button>
+
+                <div v-for="(species, index) in newTrip.reports.fishCaught" :key="species.fishCaughtId">
+                  <label for="sb-inline">{{ species.speciesCaught }}{{ index }}</label>
+                  <b-form-spinbutton @change="updateFishSpeciesCaught" id="sb-inline" v-model="species.qtyCaught" inline></b-form-spinbutton>
+                </div>
+
               </div>
 
               <div><b>Notes:</b></div>
@@ -181,7 +201,7 @@ export default {
       user: {},
       newTrip: {
         uid: '',
-        tripId: '1',
+        tripId: undefined,
         date: '',
         tripType: '',
         guideTripType: '',
@@ -193,12 +213,12 @@ export default {
           phone: '',
           notes: '',
           uid: '',
-          tripId: '1',
+          tripId: 0,
         },
         clients: {},
         selectedClientIndex: 0,
         reports: {
-          tripID: '1',
+          tripId: 0,
           mySpots: {},
           location: {
             name: '',
@@ -209,10 +229,17 @@ export default {
             pattern: '',
             color: '',
             uid: '',
-            tripId: '1',
+            tripId: 0,
           },
           hotFlies: {},
+          fishSpecies: {},
           fishCaught: {},
+          newFishCaught: {
+            uid: '',
+            tripId: 0,
+            species: '',
+            qty: 1,
+          },
           notes: '',
         },
         flybox: {}
@@ -227,29 +254,8 @@ export default {
       axios.post('http://localhost:3000/addclient', this.newTrip.newClient)
         .then((response) => {
           console.log(response);
-          this.pageLoad();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    saveChanges() {
-      axios.put('http://localhost:3000/editclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
-        .then((response) => {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    deleteClient() {
-      axios.post('http://localhost:3000/deleteclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
-        .then((response) => {
-          console.log(response);
-          this.newTrip.selectedClientIndex = 0;
-          axios.get('http://localhost:3000/clients/' + this.user.uid)
+          axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
             .then((response) => {
-              console.log(response.data)
               this.newTrip.clients = response.data;
             })
             .catch((error) => {
@@ -260,25 +266,44 @@ export default {
           console.log(error);
         });
     },
-    selectLocation(index) {
-      console.log(index);
-      this.newTrip.reports.location.spotId = this.newTrip.reports.mySpots[index].spotId;
-    },
-    addHotFly() {
-      axios.post('http://localhost:3000/addhotfly', this.newTrip.reports.newHotFly)
+    saveChanges() {
+      axios.put('http://localhost:3000/editclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
         .then((response) => {
           console.log(response);
-          this.pageLoad();
+          axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
+            .then((response) => {
+              this.newTrip.clients = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    deleteHotFly(index) {
-      axios.post('http://localhost:3000/deletehotfly', this.newTrip.reports.hotFlies[index])
+    deleteClient() {
+      axios.post('http://localhost:3000/deleteclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/hotflies/' + this.user.uid)
+          this.newTrip.selectedClientIndex = 0;
+          axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
+            .then((response) => {
+              this.newTrip.clients = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    addHotFly() {
+      axios.post('http://localhost:3000/addhotfly', this.newTrip.reports.newHotFly)
+        .then((response) => {
+          console.log(response);
+          axios.get('http://localhost:3000/hotflies/' + this.newTrip.tripId)
             .then((response) => {
               this.newTrip.reports.hotFlies = response.data;
             })
@@ -290,18 +315,64 @@ export default {
           console.log(error);
         });
     },
+    deleteHotFly(index) {
+      axios.post('http://localhost:3000/deletehotfly', this.newTrip.reports.hotFlies[index])
+        .then((response) => {
+          console.log(response);
+          axios.get('http://localhost:3000/hotflies/' + this.newTrip.tripId)
+            .then((response) => {
+              this.newTrip.reports.hotFlies = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    addFishSpeciesCaught() {
+      axios.post('http://localhost:3000/addfishcaught', this.newTrip.reports.newFishCaught)
+        .then((response) => {
+          console.log(response);
+          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.tripId)
+            .then((response) => {
+              this.newTrip.reports.fishCaught = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    updateFishSpeciesCaught(index) {
+      console.log('updateFishSpecies ' + index);
+      // axios.put('http://localhost:3000/editfishspeciescaught', this.newTrip.reports.fishCaught[index])
+      //   .then((response) => {
+      //     console.log(response);
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
+    },
     saveReport() {
       console.log('save report');
     },
     pageLoad() {
 
-      axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
+      axios.get('http://localhost:3000/aaid')
         .then((response) => {
-          this.newTrip.clients = response.data;
+          this.newTrip.tripId = response.data[0].AUTO_INCREMENT;
+          this.newTrip.reports.newFishCaught.tripId = response.data[0].AUTO_INCREMENT;
+          this.newTrip.reports.newHotFly.tripId = response.data[0].AUTO_INCREMENT;
+          this.newTrip.reports.tripId = response.data[0].AUTO_INCREMENT;
+          this.newTrip.newClient.tripId = response.data[0].AUTO_INCREMENT;
         })
         .catch((error) => {
           console.log(error);
-        })
+        });
 
       axios.get('http://localhost:3000/myspots/' + this.user.uid)
         .then((response) => {
@@ -311,22 +382,42 @@ export default {
           console.log(error);
         })
 
-        axios.get('http://localhost:3000/flybox/' + this.user.uid)
-          .then((response) => {
-            this.newTrip.flybox = response.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          })
+      axios.get('http://localhost:3000/flybox/' + this.user.uid)
+        .then((response) => {
+          this.newTrip.flybox = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
 
-        axios.get('http://localhost:3000/hotflies/' + this.newTrip.tripId)
-          .then((response) => {
-            this.newTrip.reports.hotFlies = response.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-    }
+      axios.get('http://localhost:3000/fishspecies/' + this.user.uid)
+        .then((response) => {
+          this.newTrip.reports.fishSpecies = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+
+      //uid above, tripId below
+
+      //left off here --> logging out '1' on backend instead of '23'
+
+      // axios.get('http://localhost:3000/hotflies/' + this.newTrip.tripId)
+      //   .then((response) => {
+      //     this.newTrip.reports.hotFlies = response.data;
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
+
+      // axios.get('http://localhost:3000/fishcaught/' + this.newTrip.tripId)
+      //   .then((response) => {
+      //     this.newTrip.reports.fishCaught = response.data;
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
+    },
   },
   created() {
     firebase.auth().onAuthStateChanged((user) => {
@@ -334,10 +425,10 @@ export default {
         this.user = user;
         this.newTrip.uid = user.uid;
         this.newTrip.newClient.uid = user.uid;
-        this.newTrip.newClient.tripId = this.newTrip.tripId;
-        //this.newTrip.reports.
         this.newTrip.reports.newHotFly.uid = user.uid;
+        this.newTrip.reports.newFishCaught.uid = user.uid;
         this.pageLoad();
+
       } else {
         console.log('no user signed in')
         window.location.href = "http://127.0.0.1:8080/";
