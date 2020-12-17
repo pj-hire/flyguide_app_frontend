@@ -73,7 +73,7 @@
                     </div>
                 </div>
 
-                <b-modal id="modal-2" title="Edit Client" ok-title="Save Changes" cancel-title="Delete Client" @cancel="deleteClient" @ok="saveChanges">
+                <b-modal v-if="newTrip.clients[newTrip.selectedClientIndex]" id="modal-2" title="Edit Client" ok-title="Save Changes" cancel-title="Delete Client" @cancel="deleteClient" @ok="saveChanges">
                   <p class="my-4">First Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientFirstName"></p>
                   <p class="my-4">Last Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientLastName"></p>
                   <p class="my-4">Email: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientEmail"></p>
@@ -93,13 +93,13 @@
         <div class="box">
 
           <div>
-            <b-button variant="success" v-b-modal.modal-3>Add a Report +</b-button>
+            <b-button variant="success" v-b-modal.modal-3 @click="addReport">Add a Report +</b-button>
 
             <b-modal id="modal-3" title="Add Report" ok-only ok-title="Save Report" @ok="saveReport">
 
               <div><b>Location:</b></div>
-              <select v-model="newTrip.reports.location.spotId">
-                <option disabled value="">Choose a Location</option>
+              <select v-model="newTrip.reports.spotId">
+                <option disabled :value="0">Choose a Location</option>
                 <option v-for="spot in newTrip.reports.mySpots" :key="spot.spotId" :value="spot.spotId">
                     {{ spot.locationName }} at {{ spot.subLocationName }}
                 </option>
@@ -159,17 +159,9 @@
               <div><b>Fish Caught:</b></div>
               <div class="box">
 
-                <!-- dropdown with species from fishSpecies table. -->
-                <select v-model="newTrip.reports.newFishCaught.species">
-                  <option disabled value="">Species</option>
-                  <option v-for="species in newTrip.reports.fishSpecies" :key="species.fishSpeciesId">{{ species.fishSpeciesName }}</option>
-                </select>
-
-                <b-button @click="addFishSpeciesCaught">Add</b-button>
-
-                <div v-for="(species, index) in newTrip.reports.fishCaught" :key="species.fishCaughtId">
-                  <label for="sb-inline">{{ species.speciesCaught }}{{ index }}</label>
-                  <b-form-spinbutton @change="updateFishSpeciesCaught" id="sb-inline" v-model="species.qtyCaught" inline></b-form-spinbutton>
+                <div v-for="species in newTrip.reports.fishSpecies" :key="species.fishSpeciesId">
+                  <label for="sb-inline">{{ species.fishSpeciesName }}</label>
+                  <b-form-spinbutton @change="updateFishSpeciesQty" id="sb-inline" v-model="species.qtyCaught" inline></b-form-spinbutton>
                 </div>
 
               </div>
@@ -220,10 +212,7 @@ export default {
         reports: {
           tripId: 0,
           mySpots: {},
-          location: {
-            name: '',
-            spotId: 0,
-          },
+          spotId: 0,
           newHotFly: {
             size: '',
             pattern: '',
@@ -233,12 +222,11 @@ export default {
           },
           hotFlies: {},
           fishSpecies: {},
-          fishCaught: {},
-          newFishCaught: {
+          fishCaught: {
             uid: '',
             tripId: 0,
-            species: '',
-            qty: 1,
+            fishSpeciesId: '',
+            qtyCaught: 0,
           },
           notes: '',
         },
@@ -299,6 +287,15 @@ export default {
           console.log(error);
         });
     },
+    addReport() {
+      axios.get('http://localhost:3000/hotflies/' + this.newTrip.tripId)
+        .then((response) => {
+          this.newTrip.reports.hotFlies = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    },
     addHotFly() {
       axios.post('http://localhost:3000/addhotfly', this.newTrip.reports.newHotFly)
         .then((response) => {
@@ -331,31 +328,8 @@ export default {
           console.log(error);
         });
     },
-    addFishSpeciesCaught() {
-      axios.post('http://localhost:3000/addfishcaught', this.newTrip.reports.newFishCaught)
-        .then((response) => {
-          console.log(response);
-          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.tripId)
-            .then((response) => {
-              this.newTrip.reports.fishCaught = response.data;
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    updateFishSpeciesCaught(index) {
-      console.log('updateFishSpecies ' + index);
-      // axios.put('http://localhost:3000/editfishspeciescaught', this.newTrip.reports.fishCaught[index])
-      //   .then((response) => {
-      //     console.log(response);
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
+    updateFishSpeciesQty() {
+      console.log('changeqty')
     },
     saveReport() {
       console.log('save report');
@@ -369,6 +343,7 @@ export default {
           this.newTrip.reports.newHotFly.tripId = response.data[0].AUTO_INCREMENT;
           this.newTrip.reports.tripId = response.data[0].AUTO_INCREMENT;
           this.newTrip.newClient.tripId = response.data[0].AUTO_INCREMENT;
+          this.newTrip.reports.fishCaught.tripId = response.data[0].AUTO_INCREMENT;
         })
         .catch((error) => {
           console.log(error);
@@ -426,7 +401,7 @@ export default {
         this.newTrip.uid = user.uid;
         this.newTrip.newClient.uid = user.uid;
         this.newTrip.reports.newHotFly.uid = user.uid;
-        this.newTrip.reports.newFishCaught.uid = user.uid;
+        this.newTrip.reports.fishCaught.uid = user.uid;
         this.pageLoad();
 
       } else {
