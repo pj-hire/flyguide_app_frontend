@@ -95,6 +95,14 @@
           <div>
             <b-button variant="success" v-b-modal.modal-3 @click="addReport">Add a Report +</b-button>
 
+
+            <!-- List of reports: -->
+            <!-- <div v-for="(client, index) in newTrip.clients" :key="client.clientId">
+                <div @click="selectClient(index)" v-b-modal.modal-2 title="Edit Client">
+                  {{ client.clientFirstName }} {{ client.clientLastName }}
+                </div>
+            </div> -->
+
             <b-modal id="modal-3" title="Add Report" ok-only ok-title="Save Report" @ok="saveReport">
 
               <div><b>Location:</b></div>
@@ -159,16 +167,22 @@
               <div><b>Fish Caught:</b></div>
               <div class="box">
 
-                <div v-for="species in newTrip.reports.fishSpecies" :key="species.fishSpeciesId">
+                <div>
+                  <b-form-input v-model="newTrip.reports.newSpecies.name" placeholder="Add a new species">
+                  </b-form-input>
+                  <b-button @click="addNewSpecies">Add Species</b-button>
+                </div>
+
+                <div v-for="(species, index) in newTrip.reports.fishSpecies" :key="species.fishSpeciesId">
                   <label for="sb-inline">{{ species.fishSpeciesName }}</label>
-                  <b-form-spinbutton @change="updateFishSpeciesQty" id="sb-inline" v-model="species.qtyCaught" inline></b-form-spinbutton>
+                  <b-form-spinbutton min="0" @change="updateFishSpeciesQty(species.fishSpeciesId, index)" id="sb-inline" v-model="species.qtyCaught" inline></b-form-spinbutton>
                 </div>
 
               </div>
 
               <div><b>Notes:</b></div>
               <div class="box">
-                This is a note about this trip.
+                <b-form-textarea id="textarea" v-model="newTrip.reports.notes" placeholder="Additional trip notes..." rows="3" max-rows="6"></b-form-textarea>
               </div>
 
             </b-modal>
@@ -222,11 +236,15 @@ export default {
           },
           hotFlies: {},
           fishSpecies: {},
+          newSpecies: {
+            name: '',
+            uid: '',
+          },
           fishCaught: {
             uid: '',
             tripId: 0,
             fishSpeciesId: '',
-            qtyCaught: 0,
+            qtyCaught: '',
           },
           notes: '',
         },
@@ -328,21 +346,56 @@ export default {
           console.log(error);
         });
     },
-    updateFishSpeciesQty() {
-      console.log('changeqty')
+    addNewSpecies() {
+      console.log('add new species');
+      axios.post('http://localhost:3000/addnewspecies', this.newTrip.reports.newSpecies)
+        .then((response) => {
+          console.log(response);
+          axios.get('http://localhost:3000/fishspecies/' + this.user.uid)
+            .then((response) => {
+              this.newTrip.reports.fishSpecies = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    updateFishSpeciesQty(speciesId, index) {
+      this.newTrip.reports.fishCaught.fishSpeciesId = speciesId;
+      this.newTrip.reports.fishCaught.qtyCaught = this.newTrip.reports.fishSpecies[index].qtyCaught;
+      if (this.newTrip.reports.fishCaught.qtyCaught === 0) {
+        axios.post('http://localhost:3000/addfishcaughtqty', this.newTrip.reports.fishCaught)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        axios.put('http://localhost:3000/editfishcaughtqty', this.newTrip.reports.fishCaught)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     },
     saveReport() {
       console.log('save report');
+      console.log(this.newTrip.reports);
     },
     pageLoad() {
 
       axios.get('http://localhost:3000/aaid')
         .then((response) => {
           this.newTrip.tripId = response.data[0].AUTO_INCREMENT;
-          this.newTrip.reports.newFishCaught.tripId = response.data[0].AUTO_INCREMENT;
-          this.newTrip.reports.newHotFly.tripId = response.data[0].AUTO_INCREMENT;
-          this.newTrip.reports.tripId = response.data[0].AUTO_INCREMENT;
           this.newTrip.newClient.tripId = response.data[0].AUTO_INCREMENT;
+          this.newTrip.reports.tripId = response.data[0].AUTO_INCREMENT;
+          this.newTrip.reports.newHotFly.tripId = response.data[0].AUTO_INCREMENT;
           this.newTrip.reports.fishCaught.tripId = response.data[0].AUTO_INCREMENT;
         })
         .catch((error) => {
@@ -372,26 +425,6 @@ export default {
         .catch((error) => {
           console.log(error);
         })
-
-      //uid above, tripId below
-
-      //left off here --> logging out '1' on backend instead of '23'
-
-      // axios.get('http://localhost:3000/hotflies/' + this.newTrip.tripId)
-      //   .then((response) => {
-      //     this.newTrip.reports.hotFlies = response.data;
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
-
-      // axios.get('http://localhost:3000/fishcaught/' + this.newTrip.tripId)
-      //   .then((response) => {
-      //     this.newTrip.reports.fishCaught = response.data;
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
     },
   },
   created() {
@@ -401,6 +434,7 @@ export default {
         this.newTrip.uid = user.uid;
         this.newTrip.newClient.uid = user.uid;
         this.newTrip.reports.newHotFly.uid = user.uid;
+        this.newTrip.reports.newSpecies.uid = user.uid;
         this.newTrip.reports.fishCaught.uid = user.uid;
         this.pageLoad();
 
