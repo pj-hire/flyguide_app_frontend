@@ -7,6 +7,7 @@
     <div><router-link to="/mytrips"><button>My Trips</button></router-link></div>
     <div><router-link to="/myspots"><button>My Spots</button></router-link></div>
     <div><router-link to="/flybox"><button>Flybox</button></router-link></div>
+    <div><router-link to="/targetspecies"><button>Target Species</button></router-link></div>
     <div><router-link to="/conditions"><button>Conditions</button></router-link></div>
     <div><router-link to="/stats"><button>Stats</button></router-link></div>
     <div><router-link to="/account"><button>Account</button></router-link></div>

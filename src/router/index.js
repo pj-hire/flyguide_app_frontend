@@ -8,6 +8,9 @@ import Mytrips from '../views/Mytrips.vue'
 import Myspots from '../views/Myspots.vue'
 import Addspot from '../views/Addspot.vue'
 import Editspot from '../views/Editspot.vue'
+import Targetspecies from '../views/Targetspecies.vue'
+import Addspecies from '../views/Addspecies.vue'
+import Editspecies from '../views/Editspecies.vue'
 import Flybox from '../views/Flybox.vue'
 import Addfly from '../views/Addfly.vue'
 import Editfly from '../views/Editfly.vue'
@@ -59,6 +62,21 @@ const routes = [
     component: Editspot
   },
   {
+    path: '/targetspecies',
+    name: 'Targetspecies',
+    component: Targetspecies,
+  },
+  {
+    path: '/targetspecies/addspecies',
+    name: 'Addspecies',
+    component: Addspecies,
+  },
+  {
+    path: '/targetspecies/editspecies/:id',
+    name: 'Editspecies',
+    component: Editspecies,
+  },
+  {
     path: '/flybox',
     name: 'Flybox',
     component: Flybox,
@@ -66,12 +84,12 @@ const routes = [
   {
     path: '/flybox/addfly',
     name: 'Addfly',
-    component: Addfly
+    component: Addfly,
   },
   {
     path: '/flybox/editfly/:id',
     name: 'Editfly',
-    component: Editfly
+    component: Editfly,
   },
   {
     path: '/conditions',

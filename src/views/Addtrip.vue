@@ -93,16 +93,7 @@
         <div class="box">
 
           <div>
-            <b-button @click="addAReport" variant="success" v-b-modal.modal-3>Add a Report +</b-button>
-            <!-- @click="addReport" -->
-
-
-            <!-- List of newReport: -->
-            <!-- <div v-for="(client, index) in newTrip.clients" :key="client.clientId">
-                <div @click="selectClient(index)" v-b-modal.modal-2 title="Edit Client">
-                  {{ client.clientFirstName }} {{ client.clientLastName }}
-                </div>
-            </div> -->
+            <b-button variant="success" v-b-modal.modal-3>Add a Report +</b-button>
 
             <b-modal id="modal-3" title="Add Report" ok-only ok-title="Save Report" @ok="saveReport">
 
@@ -163,15 +154,15 @@
               <div><b>Fish Caught:</b></div>
               <div class="box">
 
-                <div>
-                  <b-form-input v-model="newTrip.newReport.newSpecies.name" placeholder="Add a new species">
-                  </b-form-input>
-                  <b-button @click="addNewSpecies">Add Species</b-button>
-                </div>
+                <select v-model="newTrip.newReport.newFishCaught.speciesName">
+                  <option disabled value="">Species</option>
+                  <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
+                </select>
 
-                <div v-for="(species, index) in newTrip.fishSpecies" :key="species.fishSpeciesId">
-                  <label for="sb-inline">{{ species.fishSpeciesName }}</label>
-                  <b-form-spinbutton min="0" placeholder="--" @change="updateFishSpeciesQty(species.fishSpeciesId, index)" id="sb-inline" v-model="species.qtyCaught" inline></b-form-spinbutton>
+                <b-button @click="addFishCaught">Add</b-button>
+
+                <div v-for="(species, index) in newTrip.newReport.fishCaught" :key="species.fishCaughtId">
+                  <div>{{ species.speciesName }} <button @click="deleteFishCaught(index)">Delete</button></div>
                 </div>
 
               </div>
@@ -252,26 +243,23 @@
               <div><b>Fish Caught:</b></div>
               <div class="box">
 
-                <div>
-                  <b-form-input v-model="newTrip.editReport.newSpecies.name" placeholder="Add a new species">
-                  </b-form-input>
-                  <b-button @click="editReportAddNewSpecies">Add Species</b-button>
+                <select v-model="newTrip.editReport.newFishCaught.speciesName">
+                  <option disabled value="">Species</option>
+                  <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
+                </select>
+
+                <b-button @click="editReportAddFishCaught">Add</b-button>
+
+                <div v-for="(species, index) in newTrip.editReport.fishCaught" :key="species.fishCaughtId">
+                  <div>{{ species.speciesName }} <button @click="editReportDeleteFishCaught(index)">Delete</button></div>
                 </div>
 
-                <!-- because it's a for loop, I'm not sure what the best way to bring data in from the database is? Maybe change the whole format of logging fish quantity? -->
-                <!-- for loop for incrementer -->
-
-                <!-- loop brings species in -->
-                <div v-for="(species, index) in newTrip.fishSpecies" :key="species.fishSpeciesId">
-                    <label for="sb-inline">{{ species.fishSpeciesName }}</label>
-                    <b-form-spinbutton min="0" placeholder="--" @change="updateFishSpeciesQty(species.fishSpeciesId, index)" id="sb-inline" v-model="species.qtyCaught" inline></b-form-spinbutton>
-                </div>
               </div>
 
               <!-- edit notes -->
               <div><b>Notes:</b></div>
               <div class="box">
-                <b-form-textarea id="textarea" v-model="newTrip.editReport.notes" placeholder="Additional trip notes..." rows="3" max-rows="6"></b-form-textarea>
+                <b-form-textarea id="textarea" v-model="newTrip.editReport.notes" placeholder="Additional report notes..." rows="3" max-rows="6"></b-form-textarea>
               </div>
 
             </b-modal>
@@ -280,6 +268,16 @@
           </div>
         </div>
       </div>
+
+      <div>
+        Notes:
+        <div class="box">
+          <b-form-textarea id="textarea" v-model="newTrip.tripNotes" placeholder="Additional trip notes..." rows="3" max-rows="6"></b-form-textarea>
+        </div>
+      </div>
+
+      <b-button @click="saveTrip">Save Trip</b-button>
+
     </div>
   </div>
 </template>
@@ -316,7 +314,7 @@ export default {
         selectedReportIndex: 0,
         mySpots: {},
         flybox: {},
-        fishSpecies: {},
+        targetSpecies: {},
 
         // new report
         newReport: {
@@ -332,16 +330,14 @@ export default {
             reportId: 0,
           },
           hotFlies: {},
-          newSpecies: {
-            name: '',
-            uid: '',
-          },
-          fishCaught: {
+          newFishCaught: {
             uid: '',
             reportId: 0,
-            fishSpeciesId: '',
+            fishSpeciesId: 0,
+            speciesName: '',
             qtyCaught: 0,
           },
+          fishCaught: {},
           notes: '',
         },
 
@@ -359,19 +355,17 @@ export default {
             reportId: 0,
           },
           hotFlies: {},
-          newSpecies: {
-            name: '',
-            uid: '',
-          },
-          fishCaught: {
+          newFishCaught: {
             uid: '',
             reportId: 0,
-            fishSpeciesId: '',
+            fishSpeciesId: 0,
+            speciesName: '',
             qtyCaught: 0,
           },
+          fishCaught: {},
           notes: '',
         },
-
+        tripNotes: '',
       }
     }
   },
@@ -428,9 +422,6 @@ export default {
           console.log(error);
         });
     },
-    addAReport() {
-      console.log('add a report');
-    },
     addHotFly() {
       axios.post('http://localhost:3000/addhotfly', this.newTrip.newReport.newHotFly)
         .then((response) => {
@@ -465,6 +456,72 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    addFishCaught() {
+      axios.post('http://localhost:3000/addfishCaught', this.newTrip.newReport.newFishCaught)
+        .then((response) => {
+          console.log(response);
+          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.newReport.newFishCaught.reportId)
+            .then((response) => {
+              this.newTrip.newReport.fishCaught = response.data;
+              this.newTrip.newReport.newFishCaught.speciesName = '';
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    deleteFishCaught(index) {
+      axios.post('http://localhost:3000/deletefishcaught', this.newTrip.newReport.fishCaught[index])
+        .then((response) => {
+          console.log(response);
+          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.newReport.reportId)
+            .then((response) => {
+              this.newTrip.newReport.fishCaught = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    editReport(index) {
+      this.newTrip.selectedReportIndex = index;
+      // main data:
+      this.newTrip.editReport.uid = this.newTrip.reports[index].uid;
+      this.newTrip.editReport.tripId = this.newTrip.reports[index].tripId;
+      this.newTrip.editReport.reportId = this.newTrip.reports[index].reportId;
+      this.newTrip.editReport.spotId = this.newTrip.reports[index].spotId;
+      this.newTrip.editReport.notes = this.newTrip.reports[index].notes;
+      // hotFlies:
+      this.newTrip.editReport.newHotFly.uid = this.newTrip.reports[index].uid;
+      this.newTrip.editReport.newHotFly.reportId = this.newTrip.reports[index].reportId;
+      //fishCaught
+      this.newTrip.editReport.newFishCaught.uid = this.newTrip.reports[index].uid;
+      this.newTrip.editReport.newFishCaught.reportId = this.newTrip.reports[index].reportId;
+      // load in existing hotFlies:
+      axios.get('http://localhost:3000/hotflies/' + this.newTrip.reports[index].reportId)
+        .then((response) => {
+          console.log(response.data);
+          this.newTrip.editReport.hotFlies = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      // load in fishCaught
+      axios.get('http://localhost:3000/fishcaught/' + this.newTrip.reports[index].reportId)
+        .then((response) => {
+          console.log(response.data);
+          this.newTrip.editReport.fishCaught = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
     },
     editReportAddHotFly() {
       axios.post('http://localhost:3000/addhotfly', this.newTrip.editReport.newHotFly)
@@ -501,13 +558,14 @@ export default {
           console.log(error);
         });
     },
-    addNewSpecies() {
-      axios.post('http://localhost:3000/addnewspecies', this.newTrip.newReport.newSpecies)
+    editReportAddFishCaught() {
+      axios.post('http://localhost:3000/addfishcaught', this.newTrip.editReport.newFishCaught)
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/fishspecies/' + this.user.uid)
+          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.editReport.reportId)
             .then((response) => {
-              this.newTrip.fishSpecies = response.data;
+              this.newTrip.editReport.fishCaught = response.data;
+              this.newTrip.editReport.newFishCaught.speciesName = '';
             })
             .catch((error) => {
               console.log(error);
@@ -517,13 +575,13 @@ export default {
           console.log(error);
         });
     },
-    editReportAddNewSpecies() {
-      axios.post('http://localhost:3000/addnewspecies', this.newTrip.editReport.newSpecies)
+    editReportDeleteFishCaught(index) {
+      axios.post('http://localhost:3000/deletefishcaught', this.newTrip.editReport.fishCaught[index])
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/fishspecies/' + this.user.uid)
+          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.editReport.reportId)
             .then((response) => {
-              this.newTrip.fishSpecies = response.data;
+              this.newTrip.editReport.fishCaught = response.data;
             })
             .catch((error) => {
               console.log(error);
@@ -533,50 +591,6 @@ export default {
           console.log(error);
         });
     },
-    updateFishSpeciesQty(speciesId, index) {
-      this.newTrip.newReport.fishCaught.fishSpeciesId = speciesId;
-      this.newTrip.newReport.fishCaught.qtyCaught = this.newTrip.fishSpecies[index].qtyCaught;
-      if (this.newTrip.newReport.fishCaught.qtyCaught > 0) {
-        axios.put('http://localhost:3000/editfishcaughtqty', this.newTrip.newReport.fishCaught)
-          .then((response) => {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      } else {
-        axios.post('http://localhost:3000/addfishcaughtqty', this.newTrip.newReport.fishCaught)
-          .then((response) => {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      }
-    },
-
-    // editReportUpdateFishSpeciesQty(speciesId, index) {
-    //   this.newTrip.editReport.fishCaught.fishSpeciesId = speciesId;
-    //   this.newTrip.newReport.fishCaught.qtyCaught = this.newTrip.fishSpecies[index].qtyCaught;
-    //   if (this.newTrip.newReport.fishCaught.qtyCaught > 0) {
-    //     axios.put('http://localhost:3000/editfishcaughtqty', this.newTrip.newReport.fishCaught)
-    //       .then((response) => {
-    //         console.log(response);
-    //       })
-    //       .catch(function (error) {
-    //         console.log(error);
-    //       });
-    //   } else {
-    //     axios.post('http://localhost:3000/addfishcaughtqty', this.newTrip.newReport.fishCaught)
-    //       .then((response) => {
-    //         console.log(response);
-    //       })
-    //       .catch(function (error) {
-    //         console.log(error);
-    //       });
-    //   }
-    // },
-
     saveReport() {
       axios.post('http://localhost:3000/savereport', this.newTrip.newReport)
         .then((response) => {
@@ -587,45 +601,42 @@ export default {
         });
       this.pageLoad()
     },
-    editReport(index) {
-      this.newTrip.selectedReportIndex = index;
-      // main data
-      this.newTrip.editReport.uid = this.newTrip.reports[index].uid;
-      this.newTrip.editReport.tripId = this.newTrip.reports[index].tripId;
-      this.newTrip.editReport.reportId = this.newTrip.reports[index].reportId;
-      this.newTrip.editReport.spotId = this.newTrip.reports[index].spotId;
-      this.newTrip.editReport.notes = this.newTrip.reports[index].notes;
-      // hotflies
-      this.newTrip.editReport.newHotFly.uid = this.newTrip.reports[index].uid;
-      this.newTrip.editReport.newHotFly.reportId = this.newTrip.reports[index].reportId;
-      // load in any current hotFlies that have already been created for this report
-      axios.get('http://localhost:3000/hotflies/' + this.newTrip.reports[index].reportId)
-        .then((response) => {
-          console.log(response.data);
-          this.newTrip.editReport.hotFlies = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      //new species
-      this.newTrip.editReport.newSpecies.uid = this.newTrip.uid;
-      //get fishCaught numbers
-      axios.get('http://localhost:3000/fishcaughtqty/' + this.newTrip.reports[index].reportId)
-        .then((response) => {
-          console.log(response.data);
-          this.newTrip.editReport.fishCaught = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-
-    },
     deleteReport() {
-      console.log('delete report');
+      axios.post('http://localhost:3000/deletereport', this.newTrip.reports[this.newTrip.selectedReportIndex])
+        .then((response) => {
+          console.log(response);
+          this.newTrip.selectedReportIndex = 0;
+          axios.get('http://localhost:3000/reports/' + this.user.uid)
+            .then((response) => {
+              this.newTrip.reports = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     saveReportChanges() {
-      console.log('save report changes');
-
+      axios.put('http://localhost:3000/savereportchanges', this.newTrip.editReport)
+        .then((response) => {
+          console.log(response);
+          this.pageLoad()
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    saveTrip() {
+      axios.post('http://localhost:3000/savetrip', this.newTrip)
+        .then((response) => {
+          console.log(response);
+          window.location.href = "http://127.0.0.1:8080/mytrips";
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
 
     pageLoad() {
@@ -642,6 +653,14 @@ export default {
             .catch((error) => {
               console.log(error);
             })
+          //added this to get new trip id, tired so not sure if it was the right move. Not getting a new trip id after saving a trip.  
+          axios.get('http://localhost:3000/reports/' + response.data[0].AUTO_INCREMENT)
+            .then((response) => {
+              this.newTrip.reports = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
         })
         .catch((error) => {
           console.log(error);
@@ -649,9 +668,9 @@ export default {
 
       axios.get('http://localhost:3000/aaidreport')
         .then((response) => {
-          this.newTrip.newReport.reportId = response.data[0].AUTO_INCREMENT;
-          this.newTrip.newReport.newHotFly.reportId = response.data[0].AUTO_INCREMENT;
-          this.newTrip.newReport.fishCaught.reportId = response.data[0].AUTO_INCREMENT;
+          this.newTrip.newReport.reportId = response.data[0].reportId + 1;
+          this.newTrip.newReport.newHotFly.reportId = response.data[0].reportId + 1;
+          this.newTrip.newReport.newFishCaught.reportId = response.data[0].reportId + 1;
         })
         .catch((error) => {
           console.log(error);
@@ -673,21 +692,21 @@ export default {
           console.log(error);
         })
 
-      axios.get('http://localhost:3000/fishspecies/' + this.user.uid)
+      axios.get('http://localhost:3000/targetspecies/' + this.user.uid)
         .then((response) => {
-          this.newTrip.fishSpecies = response.data;
+          this.newTrip.targetSpecies = response.data;
         })
         .catch((error) => {
           console.log(error);
         })
 
-      axios.get('http://localhost:3000/reports/' + this.user.uid)
-        .then((response) => {
-          this.newTrip.reports = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+      // axios.get('http://localhost:3000/reports/' + this.user.uid)
+      //   .then((response) => {
+      //     this.newTrip.reports = response.data;
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
     },
   },
   created() {
@@ -698,8 +717,7 @@ export default {
         this.newTrip.newClient.uid = user.uid;
         this.newTrip.newReport.uid = user.uid;
         this.newTrip.newReport.newHotFly.uid = user.uid;
-        this.newTrip.newReport.newSpecies.uid = user.uid;
-        this.newTrip.newReport.fishCaught.uid = user.uid;
+        this.newTrip.newReport.newFishCaught.uid = user.uid;
         this.pageLoad();
 
       } else {
