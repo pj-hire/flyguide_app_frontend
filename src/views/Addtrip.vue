@@ -380,6 +380,11 @@ export default {
           axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
             .then((response) => {
               this.newTrip.clients = response.data;
+              this.newTrip.newClient.firstName = '';
+              this.newTrip.newClient.lastName = '';
+              this.newTrip.newClient.email = '';
+              this.newTrip.newClient.phone = '';
+              this.newTrip.newClient.notes = '';
             })
             .catch((error) => {
               console.log(error);
@@ -595,20 +600,40 @@ export default {
       axios.post('http://localhost:3000/savereport', this.newTrip.newReport)
         .then((response) => {
           console.log(response);
+          this.pageLoad();
         })
         .catch(function (error) {
           console.log(error);
         });
-      this.pageLoad()
     },
     deleteReport() {
+      //delete hotFlies associated with report
+      axios.post('http://localhost:3000/deletereporthotflies', this.newTrip.reports[this.newTrip.selectedReportIndex])
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      //delete fishCaught associated with report
+      axios.post('http://localhost:3000/deletereportfishcaught', this.newTrip.reports[this.newTrip.selectedReportIndex])
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      //delete report
       axios.post('http://localhost:3000/deletereport', this.newTrip.reports[this.newTrip.selectedReportIndex])
         .then((response) => {
           console.log(response);
           this.newTrip.selectedReportIndex = 0;
-          axios.get('http://localhost:3000/reports/' + this.user.uid)
+          //reload trips
+          axios.get('http://localhost:3000/reports/' + this.newTrip.tripId)
             .then((response) => {
               this.newTrip.reports = response.data;
+              //is this the right spot for pageLoad()?
+              this.pageLoad();
             })
             .catch((error) => {
               console.log(error);
@@ -638,23 +663,23 @@ export default {
           console.log(error);
         });
     },
-
     pageLoad() {
-
+      //bring tripId in
       axios.get('http://localhost:3000/aaidtrip')
         .then((response) => {
-          this.newTrip.tripId = response.data[0].AUTO_INCREMENT;
-          this.newTrip.newClient.tripId = response.data[0].AUTO_INCREMENT;
-          this.newTrip.newReport.tripId = response.data[0].AUTO_INCREMENT;
-          axios.get('http://localhost:3000/clients/' + response.data[0].AUTO_INCREMENT)
+          this.newTrip.tripId = response.data[0].tripId + 1;
+          this.newTrip.newClient.tripId = response.data[0].tripId + 1;
+          this.newTrip.newReport.tripId = response.data[0].tripId + 1;
+          //select all clients from current trip throught tripId
+          axios.get('http://localhost:3000/clients/' + (response.data[0].tripId + 1))
             .then((response) => {
               this.newTrip.clients = response.data;
             })
             .catch((error) => {
               console.log(error);
             })
-          //added this to get new trip id, tired so not sure if it was the right move. Not getting a new trip id after saving a trip.  
-          axios.get('http://localhost:3000/reports/' + response.data[0].AUTO_INCREMENT)
+          //select all reports from current trip throught tripId
+          axios.get('http://localhost:3000/reports/' + (response.data[0].tripId + 1))
             .then((response) => {
               this.newTrip.reports = response.data;
             })
@@ -666,6 +691,7 @@ export default {
           console.log(error);
         });
 
+      //bring reportId in
       axios.get('http://localhost:3000/aaidreport')
         .then((response) => {
           this.newTrip.newReport.reportId = response.data[0].reportId + 1;
@@ -676,6 +702,7 @@ export default {
           console.log(error);
         });
 
+      //bring mySpots in
       axios.get('http://localhost:3000/myspots/' + this.user.uid)
         .then((response) => {
           this.newTrip.mySpots = response.data;
@@ -684,6 +711,7 @@ export default {
           console.log(error);
         })
 
+      //bring flies from flybox in
       axios.get('http://localhost:3000/flybox/' + this.user.uid)
         .then((response) => {
           this.newTrip.flybox = response.data;
@@ -692,6 +720,7 @@ export default {
           console.log(error);
         })
 
+      //bring targetSpecies in
       axios.get('http://localhost:3000/targetspecies/' + this.user.uid)
         .then((response) => {
           this.newTrip.targetSpecies = response.data;
@@ -700,13 +729,12 @@ export default {
           console.log(error);
         })
 
-      // axios.get('http://localhost:3000/reports/' + this.user.uid)
-      //   .then((response) => {
-      //     this.newTrip.reports = response.data;
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
+      //reset everything for next report
+      this.newTrip.newReport.spotId = 0;
+      this.newTrip.newReport.hotFlies = {};
+      this.newTrip.newReport.fishCaught = {};
+      this.newTrip.newReport.notes = '';
+
     },
   },
   created() {
