@@ -4,10 +4,10 @@
     <router-link to="/mytrips/addtrip"><button>Add a Trip</button></router-link>
 
 
-    <div class="box" v-for="trip in trips" :key="trip.tripId">
+    <div v-for="trip in trips" :key="trip.tripId">
       <div v-for="client in clients" :key="client.clientId">
-        <div v-if="trip.tripId === client.tripId">
-          {{ trip.tripId }}
+        <div class="box" v-if="trip.tripId == client.tripId">
+          <router-link :to="'/mytrips/' + trip.tripId">{{ client.clientFirstName }} {{ client.clientLastName }} - {{ trip.date }} - {{ trip.guideTripType}}</router-link>
         </div>
       </div>
     </div>
