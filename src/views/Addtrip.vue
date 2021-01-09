@@ -7,35 +7,78 @@
         <b-form-datepicker v-model="newTrip.date" class="mb-2"></b-form-datepicker>
       </div>
 
-      <!-- <div class="btn-group btn-group-toggle">
-        <label class="btn btn-secondary active">
-          <input type="radio" name="options" value="guideTrip" id="option1"  v-model="newTrip.tripType" autocomplete="off" checked> Guide Trip
-        </label>
-        <label class="btn btn-secondary active">
-         <input type="radio" name="options"  value="personalTrip" id="option2"  v-model="newTrip.tripType" autocomplete="off"> Personal
-        </label>
-      </div> -->
+      <div>
+        <b-card no-body>
+          <b-tabs pills card>
+            <b-tab title="Guide Trip" active @click="newTrip.tripType = 'guideTrip'">
+              <b-card-text>
+
+                <b-form-select v-model="newTrip.guideTripType" id="dropdown-left" text="Trip Type" variant="primary" class="mb-3">
+                  <b-form-select-option disabled value="">Trip Type</b-form-select-option>
+                  <b-form-select-option value="halfDayWade">Half-Day Wade</b-form-select-option>
+                  <b-form-select-option value="fullDayWade">Full-Day Wade</b-form-select-option>
+                  <b-form-select-option value="halfDayFloat">Half-Day Float</b-form-select-option>
+                  <b-form-select-option value="fullDayFloat">Full-Day Float</b-form-select-option>
+                </b-form-select>
+
+                <b-form-select v-model="newTrip.numberInParty" id="dropdown-left" text="# In Party" variant="primary" class="mb-3">
+                  <b-form-select-option disabled value=""># in Party</b-form-select-option>
+                  <b-form-select-option type="number" value="1">1</b-form-select-option>
+                  <b-form-select-option type="number" value="2">2</b-form-select-option>
+                  <b-form-select-option type="number" value="3">3</b-form-select-option>
+                  <b-form-select-option type="number" value="4">4</b-form-select-option>
+                  <b-form-select-option type="number" value="5">5</b-form-select-option>
+                </b-form-select>
+
+                <div>
+                  Client Info:
+                  <b-card>
+
+                    <!-- add client -->
+                    <div>
+                      <b-button variant="success" v-b-modal.modal-1>Add a Client +</b-button>
+                      <b-modal id="modal-1" title="Add Client" ok-only ok-title="Save Client" @ok="addClient">
+                        <p class="my-4">First Name: <input v-model="newTrip.newClient.firstName"></p>
+                        <p class="my-4">Last Name: <input v-model="newTrip.newClient.lastName"></p>
+                        <p class="my-4">Email: <input v-model="newTrip.newClient.email"></p>
+                        <p class="my-4">Phone: <input v-model="newTrip.newClient.phone"></p>
+                        <p class="my-4">Notes: <b-form-textarea v-model="newTrip.newClient.notes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
+                      </b-modal>
+                    </div>
+
+                    <!-- display clients added -->
+                    <div v-for="(client, index) in newTrip.clients" :key="client.clientId">
+                        <div @click="selectClient(index)" v-b-modal.modal-2 title="Edit Client">
+                          {{ client.clientFirstName }} {{ client.clientLastName }}
+                        </div>
+                    </div>
+
+                    <!-- edit client -->
+                    <b-modal v-if="newTrip.clients[newTrip.selectedClientIndex]" id="modal-2" title="Edit Client" ok-title="Save Changes" cancel-title="Delete Client" @cancel="deleteClient" @ok="saveClientChanges">
+                      <p class="my-4">First Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientFirstName"></p>
+                      <p class="my-4">Last Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientLastName"></p>
+                      <p class="my-4">Email: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientEmail"></p>
+                      <p class="my-4">Phone: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientPhone"></p>
+                      <p class="my-4">Notes: <b-form-textarea v-model="newTrip.clients[newTrip.selectedClientIndex].clientNotes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
+                    </b-modal>
+
+                  </b-card>
+                </div>
+              </b-card-text></b-tab>
+            <b-tab @click="newTrip.tripType = 'personalTrip'" title="Personal Trip"><b-card-text></b-card-text></b-tab>
+          </b-tabs>
+        </b-card>
+      </div>
 
 
-      <!-- <div class="btn-group btn-group-toggle">
+      <!-- OLD COLLAPSE TOGGLE - DELETE AFTER CONFIRM NO BUGS COME UP-->
 
-        <label class="btn btn-secondary active" v-b-toggle.collapse-1>
-          <input type="radio" name="options" value="guideTrip" id="option1"  v-model="newTrip.tripType" autocomplete="off" checked> Guide Trip
-        </label>
-
-        <label class="btn btn-secondary active">
-         <input type="radio" name="options"  value="personalTrip" id="option2"  v-model="newTrip.tripType" autocomplete="off"> Personal
-        </label>
-
-      </div> -->
-
-
-      <b-button @click="newTrip.tripType = 'guideTrip'" v-b-toggle.collapse-1 variant="primary">Guide Trip</b-button>
+      <!-- <b-button @click="newTrip.tripType = 'guideTrip'" v-b-toggle.collapse-1 variant="primary">Guide Trip</b-button>
       <b-button @click="newTrip.tripType = 'personalTrip'" v-b-toggle.collapse-1 variant="primary">Personal Trip</b-button>
       <b-collapse id="collapse-1" class="mt-2">
-        <b-card v-if="newTrip.tripType = 'guideTrip'">
+        <b-card v-if="newTrip.tripType = 'guideTrip'"> -->
 
-          <b-form-select v-model="newTrip.guideTripType" id="dropdown-left" text="Trip Type" variant="primary" class="mb-3">
+          <!-- <b-form-select v-model="newTrip.guideTripType" id="dropdown-left" text="Trip Type" variant="primary" class="mb-3">
             <b-form-select-option disabled value="">Trip Type</b-form-select-option>
             <b-form-select-option value="halfDayWade">Half-Day Wade</b-form-select-option>
             <b-form-select-option value="fullDayWade">Full-Day Wade</b-form-select-option>
@@ -52,41 +95,39 @@
             <b-form-select-option type="number" value="5">5</b-form-select-option>
           </b-form-select>
 
-            <div>
-              Client Info:
-              <b-card>
+          <div>
+            Client Info:
+            <b-card>
 
-                <div>
-                  <b-button variant="success" v-b-modal.modal-1>Add a Client +</b-button>
-                  <b-modal id="modal-1" title="Add Client" ok-only ok-title="Save Client" @ok="addClient">
-                    <p class="my-4">First Name: <input v-model="newTrip.newClient.firstName"></p>
-                    <p class="my-4">Last Name: <input v-model="newTrip.newClient.lastName"></p>
-                    <p class="my-4">Email: <input v-model="newTrip.newClient.email"></p>
-                    <p class="my-4">Phone: <input v-model="newTrip.newClient.phone"></p>
-                    <p class="my-4">Notes: <b-form-textarea v-model="newTrip.newClient.notes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
-                  </b-modal>
-                </div>
-
-                <div v-for="(client, index) in newTrip.clients" :key="client.clientId">
-                    <div @click="selectClient(index)" v-b-modal.modal-2 title="Edit Client">
-                      {{ client.clientFirstName }} {{ client.clientLastName }}
-                    </div>
-                </div>
-
-                <b-modal v-if="newTrip.clients[newTrip.selectedClientIndex]" id="modal-2" title="Edit Client" ok-title="Save Changes" cancel-title="Delete Client" @cancel="deleteClient" @ok="saveClientChanges">
-                  <p class="my-4">First Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientFirstName"></p>
-                  <p class="my-4">Last Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientLastName"></p>
-                  <p class="my-4">Email: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientEmail"></p>
-                  <p class="my-4">Phone: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientPhone"></p>
-                  <p class="my-4">Notes: <b-form-textarea v-model="newTrip.clients[newTrip.selectedClientIndex].clientNotes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
+              <div>
+                <b-button variant="success" v-b-modal.modal-1>Add a Client +</b-button>
+                <b-modal id="modal-1" title="Add Client" ok-only ok-title="Save Client" @ok="addClient">
+                  <p class="my-4">First Name: <input v-model="newTrip.newClient.firstName"></p>
+                  <p class="my-4">Last Name: <input v-model="newTrip.newClient.lastName"></p>
+                  <p class="my-4">Email: <input v-model="newTrip.newClient.email"></p>
+                  <p class="my-4">Phone: <input v-model="newTrip.newClient.phone"></p>
+                  <p class="my-4">Notes: <b-form-textarea v-model="newTrip.newClient.notes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
                 </b-modal>
+              </div>
 
-              </b-card>
+              <div v-for="(client, index) in newTrip.clients" :key="client.clientId">
+                  <div @click="selectClient(index)" v-b-modal.modal-2 title="Edit Client">
+                    {{ client.clientFirstName }} {{ client.clientLastName }}
+                  </div>
+              </div>
 
-            </div>
+              <b-modal v-if="newTrip.clients[newTrip.selectedClientIndex]" id="modal-2" title="Edit Client" ok-title="Save Changes" cancel-title="Delete Client" @cancel="deleteClient" @ok="saveClientChanges">
+                <p class="my-4">First Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientFirstName"></p>
+                <p class="my-4">Last Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientLastName"></p>
+                <p class="my-4">Email: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientEmail"></p>
+                <p class="my-4">Phone: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientPhone"></p>
+                <p class="my-4">Notes: <b-form-textarea v-model="newTrip.clients[newTrip.selectedClientIndex].clientNotes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
+              </b-modal>
 
-        </b-card>
-      </b-collapse>
+            </b-card>
+          </div> -->
+        <!-- </b-card>
+      </b-collapse> -->
 
       <div>
         Reports:
@@ -162,7 +203,11 @@
                 <b-button @click="addFishCaught">Add</b-button>
 
                 <div v-for="(species, index) in newTrip.newReport.fishCaught" :key="species.fishCaughtId">
-                  <div>{{ species.speciesName }} <button @click="deleteFishCaught(index)">Delete</button></div>
+                  <div>
+                    {{ species.speciesName }}
+                    <b-form-spinbutton id="sb-inline" v-model="newTrip.newReport.fishCaught[index].qtyCaught" min='0' inline @change="changeFishCaughtQty(index)"></b-form-spinbutton>
+                    <button @click="deleteFishCaught(index)">Delete</button>
+                  </div>
                 </div>
 
               </div>
@@ -251,7 +296,11 @@
                 <b-button @click="editReportAddFishCaught">Add</b-button>
 
                 <div v-for="(species, index) in newTrip.editReport.fishCaught" :key="species.fishCaughtId">
-                  <div>{{ species.speciesName }} <button @click="editReportDeleteFishCaught(index)">Delete</button></div>
+                  <div>
+                    {{ species.speciesName }}
+                    <b-form-spinbutton id="sb-inline" v-model="newTrip.editReport.fishCaught[index].qtyCaught" min='0' inline @change="editReportChangeFishCaughtQty(index)"></b-form-spinbutton>
+                    <button @click="editReportDeleteFishCaught(index)">Delete</button>
+                  </div>
                 </div>
 
               </div>
@@ -296,7 +345,7 @@ export default {
         uid: '',
         tripId: undefined,
         date: '',
-        tripType: '',
+        tripType: 'guideTrip',
         guideTripType: '',
         numberInParty: '',
         newClient: {
@@ -370,6 +419,22 @@ export default {
     }
   },
   methods: {
+    changeFishCaughtQty(index) {
+      axios.post('http://localhost:3000/addfishcaughtqty', this.newTrip.newReport.fishCaught[index])
+        .then((response) => {
+          console.log(response);
+          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.newReport.reportId)
+            .then((response) => {
+              this.newTrip.newReport.fishCaught = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     selectClient(index) {
       this.newTrip.selectedClientIndex = index;
     },
@@ -571,6 +636,22 @@ export default {
             .then((response) => {
               this.newTrip.editReport.fishCaught = response.data;
               this.newTrip.editReport.newFishCaught.speciesName = '';
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    editReportChangeFishCaughtQty(index) {
+      axios.post('http://localhost:3000/addfishcaughtqty', this.newTrip.editReport.fishCaught[index])
+        .then((response) => {
+          console.log(response);
+          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.editReport.reportId)
+            .then((response) => {
+              this.newTrip.editReport.fishCaught = response.data;
             })
             .catch((error) => {
               console.log(error);
