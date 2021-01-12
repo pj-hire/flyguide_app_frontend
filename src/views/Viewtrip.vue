@@ -1,10 +1,10 @@
 <template>
   <div class="about">
-    <b-card v-if="tripIsLoaded === true">
+    <b-card v-if="tripIsLoaded">
       <div>{{ tripType }} - {{ trips[0].date }}</div>
       <div>{{ trips[0].guideTripNumberInParty }} Clients - {{ guideTripType }}</div>
       <hr>
-      <div v-if="clientsIsLoaded === true">
+      <div v-if="clientsIsLoaded">
         <div v-if="trips[0].guideOrPersonalTrip === 'guideTrip'">
           <div>Clients:</div>
           <b-card v-for="client in clients" :key="client.clientId">
@@ -15,7 +15,7 @@
           </b-card>
         </div>
       </div>
-      <div v-if="reportsIsLoaded === true && hotFliesIsLoaded === true && fishCaughtIsLoaded === true && mySpotsIsLoaded === true">
+      <div v-if="reportsIsLoaded">
         <div>Reports:</div>
         <b-card v-for="report in reports" :key="report.reportId">
           <div>{{ report.mySpots[0].locationName }} at {{ report.mySpots[0].subLocationName }}</div>
@@ -45,11 +45,13 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
+import moment from 'moment';
 
 export default {
   name: "Viewtrip",
   data() {
     return {
+      m: moment,
       user: {},
       trips: {},
       tripIsLoaded: false,
@@ -57,12 +59,9 @@ export default {
       clientsIsLoaded: false,
       reports: {},
       reportsIsLoaded: false,
-      hotFliesIsLoaded: false,
-      fishCaughtIsLoaded: false,
-      mySpotsIsLoaded: false,
       tripType: '',
       guideTripType: '',
-
+      now: ','
     }
   },
   methods: {
@@ -70,11 +69,14 @@ export default {
       console.log('delete trip');
     },
     pageLoad() {
+
+      //console.log(moment(this.trips[0].date).format('ll'));
+
       //bring in trip by tripId param
       axios.get('http://localhost:3000/viewtrip/' + this.$route.params.id)
         .then((response) => {
-          this.trips = response.data;
           this.tripIsLoaded = true;
+          this.trips = response.data;
 
           if (response.data[0].guideOrPersonalTrip === 'guideTrip') {
             this.tripType = 'Guide Trip';
@@ -121,7 +123,6 @@ export default {
               .then((response) => {
                 //creates hotflies array into report object
                 this.reports[report].hotFlies = response.data;
-                this.hotFliesIsLoaded = true;
               })
               .catch((error) => {
                 console.log(error);
@@ -131,7 +132,6 @@ export default {
               .then((response) => {
                 //creates hotflies array into report object
                 this.reports[report].fishCaught = response.data;
-                this.fishCaughtIsLoaded = true;
               })
               .catch((error) => {
                 console.log(error);
@@ -141,7 +141,6 @@ export default {
               .then((response) => {
                 //creates hotflies array into report object
                 this.reports[report].mySpots = response.data;
-                this.mySpotsIsLoaded = true;
               })
               .catch((error) => {
                 console.log(error);
@@ -164,7 +163,10 @@ export default {
         window.location.href = "http://127.0.0.1:8080/";
       }
     })
-  }
+  },
+  // mounted() {
+  //   console.log(moment(this.trips[0].date).format('ll'));
+  // },
 }
 
 </script>

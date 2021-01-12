@@ -845,4 +845,8 @@ export default {
   display: inline-block;
 }
 
+body {
+  background-color: #a3b4a2;
+}
+
 </style>

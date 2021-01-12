@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import firebase from 'firebase';
+import moment from 'moment';
+moment().format();
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,7 +17,7 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-//Boostrap
+//Bootstrap Vue
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 // Install BootstrapVue

@@ -20,6 +20,7 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
+//import moment from 'moment';
 
 export default {
   name: "Mytrips",
@@ -32,6 +33,9 @@ export default {
   },
   methods: {
     pageLoad() {
+
+      //this.trips[0].date = moment(this.trips[0].date).format('ll');
+
       //bring trips in by uid
       axios.get('http://localhost:3000/trips/' + this.user.uid)
         .then((response) => {
@@ -48,6 +52,7 @@ export default {
         .catch((error) => {
           console.log(error);
         })
+
     }
   },
   created() {
