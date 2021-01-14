@@ -3,14 +3,31 @@
     <h1>My Trips</h1>
     <router-link to="/mytrips/addtrip"><button>Add a Trip</button></router-link>
 
-
-    <div v-for="trip in trips" :key="trip.tripId">
-      <div v-for="client in clients" :key="client.clientId">
-        <div class="box" v-if="trip.tripId == client.tripId">
-          <router-link :to="'/mytrips/' + trip.tripId">{{ client.clientFirstName }} {{ client.clientLastName }} - {{ trip.date }} - {{ trip.guideTripType}}</router-link>
+    <div class="marginbox" v-for="trip in trips" :key="trip.tripId">
+      <!-- Guide Trip -->
+      <div v-if="trip.guideOrPersonalTrip === 'Guide Trip'">
+        <div v-for="client in clients" :key="client.clientId">
+          <div v-if="trip.tripId == client.tripId">
+            <router-link :to="'/mytrips/' + trip.tripId">{{ client.clientFirstName }} {{ client.clientLastName }} - {{ tripDate }} - {{ trip.guideTripType }}</router-link>
+          </div>
         </div>
       </div>
+      <!-- Personal Trip -->
+      <div v-if="trip.guideOrPersonalTrip === 'Personal Trip'">
+        <router-link :to="'/mytrips/' + trip.tripId">{{ trip.guideOrPersonalTrip }} - {{ tripDate }}</router-link>
+      </div>
     </div>
+
+<!-- BELOW WONT WORK UNTIL THE ARRAY OF CLIENTS PUSHES INTO TRIPS -->
+
+    <!-- <div class="box" v-for="trip in trips" :key="trip.tripId"
+      <router-link :to="'/mytrips/' + trip.tripId">
+        <div>{{ trip.clients[0].clientFirstName}} {{ trip.clients[0].clientLastName}}</div>
+        <div v-if="trip.clients.length > 1">+ {{ trips.clients.length - 1}}</div>
+        <div>{{ trip.date }}</div>
+        <div>{{ trip.guideTripType}}</div>
+      </router-link>
+    </div> -->
 
 
   </div>
@@ -20,7 +37,7 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
-//import moment from 'moment';
+import moment from 'moment';
 
 export default {
   name: "Mytrips",
@@ -29,30 +46,72 @@ export default {
       user: {},
       trips: {},
       clients: {},
+      tripDate: '',
     }
   },
   methods: {
+    clientsToTrips() {
+      console.log('clientToTrips');
+    //   for (let client of this.clients) {
+    //     console.log(client.tripId);
+    //     let tripIndex = this.trips.findIndex((trip) => {
+    //       return trip.tripId === client.tripId;
+    //     })
+    //     console.log(tripIndex);
+    //     if (this.trip[tripIndex] === undefined) {
+    //       this.trip[tripIndex].clients = [];
+    //     }
+    //     this.trips[tripIndex].clients.push(client.clientFirstName + ' ' + client.clientLastName)
+    //   }
+    },
     pageLoad() {
 
-      //this.trips[0].date = moment(this.trips[0].date).format('ll');
+      this.tripDate = moment(this.trips.date).format('ll');
 
-      //bring trips in by uid
       axios.get('http://localhost:3000/trips/' + this.user.uid)
         .then((response) => {
           this.trips = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      //bring clients in by uid
-      axios.get('http://localhost:3000/mytripsclients/' + this.user.uid)
-        .then((response) => {
-          this.clients = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+          axios.get('http://localhost:3000/mytripsclients/' + this.user.uid)
+            .then((response) => {
+              this.clients = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+            .then(() => {
+              this.clientsToTrips();
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+            .then(() => {
 
+              for (let trip of this.trips) {
+                if (trip.guideOrPersonalTrip === 'guideTrip') {
+                  trip.guideOrPersonalTrip = 'Guide Trip';
+                } else if (trip.guideOrPersonalTrip === 'personalTrip') {
+                  trip.guideOrPersonalTrip = 'Personal Trip';
+                }
+
+                if (trip.guideTripType === 'halfDayWade') {
+                  trip.guideTripType = 'Half-Day Wade';
+                } else if (trip.guideTripType === 'fullDayWade') {
+                  trip.guideTripType = 'Full-Day Wade';
+                } else if (trip.guideTripType === 'halfDayFloat') {
+                  trip.guideTripType = 'Half-Day Float';
+                } else if (trip.guideTripType === 'fullDayFloat') {
+                  trip.guideTripType = 'Full-Day Float';
+                }
+              }
+
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        .catch((error) => {
+          console.log(error);
+        })
     }
   },
   created() {
@@ -70,3 +129,11 @@ export default {
 }
 
 </script>
+
+<style>
+
+.marginbox {
+  border: solid 1px;
+}
+
+</style>

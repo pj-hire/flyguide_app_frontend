@@ -2,8 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import firebase from 'firebase';
-import moment from 'moment';
-moment().format();
+import '../public/styles.scss'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

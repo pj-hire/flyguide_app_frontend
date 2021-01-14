@@ -1,11 +1,11 @@
 <template>
   <div class="about">
-    <b-card v-if="tripIsLoaded">
-      <div>{{ tripType }} - {{ trips[0].date }}</div>
-      <div>{{ trips[0].guideTripNumberInParty }} Clients - {{ guideTripType }}</div>
+    <b-card>
+      <div>{{ tripType }} - {{ tripDate }}</div>
+      <div>{{ trips.guideTripNumberInParty }} Clients - {{ guideTripType }}</div>
       <hr>
-      <div v-if="clientsIsLoaded">
-        <div v-if="trips[0].guideOrPersonalTrip === 'guideTrip'">
+      <div>
+        <div v-if="trips.guideOrPersonalTrip === 'guideTrip'">
           <div>Clients:</div>
           <b-card v-for="client in clients" :key="client.clientId">
             <div>{{client.clientFirstName}} {{ client.clientLastName }}</div>
@@ -15,7 +15,7 @@
           </b-card>
         </div>
       </div>
-      <div v-if="reportsIsLoaded">
+      <div>
         <div>Reports:</div>
         <b-card v-for="report in reports" :key="report.reportId">
           <div>{{ report.mySpots[0].locationName }} at {{ report.mySpots[0].subLocationName }}</div>
@@ -33,7 +33,7 @@
       <div>
         <div>Trip Notes:</div>
         <b-card>
-          <div>{{ trips[0].tripNotes }}</div>
+          <div>{{ trips.tripNotes }}</div>
         </b-card>
       </div>
     </b-card>
@@ -51,17 +51,13 @@ export default {
   name: "Viewtrip",
   data() {
     return {
-      m: moment,
       user: {},
       trips: {},
-      tripIsLoaded: false,
       clients: {},
-      clientsIsLoaded: false,
       reports: {},
-      reportsIsLoaded: false,
       tripType: '',
       guideTripType: '',
-      now: ','
+      tripDate: '',
     }
   },
   methods: {
@@ -70,13 +66,13 @@ export default {
     },
     pageLoad() {
 
-      //console.log(moment(this.trips[0].date).format('ll'));
+      //change format of date here
+      this.tripDate = moment(this.trips.date).format('ll');
 
       //bring in trip by tripId param
       axios.get('http://localhost:3000/viewtrip/' + this.$route.params.id)
         .then((response) => {
-          this.tripIsLoaded = true;
-          this.trips = response.data;
+          this.trips = response.data[0];
 
           if (response.data[0].guideOrPersonalTrip === 'guideTrip') {
             this.tripType = 'Guide Trip';
@@ -102,7 +98,6 @@ export default {
       //bring clients in by tripId param
       axios.get('http://localhost:3000/viewtripclients/' + this.$route.params.id)
         .then((response) => {
-          this.clientsIsLoaded = true;
           this.clients = response.data;
         })
         .catch((error) => {
@@ -112,7 +107,6 @@ export default {
       //bring reports in by tripId param
       axios.get('http://localhost:3000/viewtripreports/' + this.$route.params.id)
         .then((response) => {
-          this.reportsIsLoaded = true;
           this.reports = response.data;
         })
         .then(() => {
@@ -122,7 +116,7 @@ export default {
             axios.get('http://localhost:3000/hotflies/' + this.reports[report].reportId)
               .then((response) => {
                 //creates hotflies array into report object
-                this.reports[report].hotFlies = response.data;
+                this.$set(this.reports[report], 'hotFlies', response.data)
               })
               .catch((error) => {
                 console.log(error);
@@ -131,7 +125,7 @@ export default {
             axios.get('http://localhost:3000/fishcaught/' + this.reports[report].reportId)
               .then((response) => {
                 //creates hotflies array into report object
-                this.reports[report].fishCaught = response.data;
+                this.$set(this.reports[report], 'fishCaught', response.data)
               })
               .catch((error) => {
                 console.log(error);
@@ -140,7 +134,7 @@ export default {
             axios.get('http://localhost:3000/myspotsviewtrip/' + this.reports[report].spotId)
               .then((response) => {
                 //creates hotflies array into report object
-                this.reports[report].mySpots = response.data;
+                this.$set(this.reports[report], 'mySpots', response.data)
               })
               .catch((error) => {
                 console.log(error);
