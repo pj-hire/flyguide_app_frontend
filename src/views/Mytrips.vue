@@ -6,11 +6,7 @@
     <div class="marginbox" v-for="trip in trips" :key="trip.tripId">
       <!-- Guide Trip -->
       <div v-if="trip.guideOrPersonalTrip === 'Guide Trip'">
-        <div v-for="client in clients" :key="client.clientId">
-          <div v-if="trip.tripId == client.tripId">
-            <router-link :to="'/mytrips/' + trip.tripId">{{ client.clientFirstName }} {{ client.clientLastName }} - {{ tripDate }} - {{ trip.guideTripType }}</router-link>
-          </div>
-        </div>
+        <router-link :to="'/mytrips/' + trip.tripId">{{ trip.clients }} - {{ tripDate }} - {{ trip.guideTripType }}</router-link>
       </div>
       <!-- Personal Trip -->
       <div v-if="trip.guideOrPersonalTrip === 'Personal Trip'">
@@ -51,18 +47,18 @@ export default {
   },
   methods: {
     clientsToTrips() {
-      console.log('clientToTrips');
-    //   for (let client of this.clients) {
-    //     console.log(client.tripId);
-    //     let tripIndex = this.trips.findIndex((trip) => {
-    //       return trip.tripId === client.tripId;
-    //     })
-    //     console.log(tripIndex);
-    //     if (this.trip[tripIndex] === undefined) {
-    //       this.trip[tripIndex].clients = [];
-    //     }
-    //     this.trips[tripIndex].clients.push(client.clientFirstName + ' ' + client.clientLastName)
-    //   }
+      for (let client of this.clients) {
+        let tripIndex = this.trips.findIndex((trip) => {
+          return trip.tripId === Number(client.tripId);
+          //return the index of all the trips where tripId matches client Id
+        })
+        if (tripIndex !== -1) {
+          this.$set(this.trips[tripIndex], 'clients', client.clientFirstName + ' ' + client.clientLastName);
+        }
+        if (this.trips[tripIndex].clients === undefined) {
+          this.trips[tripIndex].clients = []
+        }
+      }
     },
     pageLoad() {
 

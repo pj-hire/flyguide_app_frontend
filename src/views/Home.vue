@@ -11,6 +11,22 @@
     <div><router-link to="/conditions"><button>Conditions</button></router-link></div>
     <div><router-link to="/stats"><button>Stats</button></router-link></div>
     <div><router-link to="/account"><button>Account</button></router-link></div>
+
+    <div class="horizontal-menu">
+    </div>
+
+    <div class="vertical-menu">
+      <a><router-link to="/mytrips">My Trips</router-link></a>
+      <a><router-link to="/myspots">My Spots</router-link></a>
+      <a><router-link to="/flybox">Flybox</router-link></a>
+      <a><router-link to="/targetspecies">Target Species</router-link></a>
+      <a><router-link to="/conditions">Conditions</router-link></a>
+      <a><router-link to="/stats">Stats</router-link></a>
+      <a><router-link to="/account">Account</router-link></a>
+    </div>
+
+
+
   </div>
 </template>
 
@@ -42,3 +58,42 @@ export default {
 }
 
 </script>
+
+<style>
+
+body, html {
+  width: 100%;
+  height: 100%;
+}
+
+.horizontal-menu {
+  height: 50px;
+  width: 100%;
+  background-color: #43AA8B;
+}
+
+.vertical-menu {
+  width: 200px;
+  height: 100%;
+  background-color: #254441;
+}
+
+.vertical-menu a {
+  background-color: #254441;
+  color: white;
+  display: block;
+  text-align: left;
+  padding: 5px 10px;
+  text-decoration: none;
+}
+
+.vertical-menu a:hover {
+  color: #D3D3D3;
+  text-decoration: none;
+}
+
+.vertical-menu a.active {
+  color: #D3D3D3;
+}
+
+</style>
