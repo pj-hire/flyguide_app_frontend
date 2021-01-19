@@ -1,9 +1,23 @@
 
+// docs ---> https://bootstrap-vue.org/docs/reference/theming
 
-// {
-//   color: green;
-// }
-
+//Override bootstrap styles from bootstrap/scss/_variables.scss.
+// $body-bg: red;
 
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import 'node_modules/bootstrap-vue/src/index.scss';
+
+@font-face {
+  font-family: 'Roboto';
+  src: url(../src/fonts/Roboto/Roboto-Regular.ttf)
+}
+
+
+
+$customfontfamily: Roboto, Times, Arial, sans-serif;
+
+.about {
+  font-family: $customfontfamily;
+}
+
+@import './sass/_sample.scss'

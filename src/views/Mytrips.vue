@@ -6,7 +6,7 @@
     <div class="marginbox" v-for="trip in trips" :key="trip.tripId">
       <!-- Guide Trip -->
       <div v-if="trip.guideOrPersonalTrip === 'Guide Trip'">
-        <router-link :to="'/mytrips/' + trip.tripId">{{ trip.clients }} - {{ tripDate }} - {{ trip.guideTripType }}</router-link>
+        <router-link :to="'/mytrips/' + trip.tripId"><span v-if="trip.clients">{{ trip.clients[0] }}</span> - {{ tripDate }} - {{ trip.guideTripType }}</router-link>
       </div>
       <!-- Personal Trip -->
       <div v-if="trip.guideOrPersonalTrip === 'Personal Trip'">
@@ -52,11 +52,12 @@ export default {
           return trip.tripId === Number(client.tripId);
           //return the index of all the trips where tripId matches client Id
         })
+        console.log(tripIndex);
         if (tripIndex !== -1) {
-          this.$set(this.trips[tripIndex], 'clients', client.clientFirstName + ' ' + client.clientLastName);
-        }
-        if (this.trips[tripIndex].clients === undefined) {
-          this.trips[tripIndex].clients = []
+          if (this.trips[tripIndex].clients === undefined) {
+            this.$set(this.trips.[tripIndex], 'clients', []);
+          }
+          this.trips[tripIndex].clients.push(client.clientFirstName + ' ' + client.clientLastName);
         }
       }
     },

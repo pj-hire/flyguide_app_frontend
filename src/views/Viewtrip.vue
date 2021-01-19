@@ -18,7 +18,7 @@
       <div>
         <div>Reports:</div>
         <b-card v-for="report in reports" :key="report.reportId">
-          <div>{{ report.mySpots[0].locationName }} at {{ report.mySpots[0].subLocationName }}</div>
+          <div v-if="report.mySpots">{{ report.mySpots[0].locationName }} at {{ report.mySpots[0].subLocationName }}</div>
           <div>Hot Flies:</div>
           <div v-for="hotFly in report.hotFlies" :key="hotFly.hotFliesId">
             <li>#{{ hotFly.size }} {{ hotFly.pattern }} ({{ hotFly.color }})</li>
