@@ -62,7 +62,56 @@ export default {
   },
   methods: {
     deleteTrip() {
-      console.log('delete trip');
+
+      //delete trip
+      axios.post('http://localhost:3000/deletetrip-trip', this.trips)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      //delete all clients associated with trip
+      axios.post('http://localhost:3000/deletetrip-clients', this.trips)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      //delete all reports associated with trip
+      axios.post('http://localhost:3000/deletetrip-reports', this.trips)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      for (let report of this.reports) {
+        //delete hotFlies associated with all reports associated with trip
+        axios.post('http://localhost:3000/deletetrip-hotflies', {report})
+          .then((response) => {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+        //delete fishCaught associated with all report associated with trip
+        axios.post('http://localhost:3000/deletetrip-fishcaught', {report})
+          .then((response) => {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
+
+      window.location.href = "http://127.0.0.1:8080/mytrips";
+
     },
     pageLoad() {
 
@@ -158,9 +207,6 @@ export default {
       }
     })
   },
-  // mounted() {
-  //   console.log(moment(this.trips[0].date).format('ll'));
-  // },
 }
 
 </script>

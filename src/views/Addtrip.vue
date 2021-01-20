@@ -713,7 +713,6 @@ export default {
           axios.get('http://localhost:3000/reports/' + this.newTrip.tripId)
             .then((response) => {
               this.newTrip.reports = response.data;
-              //is this the right spot for pageLoad()?
               this.pageLoad();
             })
             .catch((error) => {
