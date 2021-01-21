@@ -335,6 +335,7 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
+// import jsStringEscape from 'js-string-escape';
 
 export default {
   name: "Addtrip",
@@ -744,6 +745,7 @@ export default {
         });
     },
     pageLoad() {
+
       //bring tripId in
       axios.get('http://localhost:3000/aaidtrip')
         .then((response) => {

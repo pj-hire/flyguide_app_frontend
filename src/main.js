@@ -29,9 +29,6 @@ Vue.config.productionTip = false
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 
-// import jsStringEscape from '../node_modules/js-string-escape';
-// console.log('"' + jsStringEscape('Quotes (\", \'), newlines (\n), etc.') + '"')
-
 new Vue({
   router,
   render: h => h(App)

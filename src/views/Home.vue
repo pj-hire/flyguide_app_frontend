@@ -41,9 +41,13 @@
 
 
     <!-- V3 -->
-    <div class="horizontal-menu">
-      <h2>FlyGuide App</h2>
+    <div class="horizontal-menu-wrapper">
+      <div class="horizontal-menu">
+        <img class="invert" src="../assets/nymph-icon.png" alt="nymph-icon">
+        <h2>FlyGuide App</h2>
+      </div>
     </div>
+
     <div class="wrapper">
       <div class="sidebar">
         <ul>

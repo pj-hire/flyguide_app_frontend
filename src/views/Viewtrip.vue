@@ -88,26 +88,31 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
-        });
+        })
 
-      for (let report of this.reports) {
-        //delete hotFlies associated with all reports associated with trip
-        axios.post('http://localhost:3000/deletetrip-hotflies', {report})
-          .then((response) => {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
 
-        //delete fishCaught associated with all report associated with trip
-        axios.post('http://localhost:3000/deletetrip-fishcaught', {report})
-          .then((response) => {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        if (this.reports !== []) {
+          for (let report in this.reports) {
+            console.log(this.reports[report]);
+
+            //delete hotFlies associated with all reports associated with trip
+            axios.post('http://localhost:3000/deletetrip-hotflies', this.reports[report])
+              .then((response) => {
+                console.log(response);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+
+            //delete fishCaught associated with all report associated with trip
+            axios.post('http://localhost:3000/deletetrip-fishcaught', this.reports[report])
+              .then((response) => {
+                console.log(response);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          }
         }
 
       window.location.href = "http://127.0.0.1:8080/mytrips";

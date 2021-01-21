@@ -52,7 +52,7 @@ export default {
           return trip.tripId === Number(client.tripId);
           //return the index of all the trips where tripId matches client Id
         })
-        console.log(tripIndex);
+        
         if (tripIndex !== -1) {
           if (this.trips[tripIndex].clients === undefined) {
             this.$set(this.trips.[tripIndex], 'clients', []);
@@ -126,11 +126,3 @@ export default {
 }
 
 </script>
-
-<style>
-
-.marginbox {
-  border: solid 1px;
-}
-
-</style>
