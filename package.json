@@ -14,9 +14,12 @@
     "core-js": "^3.6.5",
     "firebase": "^8.1.1",
     "firebaseui": "^4.7.1",
+    "i": "^0.3.6",
     "js-string-escape": "^1.0.1",
     "moment": "^2.29.1",
     "vue": "^2.6.11",
+    "vue-google-charts": "^0.3.3",
+    "vue-npm": "^1.0.6",
     "vue-router": "^3.2.0"
   },
   "devDependencies": {

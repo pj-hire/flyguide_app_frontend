@@ -5,15 +5,17 @@
     <div>
       Species: <input v-model="newSpecies.speciesName">
     </div>
-    <!-- <div>
-      <input type="radio" id="dryFly" value="dryFly" v-model="newFly.flyType">
-      <label for="dryFly">Dry Fly</label>
-      <input type="radio" id="nymph" value="nymph" v-model="newFly.flyType">
-      <label for="nymph">Nymph</label>
-      <input type="radio" id="streamer" value="streamer" v-model="newFly.flyType">
-      <label for="streamer">Streamer</label>
-    </div> -->
-    <div class="btn-group btn-group-toggle">
+
+    <div>
+      <input type="radio" id="option1" value="coldWater" v-model="newSpecies.habitat">
+      <label for="dryFly">Cold Water</label>
+      <input type="radio" id="option2" value="warmWater" v-model="newSpecies.habitat">
+      <label for="nymph">Warm Water</label>
+      <input type="radio" id="option3" value="saltWater" v-model="newSpecies.habitat">
+      <label for="streamer">Salt Water</label>
+    </div>
+
+    <!-- <div class="btn-group btn-group-toggle">
       <label class="btn btn-secondary active">
         <input type="radio" name="options" value="coldWater" id="option1"  v-model="newSpecies.habitat" autocomplete="off" checked> Cold Water
       </label>
@@ -25,7 +27,7 @@
       <label class="btn btn-secondary active">
         <input type="radio" name="options" value="saltWater" id="option3"  v-model="newSpecies.habitat" autocomplete="off" checked> Salt Water
       </label>
-    </div>
+    </div> -->
 
     <div>
       <button @click="addSpecies">Add Species</button>

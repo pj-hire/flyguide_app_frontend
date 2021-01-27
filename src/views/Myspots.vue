@@ -1,13 +1,17 @@
 <template>
   <div class="about">
-    <h1>My Spots</h1>
-    <router-link to="/myspots/addspot"><button>Add a Spot</button></router-link>
 
-    <div>
+    <h1>My Spots</h1>
+
+    <div class="addButton">
+      <router-link to="/myspots/addspot"><b-button class="addButton" variant="success">Add a Spot +</b-button></router-link>
+    </div>
+
+    <b-card>
       <div v-for="spot in mySpots" :key="spot.spotId">
         <div class="box"><router-link :to="'/myspots/editspot/' + spot.spotId">{{ spot.locationName }} at {{ spot.subLocationName }}</router-link></div>
       </div>
-    </div>
+    </b-card>
 
   </div>
 </template>

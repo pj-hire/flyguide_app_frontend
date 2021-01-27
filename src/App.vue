@@ -1,28 +1,45 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div class="about">
+      <div class="horizontal-menu-wrapper">
+        <div class="horizontal-menu">
+          <!-- <img class="invert" src="./assets/nymph-icon.png" alt="nymph-icon"> -->
+          <h2>FlyGuide App</h2>
+        </div>
+      </div>
+      <div class="wrapper">
+        <div class="sidebar">
+          <ul>
+            <li><a><router-link to="/mytrips"><i class="fas fa-calendar-alt"></i>My Trips</router-link></a></li>
+            <li><a><router-link to="/myspots"><i class="fas fa-map-marker-alt"></i>My Spots</router-link></a></li>
+            <li><a><router-link to="/flybox"><i class="fas fa-book-open"></i>Flybox</router-link></a></li>
+            <li><a><router-link to="/targetspecies"><i class="fas fa-fish"></i>Target Species</router-link></a></li>
+            <!-- <li><a><router-link to="/conditions"><i class="fas fa-cloud"></i>Conditions</router-link></a></li> -->
+            <li><a><router-link to="/stats"><i class="fas fa-chart-bar"></i>Stats</router-link></a></li>
+            <li><a><router-link to="/account"><i class="fas fa-user"></i>Account</router-link></a></li>
+          </ul>
+          <!-- <div class="social_media">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div> -->
+        </div>
+        <div class="main_content">
+          <div class="info">
+            <div><router-view/></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-// #nav {
-//   padding: 30px;
-//
-//   a {
-//     font-weight: bold;
-//     color: #2c3e50;
-//
-//     &.router-link-exact-active {
-//       color: #42b983;
-//     }
-//   }
+// #app {
+//   font-family: Avenir, Helvetica, Arial, sans-serif;
+//   -webkit-font-smoothing: antialiased;
+//   -moz-osx-font-smoothing: grayscale;
+//   text-align: center;
+//   color: #2c3e50;
 // }
 </style>

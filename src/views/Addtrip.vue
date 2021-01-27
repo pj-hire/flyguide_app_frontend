@@ -335,7 +335,7 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
-// import jsStringEscape from 'js-string-escape';
+import jsStringEscape from 'js-string-escape';
 
 export default {
   name: "Addtrip",
@@ -735,6 +735,7 @@ export default {
         });
     },
     saveTrip() {
+      this.newTrip.tripNotes = jsStringEscape(this.newTrip.tripNotes);
       axios.post('http://localhost:3000/savetrip', this.newTrip)
         .then((response) => {
           console.log(response);

@@ -1,18 +1,24 @@
 <template>
   <div class="about">
-    <h1>My Trips</h1>
-    <router-link to="/mytrips/addtrip"><button>Add a Trip</button></router-link>
 
-    <div class="marginbox" v-for="trip in trips" :key="trip.tripId">
-      <!-- Guide Trip -->
-      <div v-if="trip.guideOrPersonalTrip === 'Guide Trip'">
-        <router-link :to="'/mytrips/' + trip.tripId"><span v-if="trip.clients">{{ trip.clients[0] }}</span> - {{ tripDate }} - {{ trip.guideTripType }}</router-link>
-      </div>
-      <!-- Personal Trip -->
-      <div v-if="trip.guideOrPersonalTrip === 'Personal Trip'">
-        <router-link :to="'/mytrips/' + trip.tripId">{{ trip.guideOrPersonalTrip }} - {{ tripDate }}</router-link>
-      </div>
+    <h1>My Trips</h1>
+
+    <div class="addButton">
+      <router-link to="/mytrips/addtrip"><b-button variant="success">Add a Trip +</b-button></router-link>
     </div>
+
+    <b-card>
+      <div class="box" v-for="trip in trips" :key="trip.tripId">
+        <!-- Guide Trip -->
+        <div v-if="trip.guideOrPersonalTrip === 'Guide Trip'">
+          <router-link :to="'/mytrips/' + trip.tripId"><span v-if="trip.clients">{{ trip.clients[0] }}</span> - {{ tripDate }} - {{ trip.guideTripType }}</router-link>
+        </div>
+        <!-- Personal Trip -->
+        <div v-if="trip.guideOrPersonalTrip === 'Personal Trip'">
+          <router-link :to="'/mytrips/' + trip.tripId">{{ trip.guideOrPersonalTrip }} - {{ tripDate }}</router-link>
+        </div>
+      </div>
+    </b-card>
 
 <!-- BELOW WONT WORK UNTIL THE ARRAY OF CLIENTS PUSHES INTO TRIPS -->
 
@@ -52,7 +58,7 @@ export default {
           return trip.tripId === Number(client.tripId);
           //return the index of all the trips where tripId matches client Id
         })
-        
+
         if (tripIndex !== -1) {
           if (this.trips[tripIndex].clients === undefined) {
             this.$set(this.trips.[tripIndex], 'clients', []);

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Loggin from '../views/Loggin.vue'
-import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
 import Addtrip from '../views/Addtrip.vue'
 import Editclient from '../views/Editclient.vue'
 import Mytrips from '../views/Mytrips.vue'
@@ -24,13 +23,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Loggin',
-    component: Loggin
-  },
-  {
-    path: '/home',
-    name: 'Home',
-    component: Home
+    name: 'Login',
+    component: Login
   },
   {
     path: '/mytrips/addtrip',

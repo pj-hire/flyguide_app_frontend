@@ -2,18 +2,22 @@
   <div class="about">
     <h1>Add a fly</h1>
 
+    <b-card>
+
     <div>
       Pattern: <input v-model="newFly.flyPattern">
     </div>
-    <!-- <div>
+
+    <div>
       <input type="radio" id="dryFly" value="dryFly" v-model="newFly.flyType">
       <label for="dryFly">Dry Fly</label>
       <input type="radio" id="nymph" value="nymph" v-model="newFly.flyType">
       <label for="nymph">Nymph</label>
       <input type="radio" id="streamer" value="streamer" v-model="newFly.flyType">
       <label for="streamer">Streamer</label>
-    </div> -->
-    <div class="btn-group btn-group-toggle">
+    </div>
+
+    <!-- <div class="btn-group btn-group-toggle">
       <label class="btn btn-secondary active">
         <input type="radio" name="options" value="dryFly" id="option1"  v-model="newFly.flyType" autocomplete="off" checked> Dry Fly
       </label>
@@ -25,11 +29,13 @@
       <label class="btn btn-secondary active">
         <input type="radio" name="options" value="streamer" id="option3"  v-model="newFly.flyType" autocomplete="off" checked> Streamer
       </label>
-    </div>
+    </div> -->
 
     <div>
       <button @click="addFly">Add to Box</button>
     </div>
+
+    </b-card>
 
   </div>
 </template>

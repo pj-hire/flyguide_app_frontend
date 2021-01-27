@@ -14,7 +14,7 @@ import 'firebaseui/dist/firebaseui.css';
 
 
 export default {
-  name: 'Loggin',
+  name: 'Login',
   created() {
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
@@ -22,9 +22,8 @@ export default {
       signInOptions: [
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
       ],
-      signInSuccessUrl: '/home',
+      signInSuccessUrl: '/mytrips',
     })
   }
 }

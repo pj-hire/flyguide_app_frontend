@@ -1,34 +1,38 @@
 <template>
   <div class="about">
-    <h1>Flybox</h1>
-    <router-link to="/flybox/addfly"><button>Add a Fly</button></router-link>
 
-    <div>
+    <h1>Flybox</h1>
+
+    <div class="addButton">
+      <router-link to="/flybox/addfly"><b-button class="addButton" variant="success">Add a Fly +</b-button></router-link>
+    </div>  
+
+    <b-card>
       <h3>Dry Flies:</h3>
       <div v-for="fly in flybox" :key="fly.flyId">
         <div v-if="fly.flyType === 'dryFly'">
           <div class="box"><router-link :to="'/flybox/editfly/' + fly.flyId">{{ fly.flyPattern }}</router-link></div>
         </div>
       </div>
-    </div>
+    </b-card>
 
-    <div>
+    <b-card>
       <h3>Nymphs:</h3>
       <div v-for="fly in flybox" :key="fly.flyId">
         <div v-if="fly.flyType === 'nymph'">
           <div class="box"><router-link :to="'/flybox/editfly/' + fly.flyId">{{ fly.flyPattern }}</router-link></div>
         </div>
       </div>
-    </div>
+    </b-card>
 
-    <div>
+    <b-card>
       <h3>Streamers:</h3>
       <div v-for="fly in flybox" :key="fly.flyId">
         <div v-if="fly.flyType === 'streamer'">
           <div class="box"><router-link :to="'/flybox/editfly/' + fly.flyId">{{ fly.flyPattern }}</router-link></div>
         </div>
       </div>
-    </div>
+    </b-card>
 
   </div>
 </template>
