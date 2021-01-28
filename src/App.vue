@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="wrapper">
-        <div class="sidebar">
+        <div class="sidebar" v-if="isNotLogin">
           <ul>
             <li><a><router-link to="/mytrips"><i class="fas fa-calendar-alt"></i>My Trips</router-link></a></li>
             <li><a><router-link to="/myspots"><i class="fas fa-map-marker-alt"></i>My Spots</router-link></a></li>
@@ -24,7 +24,7 @@
             <a href="#"><i class="fab fa-instagram"></i></a>
           </div> -->
         </div>
-        <div class="main_content">
+        <div class="main_content" :class="{login: !isNotLogin}">
           <div class="info">
             <div><router-view/></div>
           </div>
@@ -34,7 +34,28 @@
   </div>
 </template>
 
+<script>
+  export default {
+    data() {
+      return {
+        isNotLogin: true,
+      }
+    },
+    created() {
+      if (this.$router.currentRoute.name === 'Login') {
+        this.isNotLogin = false;
+      }
+    }
+  }
+</script>
+
 <style lang="scss">
+
+.wrapper .main_content.login {
+  margin-left: 0px;
+}
+
+
 // #app {
 //   font-family: Avenir, Helvetica, Arial, sans-serif;
 //   -webkit-font-smoothing: antialiased;

@@ -34,13 +34,14 @@ export default {
       hotFlies: {},
       flyPatterns: [],
       counts: {},
-      finalData: {},
+      finalData: [],
+      finalDataOne: [],
       chartDataOne: [
         ['Pattern', 'Frequency'],
-        ['2014', 1000],
-        ['2015', 1170],
-        ['2016', 660],
-        ['2017', 1030]
+        // ['2014', 1000],
+        // ['2015', 1170],
+        // ['2016', 660],
+        // ['2017', 1030]
       ],
       chartOptionsOne: {
         // title: 'Top Flies',
@@ -82,21 +83,42 @@ export default {
             counts[x] = (counts[x] || 0) + 1;
           });
           this.counts = counts
+          //console.log(this.counts)
         })
         .catch((error) => {
           console.log(error);
         })
 
-        // .then(() => {
-        //   for (let name of this.counts) {
-        //     console.log(name);
-        //     this.finalData.name.push(name);
-        //     this.finalData.qty.push(name.value?)
-        //   }
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        // })
+        .then(() => {
+          for (let name in this.counts) {
+            let arr = [];
+            arr.push(name);
+            arr.push(this.counts[name]);
+            this.finalData.push(arr);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+
+        .then(() => {
+          //sort array from most to least
+
+          this.finalDataOne = this.finalData.slice(0,5);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+
+        .then(() => {
+          for (let item of this.finalDataOne) {
+            this.chartDataOne.push(item);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+
 
     }
   },

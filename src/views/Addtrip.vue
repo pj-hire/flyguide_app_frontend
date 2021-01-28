@@ -843,12 +843,12 @@ export default {
 
 <style>
 
-.block {
+/* .block {
   display: inline-block;
 }
 
 body {
   background-color: #a3b4a2;
-}
+} */
 
 </style>

@@ -48,8 +48,9 @@ h1 {
 .horizontal-menu-wrapper {
   height: 70px;
   width: 100%;
-  // position: fixed;
+  position: fixed;
   background-color: #43AA8B;
+  z-index: 1;
   // background-color: #9FE4D8;
 }
 
@@ -82,6 +83,7 @@ h1 {
 .wrapper{
   display: flex;
   position: relative;
+  padding-top: 70px;
 }
 
 .wrapper .sidebar {
