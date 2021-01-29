@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Addtrip from '../views/Addtrip.vue'
-import Editclient from '../views/Editclient.vue'
 import Mytrips from '../views/Mytrips.vue'
 import Viewtrip from '../views/Viewtrip.vue'
 import Myspots from '../views/Myspots.vue'
@@ -30,11 +29,6 @@ const routes = [
     path: '/mytrips/addtrip',
     name: 'Addtrip',
     component: Addtrip
-  },
-  {
-    path: '/mytrips/addtrip/editclient/:id',
-    name: 'Editclient',
-    component: Editclient
   },
   {
     path: '/mytrips',

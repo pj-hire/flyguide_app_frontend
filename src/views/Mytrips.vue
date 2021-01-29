@@ -11,7 +11,10 @@
       <div class="box" v-for="trip in trips" :key="trip.tripId">
         <!-- Guide Trip -->
         <div v-if="trip.guideOrPersonalTrip === 'Guide Trip'">
-          <router-link :to="'/mytrips/' + trip.tripId"><span v-if="trip.clients">{{ trip.clients[0] }}</span> - {{ tripDate }} - {{ trip.guideTripType }}</router-link>
+          <router-link :to="'/mytrips/' + trip.tripId">
+            <span v-if="trip.clients">
+            {{ trip.clients[0] }}<span v-if="trip.clients.length > 1"> + {{trip.clients.length -1}}</span></span> - {{ tripDate }} - {{ trip.guideTripType }}
+          </router-link>
         </div>
         <!-- Personal Trip -->
         <div v-if="trip.guideOrPersonalTrip === 'Personal Trip'">
@@ -19,18 +22,6 @@
         </div>
       </div>
     </b-card>
-
-<!-- BELOW WONT WORK UNTIL THE ARRAY OF CLIENTS PUSHES INTO TRIPS -->
-
-    <!-- <div class="box" v-for="trip in trips" :key="trip.tripId"
-      <router-link :to="'/mytrips/' + trip.tripId">
-        <div>{{ trip.clients[0].clientFirstName}} {{ trip.clients[0].clientLastName}}</div>
-        <div v-if="trip.clients.length > 1">+ {{ trips.clients.length - 1}}</div>
-        <div>{{ trip.date }}</div>
-        <div>{{ trip.guideTripType}}</div>
-      </router-link>
-    </div> -->
-
 
   </div>
 </template>

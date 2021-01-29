@@ -10,7 +10,7 @@
       />
     </b-card>
     <b-card>
-      <h3>Fish Caught - 2021</h3>
+      <h3>Fish Caught</h3>
       <GChart
         type="PieChart"
         :data="chartDataTwo"
@@ -35,23 +35,19 @@ export default {
       flyPatterns: [],
       counts: {},
       finalData: [],
-      finalDataOne: [],
+      sortedFinalData: [],
       chartDataOne: [
         ['Pattern', 'Frequency'],
-        // ['2014', 1000],
-        // ['2015', 1170],
-        // ['2016', 660],
-        // ['2017', 1030]
       ],
       chartOptionsOne: {
         // title: 'Top Flies',
       },
+      fishCaught: {},
+      fishSpecies: [],
+      fishCounts: {},
+      finalDataTwo: [],
       chartDataTwo: [
-        ['Pattern', 'Frequency'],
-        ['Brown Trout', 47],
-        ['2015', 1170],
-        ['2016', 660],
-        ['2017', 1030]
+        ['Species', 'Quantity'],
       ],
       chartOptionsTwo: {
         // title: 'Top Flies',
@@ -60,35 +56,22 @@ export default {
   },
   methods: {
     pageLoad() {
-      axios.get('http://localhost:3000/hotfliez/' + this.user.uid)
+      axios.get('http://localhost:3000/hotfliesstats/' + this.user.uid)
         .then((response) => {
           this.hotFlies = response.data;
         })
-        .catch((error) => {
-          console.log(error);
-        })
-
         .then(() => {
           for (let fly of this.hotFlies) {
             this.flyPatterns.push(fly.pattern);
           }
         })
-        .catch((error) => {
-          console.log(error);
-        })
-
         .then(() => {
           var counts = {};
           this.flyPatterns.forEach(function(x) {
             counts[x] = (counts[x] || 0) + 1;
-          });
-          this.counts = counts
-          //console.log(this.counts)
+          })
+          this.counts = counts;
         })
-        .catch((error) => {
-          console.log(error);
-        })
-
         .then(() => {
           for (let name in this.counts) {
             let arr = [];
@@ -97,21 +80,12 @@ export default {
             this.finalData.push(arr);
           }
         })
-        .catch((error) => {
-          console.log(error);
-        })
-
         .then(() => {
-          //sort array from most to least
-
-          this.finalDataOne = this.finalData.slice(0,5);
+          this.finalData.sort(function(a, b){return b[1] - a[1]});
+          this.sortedFinalData = this.finalData.slice(0,5);
         })
-        .catch((error) => {
-          console.log(error);
-        })
-
         .then(() => {
-          for (let item of this.finalDataOne) {
+          for (let item of this.sortedFinalData) {
             this.chartDataOne.push(item);
           }
         })
@@ -119,6 +93,40 @@ export default {
           console.log(error);
         })
 
+
+      axios.get('http://localhost:3000/fishcaughtstats/' + this.user.uid)
+        .then((response) => {
+          this.fishCaught = response.data;
+        })
+        .then(() => {
+          for (let fish of this.fishCaught) {
+            this.fishSpecies.push(fish.speciesName);
+          }
+        })
+        .then(() => {
+          var fishCounts = {};
+          this.fishSpecies.forEach(function(x) {
+            fishCounts[x] = (fishCounts[x] || 0) + 1;
+          })
+          this.fishCounts = fishCounts;
+        })
+        .then(() => {
+          console.log(this.fishCounts);
+          for (let name in this.fishCounts) {
+            let arr = [];
+            arr.push(name);
+            arr.push(this.fishCounts[name]);
+            this.finalDataTwo.push(arr);
+          }
+        })
+        .then(() => {
+          for (let item of this.finalDataTwo) {
+            this.chartDataTwo.push(item);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
 
     }
   },

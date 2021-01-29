@@ -440,6 +440,11 @@ export default {
       this.newTrip.selectedClientIndex = index;
     },
     addClient() {
+      this.newTrip.newClient.firstName = jsStringEscape(this.newTrip.newClient.firstName);
+      this.newTrip.newClient.lastName = jsStringEscape(this.newTrip.newClient.lastName);
+      this.newTrip.newClient.email = jsStringEscape(this.newTrip.newClient.email);
+      this.newTrip.newClient.phone = jsStringEscape(this.newTrip.newClient.phone);
+      this.newTrip.newClient.notes = jsStringEscape(this.newTrip.newClient.notes);
       axios.post('http://localhost:3000/addclient', this.newTrip.newClient)
         .then((response) => {
           console.log(response);
@@ -461,6 +466,11 @@ export default {
         });
     },
     saveClientChanges() {
+      this.newTrip.clients[this.newTrip.selectedClientIndex].clientFirstName = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientFirstName);
+      this.newTrip.clients[this.newTrip.selectedClientIndex].clientLastName = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientLastName);
+      this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail);
+      this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone);
+      this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes);
       axios.put('http://localhost:3000/editclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
         .then((response) => {
           console.log(response);
@@ -679,6 +689,7 @@ export default {
         });
     },
     saveReport() {
+      this.newTrip.newReport.notes = jsStringEscape(this.newTrip.newReport.notes);
       axios.post('http://localhost:3000/savereport', this.newTrip.newReport)
         .then((response) => {
           console.log(response);
@@ -725,6 +736,7 @@ export default {
         });
     },
     saveReportChanges() {
+      this.newTrip.editReport.notes = jsStringEscape(this.newTrip.editReport.notes);
       axios.put('http://localhost:3000/savereportchanges', this.newTrip.editReport)
         .then((response) => {
           console.log(response);
@@ -739,7 +751,7 @@ export default {
       axios.post('http://localhost:3000/savetrip', this.newTrip)
         .then((response) => {
           console.log(response);
-          window.location.href = "http://127.0.0.1:8080/mytrips";
+          this.$router.push('/mytrips');
         })
         .catch(function (error) {
           console.log(error);
@@ -840,15 +852,3 @@ export default {
 }
 
 </script>
-
-<style>
-
-/* .block {
-  display: inline-block;
-}
-
-body {
-  background-color: #a3b4a2;
-} */
-
-</style>

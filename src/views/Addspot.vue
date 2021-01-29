@@ -18,6 +18,7 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
+import jsStringEscape from 'js-string-escape';
 
 export default {
   name: "Addspot",
@@ -33,10 +34,12 @@ export default {
   },
   methods: {
     addSpot() {
+      this.newSpot.locationName = jsStringEscape(this.newSpot.locationName);
+      this.newSpot.subLocationName = jsStringEscape(this.newSpot.subLocationName);
       axios.post('http://localhost:3000/addspot', this.newSpot)
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/myspots";
+          this.$router.push('/myspots');
         })
         .catch(function (error) {
           console.log(error);

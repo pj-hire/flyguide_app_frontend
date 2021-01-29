@@ -44,6 +44,7 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
+import jsStringEscape from 'js-string-escape';
 
 export default {
   name: "Addfly",
@@ -59,10 +60,11 @@ export default {
   },
   methods: {
     addFly() {
+      this.newFly.flyPattern = jsStringEscape(this.newFly.flyPattern);
       axios.post('http://localhost:3000/addfly', this.newFly)
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/flybox";
+          this.$router.push('/flybox');
         })
         .catch(function (error) {
           console.log(error);

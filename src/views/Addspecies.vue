@@ -40,6 +40,7 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
+import jsStringEscape from 'js-string-escape';
 
 export default {
   name: "Addspecies",
@@ -55,10 +56,11 @@ export default {
   },
   methods: {
     addSpecies() {
+      this.newSpecies.speciesName = jsStringEscape(this.newSpecies.speciesName);
       axios.post('http://localhost:3000/addspecies', this.newSpecies)
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/targetspecies";
+          this.$router.push('/targetspecies');
         })
         .catch(function (error) {
           console.log(error);

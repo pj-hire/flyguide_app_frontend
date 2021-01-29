@@ -23,6 +23,7 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
+import jsStringEscape from 'js-string-escape';
 
 export default {
   name: "Editfly",
@@ -34,10 +35,11 @@ export default {
   },
   methods: {
     saveChanges() {
+      this.newFly.flyPattern = jsStringEscape(this.newFly.flyPattern);
       axios.put('http://localhost:3000/editfly', this.newFly)
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/flybox";
+          this.$router.push('/flybox');
         })
         .catch(function (error) {
           console.log(error);
@@ -47,7 +49,7 @@ export default {
       axios.post('http://localhost:3000/deletefly', this.newFly)
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/flybox";
+          this.$router.push('/flybox');
         })
         .catch(function (error) {
           console.log(error);

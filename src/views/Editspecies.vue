@@ -23,6 +23,7 @@
 
 import axios from 'axios';
 import firebase from 'firebase';
+import jsStringEscape from 'js-string-escape';
 
 export default {
   name: "Editspecies",
@@ -34,10 +35,11 @@ export default {
   },
   methods: {
     saveChanges() {
+      this.newSpecies.speciesName = jsStringEscape(this.newSpecies.speciesName);
       axios.put('http://localhost:3000/editspecies', this.newSpecies)
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/targetspecies";
+          this.$router.push('/targetspecies');
         })
         .catch(function (error) {
           console.log(error);
@@ -47,7 +49,7 @@ export default {
       axios.post('http://localhost:3000/deletespecies', this.newSpecies)
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/targetspecies";
+          this.$router.push('/targetspecies');
         })
         .catch(function (error) {
           console.log(error);

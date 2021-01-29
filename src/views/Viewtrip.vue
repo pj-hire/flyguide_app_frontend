@@ -61,6 +61,7 @@ export default {
     }
   },
   methods: {
+
     deleteTrip() {
 
       //delete trip
@@ -115,7 +116,7 @@ export default {
           }
         }
 
-      window.location.href = "http://127.0.0.1:8080/mytrips";
+      this.$router.push('/mytrips');
 
     },
     pageLoad() {
