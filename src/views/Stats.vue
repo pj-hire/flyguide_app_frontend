@@ -44,7 +44,7 @@ export default {
       },
       fishCaught: {},
       fishSpecies: [],
-      fishCounts: {},
+      fishCounts: [],
       finalDataTwo: [],
       chartDataTwo: [
         ['Species', 'Quantity'],
@@ -100,28 +100,16 @@ export default {
         })
         .then(() => {
           for (let fish of this.fishCaught) {
-            this.fishSpecies.push(fish.speciesName);
+            let arr = [];
+            arr.push(fish.speciesName);
+            arr.push(fish.qtyCaught);
+            this.fishCounts.push(arr);
           }
-        })
-        .then(() => {
-          var fishCounts = {};
-          this.fishSpecies.forEach(function(x) {
-            fishCounts[x] = (fishCounts[x] || 0) + 1;
-          })
-          this.fishCounts = fishCounts;
         })
         .then(() => {
           console.log(this.fishCounts);
-          for (let name in this.fishCounts) {
-            let arr = [];
-            arr.push(name);
-            arr.push(this.fishCounts[name]);
-            this.finalDataTwo.push(arr);
-          }
-        })
-        .then(() => {
-          for (let item of this.finalDataTwo) {
-            this.chartDataTwo.push(item);
+          for (let fish of this.fishCounts) {
+            console.log(fish[0]);
           }
         })
         .catch((error) => {
