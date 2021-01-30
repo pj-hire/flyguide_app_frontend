@@ -45,6 +45,7 @@ export default {
       fishCaught: {},
       fishSpecies: [],
       fishCounts: [],
+      newFishArray: [],
       finalDataTwo: [],
       chartDataTwo: [
         ['Species', 'Quantity'],
@@ -55,7 +56,14 @@ export default {
     }
   },
   methods: {
+
+    findRainbow(fish, index) {
+      return fish[0] === 'Brown Trout';
+    },
+
     pageLoad() {
+
+      //Top Flies
       axios.get('http://localhost:3000/hotfliesstats/' + this.user.uid)
         .then((response) => {
           this.hotFlies = response.data;
@@ -93,7 +101,7 @@ export default {
           console.log(error);
         })
 
-
+      //Fish Caught
       axios.get('http://localhost:3000/fishcaughtstats/' + this.user.uid)
         .then((response) => {
           this.fishCaught = response.data;
@@ -106,10 +114,11 @@ export default {
             this.fishCounts.push(arr);
           }
         })
+
         .then(() => {
-          console.log(this.fishCounts);
           for (let fish of this.fishCounts) {
-            console.log(fish[0]);
+            console.log(this.fishCounts.findIndex(this.findRainbow));
+            this.newFishArray.push(this.fishCounts[index]);
           }
         })
         .catch((error) => {
