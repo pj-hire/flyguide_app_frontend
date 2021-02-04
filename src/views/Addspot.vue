@@ -1,16 +1,15 @@
 <template>
   <div class="about">
-    <h1>Add a Spot</h1>
-
-    <div>
-      Body of Water: <input v-model="newSpot.locationName">
-      Section/Area: <input v-model="newSpot.subLocationName">
-    </div>
-
-    <div>
-      <button @click="addSpot">Add Spot</button>
-    </div>
-
+    <h1>Add Spot</h1>
+    <b-card class="center">
+      <div class="pattern">
+        <span><h4>Body of Water: <input v-model="newSpot.locationName"></h4></span>
+        <span><h4>Section/Area: <input v-model="newSpot.subLocationName"></h4></span>
+      </div>
+      <div>
+        <b-button @click="addSpot">Add Spot</b-button>
+      </div>
+    </b-card>
   </div>
 </template>
 

@@ -2,7 +2,7 @@
   <div class="about">
     <h1>Stats</h1>
     <b-card>
-      <h3>Top Flies</h3>
+      <h3 class="card-heading-lg center">Top Flies</h3>
       <GChart
         type="ColumnChart"
         :data="chartDataOne"
@@ -10,7 +10,7 @@
       />
     </b-card>
     <b-card>
-      <h3>Fish Caught</h3>
+      <h3 class="card-heading-lg center">Fish Caught</h3>
       <GChart
         type="PieChart"
         :data="chartDataTwo"
@@ -57,9 +57,10 @@ export default {
   },
   methods: {
 
-    findRainbow(fish, index) {
-      return fish[0] === 'Brown Trout';
-    },
+    // findRainbow(fish, index) {
+    //   return fish[0] === 'Brown Trout';
+    //   console.log(index);
+    // },
 
     pageLoad() {
 
@@ -117,8 +118,9 @@ export default {
 
         .then(() => {
           for (let fish of this.fishCounts) {
-            console.log(this.fishCounts.findIndex(this.findRainbow));
-            this.newFishArray.push(this.fishCounts[index]);
+            // console.log(this.fishCounts.findIndex(this.findRainbow));
+            // this.newFishArray.push(this.fishCounts[index]);
+            console.log(fish);
           }
         })
         .catch((error) => {

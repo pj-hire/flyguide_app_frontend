@@ -1,21 +1,29 @@
 <template>
   <div class="about">
     <h1>Edit Species</h1>
-    <div>
-      Species: <input v-model="newSpecies.speciesName">
-    </div>
-    <div>
-      <input type="radio" id="coldWater" value="coldWater" v-model="newSpecies.habitat">
-      <label for="coldWater">Cold Water</label>
-      <input type="radio" id="warmWater" value="warmWater" v-model="newSpecies.habitat">
-      <label for="warmWater">Warm Water</label>
-      <input type="radio" id="saltWater" value="saltWater" v-model="newSpecies.habitat">
-      <label for="saltWater">Salt Water</label>
-    </div>
-    <div>
-      <button @click="saveChanges">Save Changes</button>
-      <button @click="deleteSpecies">Delete Species</button>
-    </div>
+    <b-card class="center">
+      <div class="pattern">
+        <span><h4>Species: <input v-model="newSpecies.speciesName"></h4></span>
+      </div>
+      <div class="fly-type">
+        <div>
+          <input type="radio" id="option1" value="coldWater" v-model="newSpecies.habitat">
+          <label for="option1"><h5>Cold Water</h5></label>
+        </div>
+        <div>
+          <input type="radio" id="option2" value="warmWater" v-model="newSpecies.habitat">
+          <label for="option2"><h5>Warm Water</h5></label>
+        </div>
+        <div>
+          <input type="radio" id="option3" value="saltWater" v-model="newSpecies.habitat">
+          <label for="option3"><h5>Salt Water</h5></label>
+        </div>
+      </div>
+      <div class="button-add-fly">
+        <b-button @click="saveChanges">Save Changes</b-button>
+        <b-button @click="deleteSpecies">Delete Species</b-button>
+      </div>
+    </b-card>
   </div>
 </template>
 

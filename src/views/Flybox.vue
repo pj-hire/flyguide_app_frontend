@@ -3,35 +3,33 @@
 
     <h1>Flybox</h1>
 
-    <div class="addButton">
-      <router-link to="/flybox/addfly"><b-button class="addButton" variant="success">Add a Fly +</b-button></router-link>
-    </div>  
-
     <b-card>
-      <h3>Dry Flies:</h3>
+
+      <div class="addButton">
+        <router-link to="/flybox/addfly"><b-button class="addButton" variant="success" size="lg">Add Fly +</b-button></router-link>
+      </div>
+
+      <h3 class="card-heading-lg">Dry Flies:</h3>
       <div v-for="fly in flybox" :key="fly.flyId">
         <div v-if="fly.flyType === 'dryFly'">
-          <div class="box"><router-link :to="'/flybox/editfly/' + fly.flyId">{{ fly.flyPattern }}</router-link></div>
+          <router-link class="card-list-container" :to="'/flybox/editfly/' + fly.flyId">{{ fly.flyPattern }}</router-link>
         </div>
       </div>
-    </b-card>
 
-    <b-card>
-      <h3>Nymphs:</h3>
+      <h3 class="card-heading-lg">Nymphs:</h3>
       <div v-for="fly in flybox" :key="fly.flyId">
         <div v-if="fly.flyType === 'nymph'">
-          <div class="box"><router-link :to="'/flybox/editfly/' + fly.flyId">{{ fly.flyPattern }}</router-link></div>
+          <router-link class="card-list-container" :to="'/flybox/editfly/' + fly.flyId">{{ fly.flyPattern }}</router-link>
         </div>
       </div>
-    </b-card>
 
-    <b-card>
-      <h3>Streamers:</h3>
+      <h3 class="card-heading-lg">Streamers:</h3>
       <div v-for="fly in flybox" :key="fly.flyId">
         <div v-if="fly.flyType === 'streamer'">
-          <div class="box"><router-link :to="'/flybox/editfly/' + fly.flyId">{{ fly.flyPattern }}</router-link></div>
+          <router-link class="card-list-container" :to="'/flybox/editfly/' + fly.flyId">{{ fly.flyPattern }}</router-link>
         </div>
       </div>
+
     </b-card>
 
   </div>
@@ -85,12 +83,3 @@ export default {
 }
 
 </script>
-
-<style>
-
-.box {
-  border: solid 1px;
-  padding: 5px;
-}
-
-</style>

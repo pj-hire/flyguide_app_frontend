@@ -1,42 +1,28 @@
 <template>
   <div class="about">
-    <h1>Add a fly</h1>
-
-    <b-card>
-
-    <div>
-      Pattern: <input v-model="newFly.flyPattern">
-    </div>
-
-    <div>
-      <input type="radio" id="dryFly" value="dryFly" v-model="newFly.flyType">
-      <label for="dryFly">Dry Fly</label>
-      <input type="radio" id="nymph" value="nymph" v-model="newFly.flyType">
-      <label for="nymph">Nymph</label>
-      <input type="radio" id="streamer" value="streamer" v-model="newFly.flyType">
-      <label for="streamer">Streamer</label>
-    </div>
-
-    <!-- <div class="btn-group btn-group-toggle">
-      <label class="btn btn-secondary active">
-        <input type="radio" name="options" value="dryFly" id="option1"  v-model="newFly.flyType" autocomplete="off" checked> Dry Fly
-      </label>
-
-      <label class="btn btn-secondary">
-       <input type="radio" name="options"  value="nymph" id="option2"  v-model="newFly.flyType" autocomplete="off"> Nymph
-      </label>
-
-      <label class="btn btn-secondary active">
-        <input type="radio" name="options" value="streamer" id="option3"  v-model="newFly.flyType" autocomplete="off" checked> Streamer
-      </label>
-    </div> -->
-
-    <div>
-      <button @click="addFly">Add to Box</button>
-    </div>
-
+    <h1>Add Fly</h1>
+    <b-card class="center">
+      <div class="pattern">
+        <span><h4>Pattern: <input v-model="newFly.flyPattern"></h4></span>
+      </div>
+      <div class="fly-type">
+        <div>
+          <input type="radio" id="dryFly" value="dryFly" v-model="newFly.flyType">
+          <label for="dryFly"><h5>Dry Fly</h5></label>
+        </div>
+        <div>
+          <input type="radio" id="nymph" value="nymph" v-model="newFly.flyType">
+          <label for="nymph"><h5>Nymph</h5></label>
+        </div>
+        <div>
+          <input type="radio" id="streamer" value="streamer" v-model="newFly.flyType">
+          <label for="streamer"><h5>Streamer</h5></label>
+        </div>
+      </div>
+      <div class="button-add-fly">
+        <b-button @click="addFly">Add to Box</b-button>
+      </div>
     </b-card>
-
   </div>
 </template>
 

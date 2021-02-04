@@ -1,38 +1,28 @@
 <template>
   <div class="about">
-    <h1>Add a Species</h1>
-
-    <div>
-      Species: <input v-model="newSpecies.speciesName">
-    </div>
-
-    <div>
-      <input type="radio" id="option1" value="coldWater" v-model="newSpecies.habitat">
-      <label for="dryFly">Cold Water</label>
-      <input type="radio" id="option2" value="warmWater" v-model="newSpecies.habitat">
-      <label for="nymph">Warm Water</label>
-      <input type="radio" id="option3" value="saltWater" v-model="newSpecies.habitat">
-      <label for="streamer">Salt Water</label>
-    </div>
-
-    <!-- <div class="btn-group btn-group-toggle">
-      <label class="btn btn-secondary active">
-        <input type="radio" name="options" value="coldWater" id="option1"  v-model="newSpecies.habitat" autocomplete="off" checked> Cold Water
-      </label>
-
-      <label class="btn btn-secondary">
-       <input type="radio" name="options"  value="warmWater" id="option2"  v-model="newSpecies.habitat" autocomplete="off"> Warm Water
-      </label>
-
-      <label class="btn btn-secondary active">
-        <input type="radio" name="options" value="saltWater" id="option3"  v-model="newSpecies.habitat" autocomplete="off" checked> Salt Water
-      </label>
-    </div> -->
-
-    <div>
-      <button @click="addSpecies">Add Species</button>
-    </div>
-
+    <h1>Add Species</h1>
+    <b-card class="center">
+      <div class="pattern">
+        <span><h4>Species: <input v-model="newSpecies.speciesName"></h4></span>
+      </div>
+      <div class="fly-type">
+        <div>
+          <input type="radio" id="option1" value="coldWater" v-model="newSpecies.habitat">
+          <label for="option1"><h5>Cold Water</h5></label>
+        </div>
+        <div>
+          <input type="radio" id="option2" value="warmWater" v-model="newSpecies.habitat">
+          <label for="option2"><h5>Warm Water</h5></label>
+        </div>
+        <div>
+          <input type="radio" id="option3" value="saltWater" v-model="newSpecies.habitat">
+          <label for="option3"><h5>Salt Water</h5></label>
+        </div>
+      </div>
+      <div class="button-add-fly">
+        <b-button @click="addSpecies">Add Species</b-button>
+      </div>
+    </b-card>
   </div>
 </template>
 

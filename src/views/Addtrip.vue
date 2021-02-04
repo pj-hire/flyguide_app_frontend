@@ -1,106 +1,41 @@
 <template>
   <div class="about">
-    <h1>Add Trip (temporary name)</h1>
-    <div class="box">
+    <h1>Add Trip</h1>
 
-      <div>
-        <b-form-datepicker v-model="newTrip.date" class="mb-2"></b-form-datepicker>
-      </div>
+    <div>
+      <b-form-datepicker v-model="newTrip.date" class="mb-2"></b-form-datepicker>
+    </div>
 
-      <div>
-        <b-card no-body>
-          <b-tabs pills card>
-            <b-tab title="Guide Trip" active @click="newTrip.tripType = 'guideTrip'">
-              <b-card-text>
+    <b-card no-body>
+      <b-tabs pills card>
 
-                <b-form-select v-model="newTrip.guideTripType" id="dropdown-left" text="Trip Type" variant="primary" class="mb-3">
-                  <b-form-select-option disabled value="">Trip Type</b-form-select-option>
-                  <b-form-select-option value="halfDayWade">Half-Day Wade</b-form-select-option>
-                  <b-form-select-option value="fullDayWade">Full-Day Wade</b-form-select-option>
-                  <b-form-select-option value="halfDayFloat">Half-Day Float</b-form-select-option>
-                  <b-form-select-option value="fullDayFloat">Full-Day Float</b-form-select-option>
-                </b-form-select>
+        <!-- Tab for Guide Trip -->
+        <b-tab title="Guide Trip" active @click="newTrip.tripType = 'guideTrip'">
+          <b-card-text>
 
-                <b-form-select v-model="newTrip.numberInParty" id="dropdown-left" text="# In Party" variant="primary" class="mb-3">
-                  <b-form-select-option disabled value=""># in Party</b-form-select-option>
-                  <b-form-select-option type="number" value="1">1</b-form-select-option>
-                  <b-form-select-option type="number" value="2">2</b-form-select-option>
-                  <b-form-select-option type="number" value="3">3</b-form-select-option>
-                  <b-form-select-option type="number" value="4">4</b-form-select-option>
-                  <b-form-select-option type="number" value="5">5</b-form-select-option>
-                </b-form-select>
+            <b-form-select v-model="newTrip.guideTripType" id="dropdown-left" text="Trip Type" variant="primary" class="mb-3">
+              <b-form-select-option disabled value="">Trip Type</b-form-select-option>
+              <b-form-select-option value="halfDayWade">Half-Day Wade</b-form-select-option>
+              <b-form-select-option value="fullDayWade">Full-Day Wade</b-form-select-option>
+              <b-form-select-option value="halfDayFloat">Half-Day Float</b-form-select-option>
+              <b-form-select-option value="fullDayFloat">Full-Day Float</b-form-select-option>
+            </b-form-select>
 
-                <div>
-                  Client Info:
-                  <b-card>
+            <b-form-select v-model="newTrip.numberInParty" id="dropdown-left" text="# In Party" variant="primary" class="mb-3">
+              <b-form-select-option disabled value=""># in Party</b-form-select-option>
+              <b-form-select-option type="number" value="1">1</b-form-select-option>
+              <b-form-select-option type="number" value="2">2</b-form-select-option>
+              <b-form-select-option type="number" value="3">3</b-form-select-option>
+              <b-form-select-option type="number" value="4">4</b-form-select-option>
+              <b-form-select-option type="number" value="5">5</b-form-select-option>
+            </b-form-select>
 
-                    <!-- add client -->
-                    <div>
-                      <b-button variant="success" v-b-modal.modal-1>Add a Client +</b-button>
-                      <b-modal id="modal-1" title="Add Client" ok-only ok-title="Save Client" @ok="addClient">
-                        <p class="my-4">First Name: <input v-model="newTrip.newClient.firstName"></p>
-                        <p class="my-4">Last Name: <input v-model="newTrip.newClient.lastName"></p>
-                        <p class="my-4">Email: <input v-model="newTrip.newClient.email"></p>
-                        <p class="my-4">Phone: <input v-model="newTrip.newClient.phone"></p>
-                        <p class="my-4">Notes: <b-form-textarea v-model="newTrip.newClient.notes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
-                      </b-modal>
-                    </div>
+            <h3>Clients:</h3>
+            <div class="center">
 
-                    <!-- display clients added -->
-                    <div v-for="(client, index) in newTrip.clients" :key="client.clientId">
-                        <div @click="selectClient(index)" v-b-modal.modal-2 title="Edit Client">
-                          {{ client.clientFirstName }} {{ client.clientLastName }}
-                        </div>
-                    </div>
-
-                    <!-- edit client -->
-                    <b-modal v-if="newTrip.clients[newTrip.selectedClientIndex]" id="modal-2" title="Edit Client" ok-title="Save Changes" cancel-title="Delete Client" @cancel="deleteClient" @ok="saveClientChanges">
-                      <p class="my-4">First Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientFirstName"></p>
-                      <p class="my-4">Last Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientLastName"></p>
-                      <p class="my-4">Email: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientEmail"></p>
-                      <p class="my-4">Phone: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientPhone"></p>
-                      <p class="my-4">Notes: <b-form-textarea v-model="newTrip.clients[newTrip.selectedClientIndex].clientNotes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
-                    </b-modal>
-
-                  </b-card>
-                </div>
-              </b-card-text></b-tab>
-            <b-tab @click="newTrip.tripType = 'personalTrip'" title="Personal Trip"><b-card-text></b-card-text></b-tab>
-          </b-tabs>
-        </b-card>
-      </div>
-
-
-      <!-- OLD COLLAPSE TOGGLE - DELETE AFTER CONFIRM NO BUGS COME UP-->
-
-      <!-- <b-button @click="newTrip.tripType = 'guideTrip'" v-b-toggle.collapse-1 variant="primary">Guide Trip</b-button>
-      <b-button @click="newTrip.tripType = 'personalTrip'" v-b-toggle.collapse-1 variant="primary">Personal Trip</b-button>
-      <b-collapse id="collapse-1" class="mt-2">
-        <b-card v-if="newTrip.tripType = 'guideTrip'"> -->
-
-          <!-- <b-form-select v-model="newTrip.guideTripType" id="dropdown-left" text="Trip Type" variant="primary" class="mb-3">
-            <b-form-select-option disabled value="">Trip Type</b-form-select-option>
-            <b-form-select-option value="halfDayWade">Half-Day Wade</b-form-select-option>
-            <b-form-select-option value="fullDayWade">Full-Day Wade</b-form-select-option>
-            <b-form-select-option value="halfDayFloat">Half-Day Float</b-form-select-option>
-            <b-form-select-option value="fullDayFloat">Full-Day Float</b-form-select-option>
-          </b-form-select>
-
-          <b-form-select v-model="newTrip.numberInParty" id="dropdown-left" text="# In Party" variant="primary" class="mb-3">
-            <b-form-select-option disabled value=""># in Party</b-form-select-option>
-            <b-form-select-option type="number" value="1">1</b-form-select-option>
-            <b-form-select-option type="number" value="2">2</b-form-select-option>
-            <b-form-select-option type="number" value="3">3</b-form-select-option>
-            <b-form-select-option type="number" value="4">4</b-form-select-option>
-            <b-form-select-option type="number" value="5">5</b-form-select-option>
-          </b-form-select>
-
-          <div>
-            Client Info:
-            <b-card>
-
+              <!-- add client -->
               <div>
-                <b-button variant="success" v-b-modal.modal-1>Add a Client +</b-button>
+                <b-button variant="success" v-b-modal.modal-1>Add Client +</b-button>
                 <b-modal id="modal-1" title="Add Client" ok-only ok-title="Save Client" @ok="addClient">
                   <p class="my-4">First Name: <input v-model="newTrip.newClient.firstName"></p>
                   <p class="my-4">Last Name: <input v-model="newTrip.newClient.lastName"></p>
@@ -110,12 +45,14 @@
                 </b-modal>
               </div>
 
+              <!-- display clients added -->
               <div v-for="(client, index) in newTrip.clients" :key="client.clientId">
-                  <div @click="selectClient(index)" v-b-modal.modal-2 title="Edit Client">
-                    {{ client.clientFirstName }} {{ client.clientLastName }}
-                  </div>
+                <div class="card-list-container" @click="selectClient(index)" v-b-modal.modal-2 title="Edit Client">
+                  {{ client.clientFirstName }} {{ client.clientLastName }}
+                </div>
               </div>
 
+              <!-- edit client -->
               <b-modal v-if="newTrip.clients[newTrip.selectedClientIndex]" id="modal-2" title="Edit Client" ok-title="Save Changes" cancel-title="Delete Client" @cancel="deleteClient" @ok="saveClientChanges">
                 <p class="my-4">First Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientFirstName"></p>
                 <p class="my-4">Last Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientLastName"></p>
@@ -124,210 +61,196 @@
                 <p class="my-4">Notes: <b-form-textarea v-model="newTrip.clients[newTrip.selectedClientIndex].clientNotes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
               </b-modal>
 
-            </b-card>
-          </div> -->
-        <!-- </b-card>
-      </b-collapse> -->
-
-      <div>
-        Reports:
-        <div class="box">
-
-          <div>
-            <b-button variant="success" v-b-modal.modal-3>Add a Report +</b-button>
-
-            <b-modal id="modal-3" title="Add Report" ok-only ok-title="Save Report" @ok="saveReport">
-
-              <!-- add location -->
-              <div><b>Location:</b></div>
-              <select v-model="newTrip.newReport.spotId">
-                <option disabled :value="0">Choose a Location</option>
-                <option v-for="spot in newTrip.mySpots" :key="spot.spotId" :value="spot.spotId">
-                    {{ spot.locationName }} at {{ spot.subLocationName }}
-                </option>
-              </select>
-
-              <!-- add hot flies -->
-              <div><b>Hot Flies:</b></div>
-              <div class="box">
-
-                <select v-model="newTrip.newReport.newHotFly.size">
-                  <option disabled value="">Size</option>
-                  <option value="2">#2</option>
-                  <option value="4">#4</option>
-                  <option value="6">#6</option>
-                  <option value="8">#8</option>
-                  <option value="10">#10</option>
-                  <option value="12">#12</option>
-                  <option value="14">#14</option>
-                  <option value="16">#16</option>
-                  <option value="18">#18</option>
-                  <option value="20">#20</option>
-                  <option value="22">#22</option>
-                  <option value="24">#24</option>
-                </select>
-
-                <select v-model="newTrip.newReport.newHotFly.pattern">
-                  <option disabled value="">Pattern</option>
-                  <option v-for="fly in newTrip.flybox" :key="fly.flyId">{{ fly.flyPattern }}</option>
-                </select>
-
-                <select v-model="newTrip.newReport.newHotFly.color">
-                  <option disabled value="">Color</option>
-                  <option value="rust">Rust</option>
-                  <option value="black">Black</option>
-                  <option value="red">Red</option>
-                  <option value="purple">Purple</option>
-                  <option value="cream">Cream</option>
-                  <option value="natural">Natural</option>
-                  <option value="olive">Olive</option>
-                </select>
-
-                <b-button @click="addHotFly">Add</b-button>
-
-                <div v-for="(fly, index) in newTrip.newReport.hotFlies" :key="fly.hotFliesId">
-                  <div>#{{fly.size}} {{ fly.pattern }} ({{ fly.color }}) <button @click="deleteHotFly(index)">Delete</button></div>
-                </div>
-
-              </div>
-
-              <!-- add fish caught -->
-              <div><b>Fish Caught:</b></div>
-              <div class="box">
-
-                <select v-model="newTrip.newReport.newFishCaught.speciesName">
-                  <option disabled value="">Species</option>
-                  <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
-                </select>
-
-                <b-button @click="addFishCaught">Add</b-button>
-
-                <div v-for="(species, index) in newTrip.newReport.fishCaught" :key="species.fishCaughtId">
-                  <div>
-                    {{ species.speciesName }}
-                    <b-form-spinbutton id="sb-inline" v-model="newTrip.newReport.fishCaught[index].qtyCaught" min='0' inline @change="changeFishCaughtQty(index)"></b-form-spinbutton>
-                    <button @click="deleteFishCaught(index)">Delete</button>
-                  </div>
-                </div>
-
-              </div>
-
-              <!-- add notes -->
-              <div><b>Notes:</b></div>
-              <div class="box">
-                <b-form-textarea id="textarea" v-model="newTrip.newReport.notes" placeholder="Additional trip notes..." rows="3" max-rows="6"></b-form-textarea>
-              </div>
-
-            </b-modal>
-
-            <!-- click to bring up modal to edit a report -->
-            <div v-for="(report, index) in newTrip.reports" :key="report.reportId">
-              <div v-for="spot in newTrip.mySpots" :key="spot.spotId">
-                <div v-if="report.spotId === spot.spotId" @click="editReport(index)" v-b-modal.modal-4>
-                  {{ spot.locationName}} at {{ spot.subLocationName }}
-                </div>
-              </div>
             </div>
+          </b-card-text>
+        </b-tab>
 
-            <b-modal v-if="newTrip.reports[newTrip.selectedReportIndex]" id="modal-4" title="Edit Report" ok-title="Save Changes" cancel-title="Delete Report" @cancel="deleteReport" @ok="saveReportChanges">
+        <!-- Tab for personal trip -->
+        <b-tab @click="newTrip.tripType = 'personalTrip'" title="Personal Trip"></b-tab>
 
-              <!-- edit location -->
-              <div><b>Location:</b></div>
-              <select v-model="newTrip.editReport.spotId">
-                <option disabled :value="0">Choose a Location</option>
-                <option v-for="spot in newTrip.mySpots" :key="spot.spotId" :value="spot.spotId">
-                    {{ spot.locationName }} at {{ spot.subLocationName }}
-                </option>
-              </select>
+      </b-tabs>
+    </b-card>
 
-              <!-- edit hot flies -->
-              <div><b>Hot Flies:</b></div>
-              <div class="box">
+    <b-card>
+      <h3>Reports:</h3>
+      <div class="center">
 
-                <select v-model="newTrip.editReport.newHotFly.size">
-                  <option disabled value="">Size</option>
-                  <option value="2">#2</option>
-                  <option value="4">#4</option>
-                  <option value="6">#6</option>
-                  <option value="8">#8</option>
-                  <option value="10">#10</option>
-                  <option value="12">#12</option>
-                  <option value="14">#14</option>
-                  <option value="16">#16</option>
-                  <option value="18">#18</option>
-                  <option value="20">#20</option>
-                  <option value="22">#22</option>
-                  <option value="24">#24</option>
-                </select>
+        <b-button variant="success" v-b-modal.modal-3>Add Report +</b-button>
 
-                <select v-model="newTrip.editReport.newHotFly.pattern">
-                  <option disabled value="">Pattern</option>
-                  <option v-for="fly in newTrip.flybox" :key="fly.flyId">{{ fly.flyPattern }}</option>
-                </select>
+        <!-- Modal - add report -->
+        <b-modal id="modal-3" title="Add Report" ok-only ok-title="Save Report" @ok="saveReport">
 
-                <select v-model="newTrip.editReport.newHotFly.color">
-                  <option disabled value="">Color</option>
-                  <option value="rust">Rust</option>
-                  <option value="black">Black</option>
-                  <option value="red">Red</option>
-                  <option value="purple">Purple</option>
-                  <option value="cream">Cream</option>
-                  <option value="natural">Natural</option>
-                  <option value="olive">Olive</option>
-                </select>
+          <!-- add location -->
+          <div><b>Location:</b></div>
+          <select v-model="newTrip.newReport.spotId">
+            <option disabled :value="0">Choose a Location</option>
+            <option v-for="spot in newTrip.mySpots" :key="spot.spotId" :value="spot.spotId">
+                {{ spot.locationName }} at {{ spot.subLocationName }}
+            </option>
+          </select>
 
-                <b-button @click="editReportAddHotFly">Add</b-button>
+          <!-- add hot flies -->
+          <div><b>Hot Flies:</b></div>
 
-                <div v-for="(fly, index) in newTrip.editReport.hotFlies" :key="fly.hotFliesId">
-                  <div>#{{fly.size}} {{ fly.pattern }} ({{ fly.color }}) <button @click="editReportDeleteHotFly(index)">Delete</button></div>
-                </div>
+          <select v-model="newTrip.newReport.newHotFly.size">
+            <option disabled value="">Size</option>
+            <option value="2">#2</option>
+            <option value="4">#4</option>
+            <option value="6">#6</option>
+            <option value="8">#8</option>
+            <option value="10">#10</option>
+            <option value="12">#12</option>
+            <option value="14">#14</option>
+            <option value="16">#16</option>
+            <option value="18">#18</option>
+            <option value="20">#20</option>
+            <option value="22">#22</option>
+            <option value="24">#24</option>
+          </select>
 
-              </div>
+          <select v-model="newTrip.newReport.newHotFly.pattern">
+            <option disabled value="">Pattern</option>
+            <option v-for="fly in newTrip.flybox" :key="fly.flyId">{{ fly.flyPattern }}</option>
+          </select>
 
-              <!-- edit fish caught -->
-              <div><b>Fish Caught:</b></div>
-              <div class="box">
+          <select v-model="newTrip.newReport.newHotFly.color">
+            <option disabled value="">Color</option>
+            <option value="rust">Rust</option>
+            <option value="black">Black</option>
+            <option value="red">Red</option>
+            <option value="purple">Purple</option>
+            <option value="cream">Cream</option>
+            <option value="natural">Natural</option>
+            <option value="olive">Olive</option>
+          </select>
 
-                <select v-model="newTrip.editReport.newFishCaught.speciesName">
-                  <option disabled value="">Species</option>
-                  <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
-                </select>
+          <b-button @click="addHotFly">Add</b-button>
 
-                <b-button @click="editReportAddFishCaught">Add</b-button>
+          <div v-for="(fly, index) in newTrip.newReport.hotFlies" :key="fly.hotFliesId">
+            <div>#{{fly.size}} {{ fly.pattern }} ({{ fly.color }}) <button @click="deleteHotFly(index)">Delete</button></div>
+          </div>
 
-                <div v-for="(species, index) in newTrip.editReport.fishCaught" :key="species.fishCaughtId">
-                  <div>
-                    {{ species.speciesName }}
-                    <b-form-spinbutton id="sb-inline" v-model="newTrip.editReport.fishCaught[index].qtyCaught" min='0' inline @change="editReportChangeFishCaughtQty(index)"></b-form-spinbutton>
-                    <button @click="editReportDeleteFishCaught(index)">Delete</button>
-                  </div>
-                </div>
+          <!-- add fish caught -->
+          <div><b>Fish Caught:</b></div>
 
-              </div>
+          <select v-model="newTrip.newReport.newFishCaught.speciesName">
+            <option disabled value="">Species</option>
+            <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
+          </select>
 
-              <!-- edit notes -->
-              <div><b>Notes:</b></div>
-              <div class="box">
-                <b-form-textarea id="textarea" v-model="newTrip.editReport.notes" placeholder="Additional report notes..." rows="3" max-rows="6"></b-form-textarea>
-              </div>
+          <b-button @click="addFishCaught">Add</b-button>
 
-            </b-modal>
+          <div v-for="(species, index) in newTrip.newReport.fishCaught" :key="species.fishCaughtId">
+            <div>
+              {{ species.speciesName }}
+              <b-form-spinbutton id="sb-inline" v-model="newTrip.newReport.fishCaught[index].qtyCaught" min='0' inline @change="changeFishCaughtQty(index)"></b-form-spinbutton>
+              <button @click="deleteFishCaught(index)">Delete</button>
+            </div>
+          </div>
 
+          <!-- add notes -->
+          <div><b>Notes:</b></div>
+          <b-form-textarea id="textarea" v-model="newTrip.newReport.notes" placeholder="Additional trip notes..." rows="3" max-rows="6"></b-form-textarea>
 
+        </b-modal>
+
+        <!-- List of reports - click to bring up modal to edit a report -->
+        <div v-for="(report, index) in newTrip.reports" :key="report.reportId">
+          <div v-for="spot in newTrip.mySpots" :key="spot.spotId">
+            <div class="card-list-container" v-if="report.spotId === spot.spotId" @click="editReport(index)" v-b-modal.modal-4>
+              {{ spot.locationName}} at {{ spot.subLocationName }}
+            </div>
           </div>
         </div>
+
+        <!-- Edit report Modal -->
+        <b-modal v-if="newTrip.reports[newTrip.selectedReportIndex]" id="modal-4" title="Edit Report" ok-title="Save Changes" cancel-title="Delete Report" @cancel="deleteReport" @ok="saveReportChanges">
+
+          <!-- edit location -->
+          <div><b>Location:</b></div>
+          <select v-model="newTrip.editReport.spotId">
+            <option disabled :value="0">Choose a Location</option>
+            <option v-for="spot in newTrip.mySpots" :key="spot.spotId" :value="spot.spotId">
+                {{ spot.locationName }} at {{ spot.subLocationName }}
+            </option>
+          </select>
+
+          <!-- edit hot flies -->
+          <div><b>Hot Flies:</b></div>
+
+          <select v-model="newTrip.editReport.newHotFly.size">
+            <option disabled value="">Size</option>
+            <option value="2">#2</option>
+            <option value="4">#4</option>
+            <option value="6">#6</option>
+            <option value="8">#8</option>
+            <option value="10">#10</option>
+            <option value="12">#12</option>
+            <option value="14">#14</option>
+            <option value="16">#16</option>
+            <option value="18">#18</option>
+            <option value="20">#20</option>
+            <option value="22">#22</option>
+            <option value="24">#24</option>
+          </select>
+
+          <select v-model="newTrip.editReport.newHotFly.pattern">
+            <option disabled value="">Pattern</option>
+            <option v-for="fly in newTrip.flybox" :key="fly.flyId">{{ fly.flyPattern }}</option>
+          </select>
+
+          <select v-model="newTrip.editReport.newHotFly.color">
+            <option disabled value="">Color</option>
+            <option value="rust">Rust</option>
+            <option value="black">Black</option>
+            <option value="red">Red</option>
+            <option value="purple">Purple</option>
+            <option value="cream">Cream</option>
+            <option value="natural">Natural</option>
+            <option value="olive">Olive</option>
+          </select>
+
+          <b-button @click="editReportAddHotFly">Add</b-button>
+
+          <div v-for="(fly, index) in newTrip.editReport.hotFlies" :key="fly.hotFliesId">
+            <div>#{{fly.size}} {{ fly.pattern }} ({{ fly.color }}) <button @click="editReportDeleteHotFly(index)">Delete</button></div>
+          </div>
+
+          <!-- edit fish caught -->
+          <div><b>Fish Caught:</b></div>
+
+          <select v-model="newTrip.editReport.newFishCaught.speciesName">
+            <option disabled value="">Species</option>
+            <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
+          </select>
+
+          <b-button @click="editReportAddFishCaught">Add</b-button>
+
+          <div v-for="(species, index) in newTrip.editReport.fishCaught" :key="species.fishCaughtId">
+            <div>
+              {{ species.speciesName }}
+              <b-form-spinbutton id="sb-inline" v-model="newTrip.editReport.fishCaught[index].qtyCaught" min='0' inline @change="editReportChangeFishCaughtQty(index)"></b-form-spinbutton>
+              <button @click="editReportDeleteFishCaught(index)">Delete</button>
+            </div>
+          </div>
+
+          <!-- edit report notes -->
+          <div><b>Notes:</b></div>
+          <b-form-textarea id="textarea" v-model="newTrip.editReport.notes" placeholder="Additional report notes..." rows="3" max-rows="6"></b-form-textarea>
+
+        </b-modal>
       </div>
+    </b-card>
 
-      <div>
-        Notes:
-        <div class="box">
-          <b-form-textarea id="textarea" v-model="newTrip.tripNotes" placeholder="Additional trip notes..." rows="3" max-rows="6"></b-form-textarea>
-        </div>
+    <b-card>
+      <h3 class="notes-heading">Notes:</h3>
+      <b-form-textarea id="textarea" v-model="newTrip.tripNotes" placeholder="Additional trip notes..." rows="3" max-rows="6"></b-form-textarea>
+
+      <div class="center">
+        <b-button class="button-savetrip" @click="saveTrip">Save Trip</b-button>
       </div>
+    </b-card>
 
-      <b-button @click="saveTrip">Save Trip</b-button>
-
-    </div>
   </div>
 </template>
 

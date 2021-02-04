@@ -3,14 +3,16 @@
 
     <h1>My Spots</h1>
 
-    <div class="addButton">
-      <router-link to="/myspots/addspot"><b-button class="addButton" variant="success">Add a Spot +</b-button></router-link>
-    </div>
-
     <b-card>
-      <div v-for="spot in mySpots" :key="spot.spotId">
-        <div class="box"><router-link :to="'/myspots/editspot/' + spot.spotId">{{ spot.locationName }} at {{ spot.subLocationName }}</router-link></div>
+
+      <div class="addButton">
+        <router-link to="/myspots/addspot"><b-button class="addButton" variant="success" size="lg">Add Spot +</b-button></router-link>
       </div>
+
+      <div v-for="spot in mySpots" :key="spot.spotId">
+        <router-link class="card-list-container" :to="'/myspots/editspot/' + spot.spotId">{{ spot.locationName }} at {{ spot.subLocationName }}</router-link>
+      </div>
+
     </b-card>
 
   </div>

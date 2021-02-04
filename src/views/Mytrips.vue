@@ -3,22 +3,60 @@
 
     <h1>My Trips</h1>
 
-    <div class="addButton">
-      <router-link to="/mytrips/addtrip"><b-button variant="success">Add a Trip +</b-button></router-link>
-    </div>
-
     <b-card>
-      <div class="box" v-for="trip in trips" :key="trip.tripId">
+
+      <div class="addButton">
+        <router-link to="/mytrips/addtrip"><b-button variant="success" size="lg">Add Trip +</b-button></router-link>
+      </div>
+
+      <div  v-for="trip in trips" :key="trip.tripId">
         <!-- Guide Trip -->
         <div v-if="trip.guideOrPersonalTrip === 'Guide Trip'">
           <router-link :to="'/mytrips/' + trip.tripId">
-            <span v-if="trip.clients">
-            {{ trip.clients[0] }}<span v-if="trip.clients.length > 1"> + {{trip.clients.length -1}}</span></span> - {{ tripDate }} - {{ trip.guideTripType }}
+            <div class="card-list-container" v-if="trip.clients">
+
+              <div class="card-list-container-left">
+                <div class="clientName">
+                  {{ trip.clients[0] }}
+                </div>
+                <div class="client-number" v-if="trip.clients.length > 1">
+                   + {{trip.clients.length -1}} more
+                </div>
+              </div>
+
+              <div class="card-list-container-right">
+                <div class="trip-date">
+                  {{ tripDate }}
+                </div>
+                <div class="guidetrip-type">
+                  {{ trip.guideTripType }}
+                </div>
+              </div>
+
+            </div>
           </router-link>
         </div>
         <!-- Personal Trip -->
         <div v-if="trip.guideOrPersonalTrip === 'Personal Trip'">
-          <router-link :to="'/mytrips/' + trip.tripId">{{ trip.guideOrPersonalTrip }} - {{ tripDate }}</router-link>
+          <router-link :to="'/mytrips/' + trip.tripId">
+
+            <div class="card-list-container">
+
+              <div class="card-list-container-left">
+                <div class="trip-type">
+                  {{ trip.guideOrPersonalTrip }}
+                </div>
+              </div>
+
+              <div class="card-list-container-right">
+                <div class="trip-date">
+                  {{ tripDate }}
+                </div>
+              </div>
+
+            </div>
+
+          </router-link>
         </div>
       </div>
     </b-card>
