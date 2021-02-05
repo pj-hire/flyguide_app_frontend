@@ -33,15 +33,31 @@
             <h3>Clients:</h3>
             <div class="center">
 
-              <!-- add client -->
+              <!-- add client modal -->
               <div>
                 <b-button variant="success" v-b-modal.modal-1>Add Client +</b-button>
                 <b-modal id="modal-1" title="Add Client" ok-only ok-title="Save Client" @ok="addClient">
-                  <p class="my-4">First Name: <input v-model="newTrip.newClient.firstName"></p>
-                  <p class="my-4">Last Name: <input v-model="newTrip.newClient.lastName"></p>
-                  <p class="my-4">Email: <input v-model="newTrip.newClient.email"></p>
-                  <p class="my-4">Phone: <input v-model="newTrip.newClient.phone"></p>
-                  <p class="my-4">Notes: <b-form-textarea v-model="newTrip.newClient.notes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
+                  <b-container fluid>
+                    <div class="row">
+                      <div class="col-left"><p class="my-4">First Name:</p></div>
+                      <div class="col-right"><input v-model="newTrip.newClient.firstName"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-left"><p class="my-4">Last Name:</p></div>
+                      <div class="col-right"><input v-model="newTrip.newClient.lastName"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-left"><p class="my-4">Email:</p></div>
+                      <div class="col-right"><input v-model="newTrip.newClient.email"></div>
+                    </div>
+                    <div class="row">
+                      <div class="col-left"><p class="my-4">Phone:</p></div>
+                      <div class="col-right"><input v-model="newTrip.newClient.phone"></div>
+                    </div>
+
+                    <p class="my-4">Notes: <b-form-textarea v-model="newTrip.newClient.notes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
+
+                  </b-container>
                 </b-modal>
               </div>
 

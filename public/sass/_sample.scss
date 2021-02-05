@@ -264,3 +264,34 @@ h1 {
 .button-savetrip {
   margin-top: 20px;
 }
+
+//ADD CLIENT Modal
+
+.row {
+  display: flex;
+}
+
+.col-left {
+  flex: 1;
+  text-align: right;
+  font-weight: bold;
+}
+
+.col-right {
+  flex: 3;
+  padding-top: 22px;
+  padding-left: 10px;
+}
+
+.col-right input {
+  border: none;
+  border-bottom: 1px solid #d3d3d3;
+  padding-left: 5px;
+  color: gray;
+}
+
+.col-right input:focus {
+  border: none;
+  border-bottom: 2px solid #d3d3d3;
+
+}
