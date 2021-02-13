@@ -5,7 +5,7 @@
         <div class="horizontal-menu">
           <!-- <img class="invert" src="./assets/nymph-icon.png" alt="nymph-icon"> -->
           <input type="checkbox" id="check">
-          <label id="checkbtn" class="checkbtn">
+          <label id="checkbtn" class="checkbtn" :class="{checkbtn_hide: !isNotLogin}">
             <span @click="toggleNav"><i class="fas fa-bars"></i></span>
           </label>
           <h2>FlyGuide App</h2>
@@ -71,15 +71,6 @@
     created() {
       if (this.$router.currentRoute.name === 'Login') {
         this.isNotLogin = false
-        // .then(() => {
-        //   let check = document.getElementById("checkbtn");
-        //   if (this.isNotLogin === false) {
-        //     check.style.display = "none";
-        //   }
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        // })
       }
     },
     beforeDestroy() {
