@@ -1,33 +1,49 @@
 <template>
   <div class="about">
-
     <h1>Account</h1>
-
     <b-card>
+      
       <h3>{{ this.user.displayName }}</h3>
       <p>{{ this.user.email }}</p>
 
-
       <div>
         <b-button v-b-modal.modal-1>Update Email</b-button>
-
         <b-modal id="modal-1" title="Update Email Address" ok-only ok-title="Update" @ok="updateEmail">
-          <div>Enter New Email: <input v-model="newEmailOne"></div>
-          <div>Re-Enter New Email: <input v-model="newEmailTwo"></div>
+          <b-container fluid>
+            <div class="row">
+              <div class="modal-email-pswd-left"><p class="my-4">Enter New Email:</p></div>
+              <div class="modal-email-pswd-right"><input v-model="newEmailOne"></div>
+            </div>
+            <div class="row">
+              <div class="modal-email-pswd-left"><p class="my-4">Re-Enter New Email:</p></div>
+              <div class="modal-email-pswd-right"><input v-model="newEmailTwo"></div>
+            </div>
+          </b-container>
         </b-modal>
       </div>
 
-      <div>
+      <div class="pt-10">
         <b-button v-b-modal.modal-2>Update Password</b-button>
-
         <b-modal id="modal-2" title="Update Password" ok-only ok-title="Update" @ok="updatePassword">
-          <div>Enter New Password: <input type="password" v-model="newPasswordOne"></div>
-          <div>Re-Enter New Password: <input type="password" v-model="newPasswordTwo"></div>
+          <b-container fluid>
+            <div class="row">
+              <div class="modal-email-pswd-left"><p class="my-4">Enter New Password:</p></div>
+              <div class="modal-email-pswd-right"><input type="password" v-model="newPasswordOne"></div>
+            </div>
+            <div class="row">
+              <div class="modal-email-pswd-left"><p class="my-4">Re-Enter New Password:</p></div>
+              <div class="modal-email-pswd-right"><input type="password" v-model="newPasswordTwo"></div>
+            </div>
+          </b-container>
         </b-modal>
       </div>
 
-      <b-button @click="logout">Log Out</b-button>
-      
+      <hr>
+
+      <div class="center">
+        <b-button variant="primary" @click="logout">Log Out</b-button>
+      </div>
+
     </b-card>
   </div>
 </template>

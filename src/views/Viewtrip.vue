@@ -1,43 +1,60 @@
 <template>
   <div class="about">
+    <h1>Trip Report</h1>
     <b-card>
-      <div>{{ tripType }} - {{ tripDate }}</div>
-      <div>{{ trips.guideTripNumberInParty }} Clients - {{ guideTripType }}</div>
-      <hr>
       <div>
-        <div v-if="trips.guideOrPersonalTrip === 'guideTrip'">
-          <div>Clients:</div>
-          <b-card v-for="client in clients" :key="client.clientId">
-            <div>{{client.clientFirstName}} {{ client.clientLastName }}</div>
-            <div>{{client.clientEmail}}</div>
-            <div>{{client.clientPhone}}</div>
-            <div>{{client.clientNotes}}</div>
-          </b-card>
-        </div>
+        <h2>{{ tripType }}</h2>
       </div>
       <div>
-        <div>Reports:</div>
-        <b-card v-for="report in reports" :key="report.reportId">
-          <div v-if="report.mySpots">{{ report.mySpots[0].locationName }} at {{ report.mySpots[0].subLocationName }}</div>
-          <div>Hot Flies:</div>
-          <div v-for="hotFly in report.hotFlies" :key="hotFly.hotFliesId">
-            <li>#{{ hotFly.size }} {{ hotFly.pattern }} ({{ hotFly.color }})</li>
-          </div>
-          <div>Fish Caught:</div>
-          <div v-for="fish in report.fishCaught" :key="fish.fishCaughtId">
-            <li>{{ fish.speciesName }}: {{ fish.qtyCaught }}</li>
-          </div>
-          <div>Report Notes: {{ report.notes }}</div>
+        <h4 class="viewtrip-heading-h4">{{ formatDate(trips.date) }}</h4>
+      </div>
+      <div class="viewtrip-heading-h5" v-if="tripType === 'Guide Trip'">
+        <h5>{{ guideTripType }} - {{ trips.guideTripNumberInParty }} {{ client }}</h5>
+      </div>
+      <hr class="hr">
+      <div class="viewtrip-list-container" v-if="trips.guideOrPersonalTrip === 'guideTrip'">
+        <b-card-title>{{client}}:</b-card-title>
+        <b-card class="viewtrip-list-card" v-for="client in clients" :key="client.clientId">
+          <div><b>{{client.clientFirstName}} {{ client.clientLastName }}</b></div>
+          <div>{{client.clientEmail}}</div>
+          <div>{{client.clientPhone}}</div>
+          <div>{{client.clientNotes}}</div>
         </b-card>
       </div>
-      <div>
-        <div>Trip Notes:</div>
-        <b-card>
+      <div class="viewtrip-list-container">
+        <b-card-title>Reports:</b-card-title>
+        <b-card class="viewtrip-list-card" v-for="report in reports" :key="report.reportId">
+          <div v-if="report.mySpots">
+            <h5>{{ report.mySpots[0].locationName }} at {{ report.mySpots[0].subLocationName }}</h5>
+          </div>
+          <div class="viewtrip-list-bullet-container">
+            <b><div>Hot Flies:</div></b>
+            <div v-for="hotFly in report.hotFlies" :key="hotFly.hotFliesId">
+              <div class="bullet">#{{ hotFly.size }} {{ hotFly.pattern }} ({{ hotFly.color }})</div>
+            </div>
+          </div>
+          <div class="viewtrip-list-bullet-container">
+            <b><div>Fish Caught:</div></b>
+            <div v-for="fish in report.fishCaught" :key="fish.fishCaughtId">
+              <div class="bullet">{{ fish.speciesName }}: {{ fish.qtyCaught }}</div>
+            </div>
+          </div>
+          <div class="viewtrip-list-bullet-container">
+            <b><div>Report Notes:</div></b>
+            <div class="bullet" v-if="report.notes !== ''">{{ report.notes }}</div>
+          </div>
+        </b-card>
+      </div>
+      <div class="viewtrip-list-container">
+        <b-card-title>Trip Notes:</b-card-title>
+        <b-card class="viewtrip-list-card">
           <div>{{ trips.tripNotes }}</div>
         </b-card>
       </div>
+      <div class="center">
+        <b-button @click="deleteTrip">Delete Trip</b-button>
+      </div>
     </b-card>
-    <b-button @click="deleteTrip">Delete Trip</b-button>
   </div>
 </template>
 
@@ -57,13 +74,14 @@ export default {
       reports: {},
       tripType: '',
       guideTripType: '',
-      tripDate: '',
+      client: 'Client',
     }
   },
   methods: {
-
+    formatDate(date) {
+      return moment(date).format('ll');
+    },
     deleteTrip() {
-
       //delete trip
       axios.post('http://localhost:3000/deletetrip-trip', this.trips)
         .then((response) => {
@@ -90,7 +108,6 @@ export default {
         .catch(function (error) {
           console.log(error);
         })
-
 
         if (this.reports !== []) {
           for (let report in this.reports) {
@@ -120,9 +137,6 @@ export default {
 
     },
     pageLoad() {
-
-      //change format of date here
-      this.tripDate = moment(this.trips.date).format('ll');
 
       //bring in trip by tripId param
       axios.get('http://localhost:3000/viewtrip/' + this.$route.params.id)
@@ -154,6 +168,15 @@ export default {
       axios.get('http://localhost:3000/viewtripclients/' + this.$route.params.id)
         .then((response) => {
           this.clients = response.data;
+        })
+        .then (() => {
+          this.trips.guideTripNumberInParty = this.clients.length;
+        })
+        //pluralize client to clients
+        .then (() => {
+          if (this.clients.length > 1) {
+            this.client = "Clients";
+          }
         })
         .catch((error) => {
           console.log(error);

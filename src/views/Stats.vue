@@ -2,7 +2,7 @@
   <div class="about">
     <h1>Stats</h1>
     <b-card>
-      <h3 class="card-heading-lg center">Top Flies</h3>
+      <h3 class="card-heading-lg center">Top 5 Flies</h3>
       <GChart
         type="ColumnChart"
         :data="chartDataOne"
@@ -40,7 +40,9 @@ export default {
         ['Pattern', 'Frequency'],
       ],
       chartOptionsOne: {
-        // title: 'Top Flies',
+        legend: {
+          position: 'none'
+        }
       },
       fishCaught: {},
       fishSpecies: [],
@@ -110,17 +112,24 @@ export default {
         .then(() => {
           for (let fish of this.fishCaught) {
             let arr = [];
-            arr.push(fish.speciesName);
-            arr.push(fish.qtyCaught);
-            this.fishCounts.push(arr);
+
+            let fishIndex = this.fishCounts.findIndex((fishCountsFish) => {
+              return fish.speciesName === fishCountsFish[0];
+            })
+
+            if (fishIndex === -1) {
+              arr.push(fish.speciesName);
+              arr.push(fish.qtyCaught);
+              this.fishCounts.push(arr);
+            } else {
+              this.fishCounts[fishIndex][1] += fish.qtyCaught;
+            }
           }
         })
-
         .then(() => {
-          for (let fish of this.fishCounts) {
-            // console.log(this.fishCounts.findIndex(this.findRainbow));
-            // this.newFishArray.push(this.fishCounts[index]);
-            console.log(fish);
+          console.log(this.fishCounts);
+          for (let item of this.fishCounts) {
+            this.chartDataTwo.push(item);
           }
         })
         .catch((error) => {

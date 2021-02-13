@@ -2,16 +2,19 @@
   <div class="about">
     <h1>Add Trip</h1>
 
-    <div>
-      <b-form-datepicker v-model="newTrip.date" class="mb-2"></b-form-datepicker>
-    </div>
-
     <b-card no-body>
       <b-tabs pills card>
 
         <!-- Tab for Guide Trip -->
         <b-tab title="Guide Trip" active @click="newTrip.tripType = 'guideTrip'">
           <b-card-text>
+
+            <h3>Date:</h3>
+            <div>
+              <b-form-datepicker v-model="newTrip.date" class="mb-2"></b-form-datepicker>
+            </div>
+
+            <h3 class="pt-20">Trip Info:</h3>
 
             <b-form-select v-model="newTrip.guideTripType" id="dropdown-left" text="Trip Type" variant="primary" class="mb-3">
               <b-form-select-option disabled value="">Trip Type</b-form-select-option>
@@ -30,7 +33,7 @@
               <b-form-select-option type="number" value="5">5</b-form-select-option>
             </b-form-select>
 
-            <h3>Clients:</h3>
+            <h3 class="pt-10">Clients:</h3>
             <div class="center">
 
               <!-- add client modal -->
@@ -39,24 +42,24 @@
                 <b-modal id="modal-1" title="Add Client" ok-only ok-title="Save Client" @ok="addClient">
                   <b-container fluid>
                     <div class="row">
-                      <div class="col-left"><p class="my-4">First Name:</p></div>
-                      <div class="col-right"><input v-model="newTrip.newClient.firstName"></div>
+                      <div class="modal-addclient-left"><p class="my-4">First Name:</p></div>
+                      <div class="modal-addclient-right"><input v-model="newTrip.newClient.firstName"></div>
                     </div>
                     <div class="row">
-                      <div class="col-left"><p class="my-4">Last Name:</p></div>
-                      <div class="col-right"><input v-model="newTrip.newClient.lastName"></div>
+                      <div class="modal-addclient-left"><p class="my-4">Last Name:</p></div>
+                      <div class="modal-addclient-right"><input v-model="newTrip.newClient.lastName"></div>
                     </div>
                     <div class="row">
-                      <div class="col-left"><p class="my-4">Email:</p></div>
-                      <div class="col-right"><input v-model="newTrip.newClient.email"></div>
+                      <div class="modal-addclient-left"><p class="my-4">Email:</p></div>
+                      <div class="modal-addclient-right"><input v-model="newTrip.newClient.email"></div>
                     </div>
                     <div class="row">
-                      <div class="col-left"><p class="my-4">Phone:</p></div>
-                      <div class="col-right"><input v-model="newTrip.newClient.phone"></div>
+                      <div class="modal-addclient-left"><p class="my-4">Phone:</p></div>
+                      <div class="modal-addclient-right"><input v-model="newTrip.newClient.phone"></div>
                     </div>
-
-                    <p class="my-4">Notes: <b-form-textarea v-model="newTrip.newClient.notes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
-
+                    <div class="text-area">
+                      <b-form-textarea v-model="newTrip.newClient.notes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea>
+                    </div>
                   </b-container>
                 </b-modal>
               </div>
@@ -70,19 +73,44 @@
 
               <!-- edit client -->
               <b-modal v-if="newTrip.clients[newTrip.selectedClientIndex]" id="modal-2" title="Edit Client" ok-title="Save Changes" cancel-title="Delete Client" @cancel="deleteClient" @ok="saveClientChanges">
-                <p class="my-4">First Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientFirstName"></p>
-                <p class="my-4">Last Name: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientLastName"></p>
-                <p class="my-4">Email: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientEmail"></p>
-                <p class="my-4">Phone: <input v-model="newTrip.clients[newTrip.selectedClientIndex].clientPhone"></p>
-                <p class="my-4">Notes: <b-form-textarea v-model="newTrip.clients[newTrip.selectedClientIndex].clientNotes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea></p>
+                <b-container fluid>
+                  <div class="row">
+                    <div class="modal-addclient-left"><p class="my-4">First Name:</p></div>
+                    <div class="modal-addclient-right"><input v-model="newTrip.clients[newTrip.selectedClientIndex].clientFirstName"></div>
+                  </div>
+                  <div class="row">
+                    <div class="modal-addclient-left"><p class="my-4">Last Name:</p></div>
+                    <div class="modal-addclient-right"><input v-model="newTrip.clients[newTrip.selectedClientIndex].clientLastName"></div>
+                  </div>
+                  <div class="row">
+                    <div class="modal-addclient-left"><p class="my-4">Email:</p></div>
+                    <div class="modal-addclient-right"><input v-model="newTrip.clients[newTrip.selectedClientIndex].clientEmail"></div>
+                  </div>
+                  <div class="row">
+                    <div class="modal-addclient-left"><p class="my-4">Phone:</p></div>
+                    <div class="modal-addclient-right"><input v-model="newTrip.clients[newTrip.selectedClientIndex].clientPhone"></div>
+                  </div>
+                  <div class="text-area">
+                    <b-form-textarea v-model="newTrip.clients[newTrip.selectedClientIndex].clientNotes" placeholder="Client notes..." rows="3" max-rows="6"></b-form-textarea>
+                  </div>
+                </b-container>
               </b-modal>
-
             </div>
+
+            <!-- If we wanted to bring REPORTS and TRIP NOTES into this tab. Would probably just want to create a sererate component  -->
+
           </b-card-text>
         </b-tab>
 
         <!-- Tab for personal trip -->
-        <b-tab @click="newTrip.tripType = 'personalTrip'" title="Personal Trip"></b-tab>
+        <b-tab @click="newTrip.tripType = 'personalTrip'" title="Personal Trip">
+          <b-card-text>
+            <h3>Date:</h3>
+            <div>
+              <b-form-datepicker v-model="newTrip.date" class="mb-2"></b-form-datepicker>
+            </div>
+          </b-card-text>
+        </b-tab>
 
       </b-tabs>
     </b-card>
@@ -95,79 +123,114 @@
 
         <!-- Modal - add report -->
         <b-modal id="modal-3" title="Add Report" ok-only ok-title="Save Report" @ok="saveReport">
+          <b-container fluid>
 
-          <!-- add location -->
-          <div><b>Location:</b></div>
-          <select v-model="newTrip.newReport.spotId">
-            <option disabled :value="0">Choose a Location</option>
-            <option v-for="spot in newTrip.mySpots" :key="spot.spotId" :value="spot.spotId">
-                {{ spot.locationName }} at {{ spot.subLocationName }}
-            </option>
-          </select>
-
-          <!-- add hot flies -->
-          <div><b>Hot Flies:</b></div>
-
-          <select v-model="newTrip.newReport.newHotFly.size">
-            <option disabled value="">Size</option>
-            <option value="2">#2</option>
-            <option value="4">#4</option>
-            <option value="6">#6</option>
-            <option value="8">#8</option>
-            <option value="10">#10</option>
-            <option value="12">#12</option>
-            <option value="14">#14</option>
-            <option value="16">#16</option>
-            <option value="18">#18</option>
-            <option value="20">#20</option>
-            <option value="22">#22</option>
-            <option value="24">#24</option>
-          </select>
-
-          <select v-model="newTrip.newReport.newHotFly.pattern">
-            <option disabled value="">Pattern</option>
-            <option v-for="fly in newTrip.flybox" :key="fly.flyId">{{ fly.flyPattern }}</option>
-          </select>
-
-          <select v-model="newTrip.newReport.newHotFly.color">
-            <option disabled value="">Color</option>
-            <option value="rust">Rust</option>
-            <option value="black">Black</option>
-            <option value="red">Red</option>
-            <option value="purple">Purple</option>
-            <option value="cream">Cream</option>
-            <option value="natural">Natural</option>
-            <option value="olive">Olive</option>
-          </select>
-
-          <b-button @click="addHotFly">Add</b-button>
-
-          <div v-for="(fly, index) in newTrip.newReport.hotFlies" :key="fly.hotFliesId">
-            <div>#{{fly.size}} {{ fly.pattern }} ({{ fly.color }}) <button @click="deleteHotFly(index)">Delete</button></div>
-          </div>
-
-          <!-- add fish caught -->
-          <div><b>Fish Caught:</b></div>
-
-          <select v-model="newTrip.newReport.newFishCaught.speciesName">
-            <option disabled value="">Species</option>
-            <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
-          </select>
-
-          <b-button @click="addFishCaught">Add</b-button>
-
-          <div v-for="(species, index) in newTrip.newReport.fishCaught" :key="species.fishCaughtId">
-            <div>
-              {{ species.speciesName }}
-              <b-form-spinbutton id="sb-inline" v-model="newTrip.newReport.fishCaught[index].qtyCaught" min='0' inline @change="changeFishCaughtQty(index)"></b-form-spinbutton>
-              <button @click="deleteFishCaught(index)">Delete</button>
+            <!-- add location -->
+            <div class="reports-input-container">
+              <h5>Location:</h5>
+              <b-form-select v-model="newTrip.newReport.spotId">
+                <option disabled :value="0">Choose a Location</option>
+                <option v-for="spot in newTrip.mySpots" :key="spot.spotId" :value="spot.spotId">
+                    {{ spot.locationName }} at {{ spot.subLocationName }}
+                </option>
+              </b-form-select>
             </div>
-          </div>
 
-          <!-- add notes -->
-          <div><b>Notes:</b></div>
-          <b-form-textarea id="textarea" v-model="newTrip.newReport.notes" placeholder="Additional trip notes..." rows="3" max-rows="6"></b-form-textarea>
+            <!-- add hot flies -->
+            <div class="reports-input-container">
+              <h5 class="report-heading">Hot Flies:</h5>
+              <b-container fluid>
+                <div class="row">
+                  <div class="flex-2 mr-2">
+                    <b-form-select v-model="newTrip.newReport.newHotFly.size">
+                      <option disabled value="">Size</option>
+                      <option value="2">#2</option>
+                      <option value="4">#4</option>
+                      <option value="6">#6</option>
+                      <option value="8">#8</option>
+                      <option value="10">#10</option>
+                      <option value="12">#12</option>
+                      <option value="14">#14</option>
+                      <option value="16">#16</option>
+                      <option value="18">#18</option>
+                      <option value="20">#20</option>
+                      <option value="22">#22</option>
+                      <option value="24">#24</option>
+                    </b-form-select>
+                  </div>
+                  <div class="flex-2 mr-2">
+                    <b-form-select v-model="newTrip.newReport.newHotFly.pattern">
+                      <option disabled value="">Pattern</option>
+                      <option v-for="fly in newTrip.flybox" :key="fly.flyId">{{ fly.flyPattern }}</option>
+                    </b-form-select>
+                  </div>
+                  <div class="flex-2 mr-2">
+                    <b-form-select v-model="newTrip.newReport.newHotFly.color">
+                      <option disabled value="">Color</option>
+                      <option value="rust">Rust</option>
+                      <option value="black">Black</option>
+                      <option value="red">Red</option>
+                      <option value="purple">Purple</option>
+                      <option value="cream">Cream</option>
+                      <option value="natural">Natural</option>
+                      <option value="olive">Olive</option>
+                    </b-form-select>
+                  </div>
+                  <div class="flex-1">
+                    <b-button @click="addHotFly">Add</b-button>
+                  </div>
+                </div>
+              </b-container>
+            </div>
 
+            <!-- display hot flies -->
+            <div class="reports-list-container" v-for="(fly, index) in newTrip.newReport.hotFlies" :key="fly.hotFliesId">
+              <div class="flex-6 reports-hotfly-left">
+                #{{fly.size}} {{ fly.pattern }} ({{ fly.color }})
+              </div>
+              <div class="flex-2 reports-hotfly-right">
+                <b-button pill variant="outline-danger" size="sm" @click="deleteHotFly(index)">Delete</b-button>
+              </div>
+            </div>
+
+            <!-- add fish caught -->
+            <div class="reports-input-container">
+              <h5 class="report-heading">Fish Caught:</h5>
+              <b-container fluid>
+                <div class="row">
+                  <div class="flex-6 mr-2">
+                    <b-form-select v-model="newTrip.newReport.newFishCaught.speciesName">
+                      <option disabled value="">Species</option>
+                      <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
+                    </b-form-select>
+                  </div>
+                  <div class="flex-1">
+                    <b-button @click="addFishCaught">Add</b-button>
+                  </div>
+                </div>
+              </b-container>
+            </div>
+
+            <!-- display fish caught -->
+            <div class="reports-list-container" v-for="(species, index) in newTrip.newReport.fishCaught" :key="species.fishCaughtId">
+              <div class="flex-2 reports-fishcaught-left">
+                {{ species.speciesName }}
+              </div>
+              <div class="flex-2 reports-fishcaught-middle">
+                <b-form-spinbutton size="sm" id="sb-inline" v-model="newTrip.newReport.fishCaught[index].qtyCaught" min='0' inline @change="changeFishCaughtQty(index)"></b-form-spinbutton>
+              </div>
+              <div class="flex-1 reports-fishcaught-right">
+                <b-button pill variant="outline-danger" size="sm" @click="deleteFishCaught(index)">Delete</b-button>
+              </div>
+            </div>
+
+            <!-- add notes -->
+            <div>
+              <h5 class="report-heading">Notes:</h5>
+              <b-form-textarea id="textarea" v-model="newTrip.newReport.notes" placeholder="Additional report notes..." rows="3" max-rows="6"></b-form-textarea>
+            </div>
+
+          </b-container>
         </b-modal>
 
         <!-- List of reports - click to bring up modal to edit a report -->
@@ -182,77 +245,110 @@
         <!-- Edit report Modal -->
         <b-modal v-if="newTrip.reports[newTrip.selectedReportIndex]" id="modal-4" title="Edit Report" ok-title="Save Changes" cancel-title="Delete Report" @cancel="deleteReport" @ok="saveReportChanges">
 
-          <!-- edit location -->
-          <div><b>Location:</b></div>
-          <select v-model="newTrip.editReport.spotId">
-            <option disabled :value="0">Choose a Location</option>
-            <option v-for="spot in newTrip.mySpots" :key="spot.spotId" :value="spot.spotId">
-                {{ spot.locationName }} at {{ spot.subLocationName }}
-            </option>
-          </select>
-
-          <!-- edit hot flies -->
-          <div><b>Hot Flies:</b></div>
-
-          <select v-model="newTrip.editReport.newHotFly.size">
-            <option disabled value="">Size</option>
-            <option value="2">#2</option>
-            <option value="4">#4</option>
-            <option value="6">#6</option>
-            <option value="8">#8</option>
-            <option value="10">#10</option>
-            <option value="12">#12</option>
-            <option value="14">#14</option>
-            <option value="16">#16</option>
-            <option value="18">#18</option>
-            <option value="20">#20</option>
-            <option value="22">#22</option>
-            <option value="24">#24</option>
-          </select>
-
-          <select v-model="newTrip.editReport.newHotFly.pattern">
-            <option disabled value="">Pattern</option>
-            <option v-for="fly in newTrip.flybox" :key="fly.flyId">{{ fly.flyPattern }}</option>
-          </select>
-
-          <select v-model="newTrip.editReport.newHotFly.color">
-            <option disabled value="">Color</option>
-            <option value="rust">Rust</option>
-            <option value="black">Black</option>
-            <option value="red">Red</option>
-            <option value="purple">Purple</option>
-            <option value="cream">Cream</option>
-            <option value="natural">Natural</option>
-            <option value="olive">Olive</option>
-          </select>
-
-          <b-button @click="editReportAddHotFly">Add</b-button>
-
-          <div v-for="(fly, index) in newTrip.editReport.hotFlies" :key="fly.hotFliesId">
-            <div>#{{fly.size}} {{ fly.pattern }} ({{ fly.color }}) <button @click="editReportDeleteHotFly(index)">Delete</button></div>
+          <!-- edit report - location -->
+          <div class="reports-input-container">
+            <h5>Location:</h5>
+            <b-form-select v-model="newTrip.editReport.spotId">
+              <option disabled :value="0">Choose a Location</option>
+              <option v-for="spot in newTrip.mySpots" :key="spot.spotId" :value="spot.spotId">
+                  {{ spot.locationName }} at {{ spot.subLocationName }}
+              </option>
+            </b-form-select>
           </div>
 
-          <!-- edit fish caught -->
-          <div><b>Fish Caught:</b></div>
+          <!-- edit report - hot flies -->
+          <div class="reports-input-container">
+            <h5 class="report-heading">Hot Flies:</h5>
+            <b-container fluid>
+              <div class="row">
+                <div class="flex-2 mr-2">
+                  <b-form-select v-model="newTrip.editReport.newHotFly.size">
+                    <option disabled value="">Size</option>
+                    <option value="2">#2</option>
+                    <option value="4">#4</option>
+                    <option value="6">#6</option>
+                    <option value="8">#8</option>
+                    <option value="10">#10</option>
+                    <option value="12">#12</option>
+                    <option value="14">#14</option>
+                    <option value="16">#16</option>
+                    <option value="18">#18</option>
+                    <option value="20">#20</option>
+                    <option value="22">#22</option>
+                    <option value="24">#24</option>
+                  </b-form-select>
+                </div>
+                <div class="flex-2 mr-2">
+                  <b-form-select v-model="newTrip.editReport.newHotFly.pattern">
+                    <option disabled value="">Pattern</option>
+                    <option v-for="fly in newTrip.flybox" :key="fly.flyId">{{ fly.flyPattern }}</option>
+                  </b-form-select>
+                </div>
+                <div class="flex-2 mr-2">
+                  <b-form-select v-model="newTrip.editReport.newHotFly.color">
+                    <option disabled value="">Color</option>
+                    <option value="rust">Rust</option>
+                    <option value="black">Black</option>
+                    <option value="red">Red</option>
+                    <option value="purple">Purple</option>
+                    <option value="cream">Cream</option>
+                    <option value="natural">Natural</option>
+                    <option value="olive">Olive</option>
+                  </b-form-select>
+                </div>
+                <div class="flex-1">
+                  <b-button @click="editReportAddHotFly">Add</b-button>
+                </div>
+              </div>
+            </b-container>
+          </div>
 
-          <select v-model="newTrip.editReport.newFishCaught.speciesName">
-            <option disabled value="">Species</option>
-            <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
-          </select>
-
-          <b-button @click="editReportAddFishCaught">Add</b-button>
-
-          <div v-for="(species, index) in newTrip.editReport.fishCaught" :key="species.fishCaughtId">
-            <div>
-              {{ species.speciesName }}
-              <b-form-spinbutton id="sb-inline" v-model="newTrip.editReport.fishCaught[index].qtyCaught" min='0' inline @change="editReportChangeFishCaughtQty(index)"></b-form-spinbutton>
-              <button @click="editReportDeleteFishCaught(index)">Delete</button>
+          <!-- edit report - display hot flies -->
+          <div class="reports-list-container" v-for="(fly, index) in newTrip.editReport.hotFlies" :key="fly.hotFliesId">
+            <div class="flex-6 reports-hotfly-left">
+              #{{fly.size}} {{ fly.pattern }} ({{ fly.color }})
+            </div>
+            <div class="flex-2 reports-hotfly-right">
+              <b-button pill variant="outline-danger" size="sm" @click="editReportDeleteHotFly(index)">Delete</b-button>
             </div>
           </div>
 
-          <!-- edit report notes -->
-          <div><b>Notes:</b></div>
-          <b-form-textarea id="textarea" v-model="newTrip.editReport.notes" placeholder="Additional report notes..." rows="3" max-rows="6"></b-form-textarea>
+          <!-- edit report - fish caught -->
+          <div class="reports-input-container">
+            <h5 class="report-heading">Fish Caught:</h5>
+            <b-container fluid>
+              <div class="row">
+                <div class="flex-6 mr-2">
+                  <b-form-select v-model="newTrip.editReport.newFishCaught.speciesName">
+                    <option disabled value="">Species</option>
+                    <option v-for="species in newTrip.targetSpecies" :key="species.fishSpeciesId">{{ species.speciesName }}</option>
+                  </b-form-select>
+                </div>
+                <div class="flex-1">
+                  <b-button @click="editReportAddFishCaught">Add</b-button>
+                </div>
+              </div>
+            </b-container>
+          </div>
+
+          <!-- edit report - display fish caught -->
+          <div class="reports-list-container" v-for="(species, index) in newTrip.editReport.fishCaught" :key="species.fishCaughtId">
+            <div class="flex-2 reports-fishcaught-left">
+              {{ species.speciesName }}
+            </div>
+            <div class="flex-2 reports-fishcaught-middle">
+              <b-form-spinbutton size="sm" id="sb-inline" v-model="newTrip.editReport.fishCaught[index].qtyCaught" min='0' inline @change="editReportChangeFishCaughtQty(index)"></b-form-spinbutton>
+            </div>
+            <div class="flex-1 reports-fishcaught-right">
+              <b-button pill variant="outline-danger" size="sm" @click="editReportDeleteFishCaught(index)">Delete</b-button>
+            </div>
+          </div>
+
+          <!-- edit report - report notes -->
+          <div>
+            <h5 class="report-heading">Notes:</h5>
+            <b-form-textarea id="textarea" v-model="newTrip.editReport.notes" placeholder="Additional report notes..." rows="3" max-rows="6"></b-form-textarea>
+          </div>
 
         </b-modal>
       </div>
@@ -304,7 +400,6 @@ export default {
         mySpots: {},
         flybox: {},
         targetSpecies: {},
-
         // new report
         newReport: {
           reportId: 0,
@@ -329,7 +424,6 @@ export default {
           fishCaught: {},
           notes: '',
         },
-
         // edit report
         editReport: {
           reportId: 0,
@@ -379,51 +473,59 @@ export default {
       this.newTrip.selectedClientIndex = index;
     },
     addClient() {
-      this.newTrip.newClient.firstName = jsStringEscape(this.newTrip.newClient.firstName);
-      this.newTrip.newClient.lastName = jsStringEscape(this.newTrip.newClient.lastName);
-      this.newTrip.newClient.email = jsStringEscape(this.newTrip.newClient.email);
-      this.newTrip.newClient.phone = jsStringEscape(this.newTrip.newClient.phone);
-      this.newTrip.newClient.notes = jsStringEscape(this.newTrip.newClient.notes);
-      axios.post('http://localhost:3000/addclient', this.newTrip.newClient)
-        .then((response) => {
-          console.log(response);
-          axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
-            .then((response) => {
-              this.newTrip.clients = response.data;
-              this.newTrip.newClient.firstName = '';
-              this.newTrip.newClient.lastName = '';
-              this.newTrip.newClient.email = '';
-              this.newTrip.newClient.phone = '';
-              this.newTrip.newClient.notes = '';
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      if (this.newTrip.newClient.firstName || this.newTrip.newClient.lastName !== '') {
+        this.newTrip.newClient.firstName = jsStringEscape(this.newTrip.newClient.firstName);
+        this.newTrip.newClient.lastName = jsStringEscape(this.newTrip.newClient.lastName);
+        this.newTrip.newClient.email = jsStringEscape(this.newTrip.newClient.email);
+        this.newTrip.newClient.phone = jsStringEscape(this.newTrip.newClient.phone);
+        this.newTrip.newClient.notes = jsStringEscape(this.newTrip.newClient.notes);
+        axios.post('http://localhost:3000/addclient', this.newTrip.newClient)
+          .then((response) => {
+            console.log(response);
+            axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
+              .then((response) => {
+                this.newTrip.clients = response.data;
+                this.newTrip.newClient.firstName = '';
+                this.newTrip.newClient.lastName = '';
+                this.newTrip.newClient.email = '';
+                this.newTrip.newClient.phone = '';
+                this.newTrip.newClient.notes = '';
+              })
+              .catch((error) => {
+                console.log(error);
+              })
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        alert('Enter client name')
+      }
     },
     saveClientChanges() {
-      this.newTrip.clients[this.newTrip.selectedClientIndex].clientFirstName = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientFirstName);
-      this.newTrip.clients[this.newTrip.selectedClientIndex].clientLastName = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientLastName);
-      this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail);
-      this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone);
-      this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes);
-      axios.put('http://localhost:3000/editclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
-        .then((response) => {
-          console.log(response);
-          axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
-            .then((response) => {
-              this.newTrip.clients = response.data;
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      if (this.newTrip.newClient.firstName || this.newTrip.newClient.lastName !== '') {
+        this.newTrip.clients[this.newTrip.selectedClientIndex].clientFirstName = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientFirstName);
+        this.newTrip.clients[this.newTrip.selectedClientIndex].clientLastName = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientLastName);
+        this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail);
+        this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone);
+        this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes);
+        axios.put('http://localhost:3000/editclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
+          .then((response) => {
+            console.log(response);
+            axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
+              .then((response) => {
+                this.newTrip.clients = response.data;
+              })
+              .catch((error) => {
+                console.log(error);
+              })
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        alert('Enter client name')
+      }
     },
     deleteClient() {
       axios.post('http://localhost:3000/deleteclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
@@ -443,6 +545,7 @@ export default {
         });
     },
     addHotFly() {
+      this.newTrip.newReport.newHotFly.pattern = jsStringEscape(this.newTrip.newReport.newHotFly.pattern);
       axios.post('http://localhost:3000/addhotfly', this.newTrip.newReport.newHotFly)
         .then((response) => {
           console.log(response);
@@ -544,6 +647,7 @@ export default {
         })
     },
     editReportAddHotFly() {
+      this.newTrip.editReport.newHotFly.pattern = jsStringEscape(this.newTrip.editReport.newHotFly.pattern);
       axios.post('http://localhost:3000/addhotfly', this.newTrip.editReport.newHotFly)
         .then((response) => {
           console.log(response);
@@ -628,15 +732,19 @@ export default {
         });
     },
     saveReport() {
-      this.newTrip.newReport.notes = jsStringEscape(this.newTrip.newReport.notes);
-      axios.post('http://localhost:3000/savereport', this.newTrip.newReport)
-        .then((response) => {
-          console.log(response);
-          this.pageLoad();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      if (this.newTrip.newReport.spotId !== 0) {
+        this.newTrip.newReport.notes = jsStringEscape(this.newTrip.newReport.notes);
+        axios.post('http://localhost:3000/savereport', this.newTrip.newReport)
+          .then((response) => {
+            console.log(response);
+            this.pageLoad();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        alert('Choose a location')
+      }
     },
     deleteReport() {
       //delete hotFlies associated with report
@@ -686,15 +794,19 @@ export default {
         });
     },
     saveTrip() {
-      this.newTrip.tripNotes = jsStringEscape(this.newTrip.tripNotes);
-      axios.post('http://localhost:3000/savetrip', this.newTrip)
-        .then((response) => {
-          console.log(response);
-          this.$router.push('/mytrips');
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      if (this.newTrip.date !== '') {
+        this.newTrip.tripNotes = jsStringEscape(this.newTrip.tripNotes);
+        axios.post('http://localhost:3000/savetrip', this.newTrip)
+          .then((response) => {
+            console.log(response);
+            this.$router.push('/mytrips');
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        alert('Select a date');
+      }
     },
     pageLoad() {
 

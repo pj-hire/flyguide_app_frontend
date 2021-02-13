@@ -1,21 +1,18 @@
 <template>
   <div class="about">
-
     <h1>My Trips</h1>
-
     <b-card>
-
       <div class="addButton">
         <router-link to="/mytrips/addtrip"><b-button variant="success" size="lg">Add Trip +</b-button></router-link>
       </div>
-
+      <!-- render trips -->
       <div  v-for="trip in trips" :key="trip.tripId">
         <!-- Guide Trip -->
         <div v-if="trip.guideOrPersonalTrip === 'Guide Trip'">
           <router-link :to="'/mytrips/' + trip.tripId">
             <div class="card-list-container" v-if="trip.clients">
-
-              <div class="card-list-container-left">
+              <!-- left side -->
+              <div class="flex-5">
                 <div class="clientName">
                   {{ trip.clients[0] }}
                 </div>
@@ -23,44 +20,39 @@
                    + {{trip.clients.length -1}} more
                 </div>
               </div>
-
-              <div class="card-list-container-right">
+              <!-- right side -->
+              <div class="flex-3">
                 <div class="trip-date">
-                  {{ tripDate }}
+                  {{ formatDate(trip.date) }}
                 </div>
                 <div class="guidetrip-type">
                   {{ trip.guideTripType }}
                 </div>
               </div>
-
             </div>
           </router-link>
         </div>
         <!-- Personal Trip -->
         <div v-if="trip.guideOrPersonalTrip === 'Personal Trip'">
           <router-link :to="'/mytrips/' + trip.tripId">
-
             <div class="card-list-container">
-
-              <div class="card-list-container-left">
+              <!-- left side -->
+              <div class="flex-5">
                 <div class="trip-type">
                   {{ trip.guideOrPersonalTrip }}
                 </div>
               </div>
-
-              <div class="card-list-container-right">
+              <!-- right side -->
+              <div class="flex-3">
                 <div class="trip-date">
-                  {{ tripDate }}
+                  {{ formatDate(trip.date) }}
                 </div>
               </div>
-
             </div>
-
           </router-link>
         </div>
       </div>
     </b-card>
-
   </div>
 </template>
 
@@ -81,6 +73,9 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      return moment(date).format('ll');
+    },
     clientsToTrips() {
       for (let client of this.clients) {
         let tripIndex = this.trips.findIndex((trip) => {
@@ -98,7 +93,7 @@ export default {
     },
     pageLoad() {
 
-      this.tripDate = moment(this.trips.date).format('ll');
+      // this.tripDate = moment(this.trips.date).format('ll');
 
       axios.get('http://localhost:3000/trips/' + this.user.uid)
         .then((response) => {

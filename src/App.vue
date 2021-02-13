@@ -4,19 +4,23 @@
       <div class="horizontal-menu-wrapper">
         <div class="horizontal-menu">
           <!-- <img class="invert" src="./assets/nymph-icon.png" alt="nymph-icon"> -->
+          <input type="checkbox" id="check">
+          <label id="checkbtn" class="checkbtn">
+            <span @click="toggleNav"><i class="fas fa-bars"></i></span>
+          </label>
           <h2>FlyGuide App</h2>
         </div>
       </div>
       <div class="wrapper">
-        <div class="sidebar" v-if="isNotLogin">
+        <div class="sidebar" id="sidebar" v-if="isNotLogin">
           <ul>
-            <li><a><router-link to="/mytrips"><i class="fas fa-calendar-alt"></i>My Trips</router-link></a></li>
-            <li><a><router-link to="/myspots"><i class="fas fa-map-marker-alt"></i>My Spots</router-link></a></li>
-            <li><a><router-link to="/flybox"><i class="fas fa-book-open"></i>Flybox</router-link></a></li>
-            <li><a><router-link to="/targetspecies"><i class="fas fa-fish"></i>Target Species</router-link></a></li>
+            <li><a @click="toggleNav"><router-link to="/mytrips"><i class="fas fa-calendar-alt"></i>My Trips</router-link></a></li>
+            <li><a @click="toggleNav"><router-link to="/myspots"><i class="fas fa-map-marker-alt"></i>My Spots</router-link></a></li>
+            <li><a @click="toggleNav"><router-link to="/flybox"><i class="fas fa-book-open"></i>Flybox</router-link></a></li>
+            <li><a @click="toggleNav"><router-link to="/targetspecies"><i class="fas fa-fish"></i>Target Species</router-link></a></li>
             <!-- <li><a><router-link to="/conditions"><i class="fas fa-cloud"></i>Conditions</router-link></a></li> -->
-            <li><a><router-link to="/stats"><i class="fas fa-chart-bar"></i>Stats</router-link></a></li>
-            <li><a><router-link to="/account"><i class="fas fa-user"></i>Account</router-link></a></li>
+            <li><a @click="toggleNav"><router-link to="/stats"><i class="fas fa-chart-bar"></i>Stats</router-link></a></li>
+            <li><a @click="toggleNav"><router-link to="/account"><i class="fas fa-user"></i>Account</router-link></a></li>
           </ul>
           <!-- <div class="social_media">
             <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -41,26 +45,45 @@
         isNotLogin: true,
       }
     },
+    methods: {
+      onResize() {
+        let sidebar = document.getElementById("sidebar");
+        if (window.innerWidth > 768) {
+          sidebar.style.display = "block";
+        } else if (window.innerWidth <= 768) {
+          sidebar.style.display = "none";
+        }
+      },
+      toggleNav() {
+        let sidebar = document.getElementById("sidebar");
+        if (window.innerWidth <= 768) {
+          if (sidebar.style.display === "none") {
+            sidebar.style.display = "block";
+          } else {
+            sidebar.style.display = "none";
+          }
+        }
+      },
+    },
+    mounted() {
+      window.addEventListener('resize', this.onResize)
+    },
     created() {
       if (this.$router.currentRoute.name === 'Login') {
-        this.isNotLogin = false;
+        this.isNotLogin = false
+        // .then(() => {
+        //   let check = document.getElementById("checkbtn");
+        //   if (this.isNotLogin === false) {
+        //     check.style.display = "none";
+        //   }
+        // })
+        // .catch((error) => {
+        //   console.log(error);
+        // })
       }
+    },
+    beforeDestroy() {
+      window.removeEventListener('resize', this.onResize)
     }
   }
 </script>
-
-<style lang="scss">
-
-.wrapper .main_content.login {
-  margin-left: 0px;
-}
-
-
-// #app {
-//   font-family: Avenir, Helvetica, Arial, sans-serif;
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
-//   text-align: center;
-//   color: #2c3e50;
-// }
-</style>

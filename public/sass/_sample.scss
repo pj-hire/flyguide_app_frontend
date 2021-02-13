@@ -12,6 +12,7 @@
 
 body {
    background-color: lightgray;
+   // background-image: linear-gradient(to right, #c4c4c4, #d4d4d4);
 }
 
 h1 {
@@ -21,7 +22,6 @@ h1 {
   color: #595959;
 }
 
-//END MAIN
 
 //BUTTONS
 
@@ -30,9 +30,32 @@ h1 {
   margin-bottom: 15px;
 }
 
-//END BUTTONS
 
 //UTILITY
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-2 {
+  flex: 2;
+}
+
+.flex-3 {
+  flex: 3;
+}
+
+.flex-4 {
+  flex: 4;
+}
+
+.flex-5 {
+  flex: 5;
+}
+
+.flex-6 {
+  flex: 6;
+}
 
 .center {
   margin-left: auto;
@@ -40,7 +63,27 @@ h1 {
   text-align: center;
 }
 
-//END UTILITY
+.mr-2 {
+  margin-right: 2px;
+}
+
+.pt-10 {
+    padding-top: 10px;
+}
+
+.pt-20 {
+  padding-top: 20px;
+}
+
+.hr {
+  border-top: solid 2px #43AA8B;
+}
+
+.bullet {
+  display: list-item;
+  list-style-type: disc;
+  list-style-position: inside;
+}
 
 //HEADER
 
@@ -49,16 +92,8 @@ h1 {
   width: 100%;
   position: fixed;
   background-color: #43AA8B;
+  // background-image: linear-gradient(to right, #43AA8B, #59cfab);
   z-index: 1;
-  // background-color: #9FE4D8;
-}
-
-.horizontal-menu {
-  max-width: 500px;
-  min-width: 300px;
-  height: 70px;
-  // margin-left: auto;
-  // margin-right: auto;
 }
 
 .horizontal-menu img {
@@ -77,7 +112,13 @@ h1 {
   display: inline-block;
 }
 
-//END HEADER
+#check {
+  display: none;
+}
+
+.checkbtn {
+  display: none;
+}
 
 //MENU
 
@@ -90,9 +131,9 @@ h1 {
 .wrapper .sidebar {
   width: 200px;
   height: 100%;
-  // background: #4b4276;
   background: #254441;
   position: fixed;
+  z-index: 2;
 }
 
 .wrapper .sidebar ul li{
@@ -129,16 +170,11 @@ h1 {
   text-decoration: none;
 }
 
+//MAIN CONTENT AREA
+
 .wrapper .main_content{
   width: 100%;
   margin-left: 200px;
-}
-
-.wrapper .main_content .header{
-  padding: 20px;
-  background-color: white;
-  color: black;
-  border-bottom: 1px solid #e0e4e8;
 }
 
 .wrapper .main_content .info{
@@ -147,7 +183,10 @@ h1 {
   line-height: 25px;
 }
 
-//END MENU
+.wrapper .main_content.login {
+  text-align: center;
+  margin-left: 100px;
+}
 
 //CARD - LIST RENDERING
 
@@ -155,6 +194,7 @@ h1 {
   text-decoration: none;
   color: black;
 }
+
 .card-body a:hover {
   font-weight: 500;
   color: black;
@@ -166,34 +206,20 @@ h1 {
   border: solid 2px lightgray;
   border-radius: 5px;
   margin-top: 10px;
-  // background-color: #c0dbb6;
 }
 
 .card-list-container:hover {
   background-color: #f2f2f2;
-  // border: solid 2px #43AA8B;
-}
-
-//just for My Trips - left side
-.card-list-container-left {
-  flex: 5;
 }
 
 .client-name {
 }
 
 .client-number {
-
 }
 
 //Personal Trip
 .trip-type {
-
-}
-
-//just for My Trips - right side
-.card-list-container-right {
-  flex: 3;
 }
 
 .trip-date {
@@ -210,8 +236,6 @@ h1 {
   margin-top: 25px;
   margin-bottom: 10px;
 }
-
-//END CARD - LIST RENDERING
 
 //ADD SPOT, ADD FLY, ADD SPECIES
 
@@ -251,10 +275,10 @@ h1 {
   margin-left: 5px;
 }
 
-//ADD Trip
+//ADD TRIP
 
 .notes-heading {
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .notes-textarea {
@@ -265,33 +289,183 @@ h1 {
   margin-top: 20px;
 }
 
-//ADD CLIENT Modal
+//ADD CLIENT MODAL
 
 .row {
   display: flex;
 }
 
-.col-left {
+.modal-addclient-left {
   flex: 1;
   text-align: right;
-  font-weight: bold;
 }
 
-.col-right {
+.modal-addclient-right {
   flex: 3;
-  padding-top: 22px;
+  padding-top: 25px;
   padding-left: 10px;
 }
 
-.col-right input {
+.modal-addclient-right input {
+  color: #535353;
   border: none;
   border-bottom: 1px solid #d3d3d3;
   padding-left: 5px;
-  color: gray;
+  width: 225px;
 }
 
-.col-right input:focus {
+.modal-addclient-right input:focus {
   border: none;
+  outline: none;
   border-bottom: 2px solid #d3d3d3;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.text-area {
+  margin-top: 25px;
+}
+
+//MODAL CHANGE EMAIL/PASSWORD
+
+.modal-email-pswd-left {
+  flex: 2;
+  text-align: right;
+}
+
+.modal-email-pswd-right {
+  flex: 3;
+  padding-top: 25px;
+  padding-left: 10px;
+}
+
+.modal-email-pswd-right input {
+  color: #535353;
+  border: none;
+  border-bottom: 1px solid #d3d3d3;
+  padding-left: 5px;
+  width: 225px;
+}
+
+.modal-email-pswd-right input:focus {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #d3d3d3;
+}
+
+//REPORTS
+
+.report-heading {
+  padding-top: 20px;
+}
+
+.reports-input-container {
+  margin-bottom: 15px;
+}
+
+// reports - list rendering
+
+.reports-list-container {
+  display: flex;
+  border-bottom: solid 1px lightgray;
+  padding: 5px;
+}
+
+.reports-hotfly-left {
+  color: #535353;
+  margin-top: 3px;
+}
+
+.reports-hotfly-right {
+  text-align: right;
+}
+
+.reports-fishcaught-left {
+  color: #535353;
+  margin-top: 3px;
+}
+
+.reports-fishcaught-middle {
+  text-align: center;
+}
+
+.reports-fishcaught-right {
+  text-align: right;
+}
+
+//VIEW TRIP
+
+.viewtrip-heading-h4 {
+  padding: 10px 0px 15px 0px;
+
+}
+
+.viewtrip-heading-h5 {
+  padding: 0px 0px 5px 0px;
+}
+
+.viewtrip-list-container {
+  padding-bottom: 20px;
+}
+
+.viewtrip-list-card {
+  margin-top: 5px;
+  border: solid 2px lightgray;
+  color: #535353;
+}
+
+.viewtrip-list-bullet-container {
+  padding-top: 10px;
+}
+
+//RESPONSIVE
+
+@media (max-width: 768px) {
+
+  //HORIZONTAL MENU
+
+  .horizontal-menu h2 {
+    padding-left: 0px;
+  }
+
+  .horizontal-menu {
+    text-align: center;
+  }
+
+  .horizontal-menu h2 {
+    margin-right: 75px;
+  }
+
+  .wrapper .main_content{
+    margin-left: 0px;
+  }
+
+  .wrapper .main_content.login {
+    margin-left: 0px;
+  }
+
+  .checkbtn {
+    font-size: 30px;
+    color: white;
+    float: left;
+    padding: 13px 25px;
+    cursor: pointer;
+    display: inherit;
+  }
+
+  //VERICAL NAV BAR
+
+  .wrapper .sidebar {
+    width: 100%;
+    transition: .4s;
+  }
+
+  .wrapper .sidebar ul li a{
+    padding-left: 5px;
+  }
+
+
 
 }

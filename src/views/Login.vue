@@ -1,6 +1,6 @@
 <template>
   <!-- do I need to change the class below -->
-  <div class="home">
+  <div class="home">  
     <div>Welcome to flyguide app</div>
     <div id="firebaseui-auth-container"></div>
   </div>
