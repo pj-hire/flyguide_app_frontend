@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     pageLoad() {
-      axios.get('http://localhost:3000/targetspecies/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'targetspecies/' + this.user.uid)
         .then((response) => {
           this.targetSpecies = response.data;
         })
@@ -82,7 +82,7 @@ export default {
       if (user) {
         this.user = user;
         this.pageLoad();
-        // axios.get('http://localhost:3000/flybox/editfly/' + this.$route.params.id)
+        // axios.get(process.env.VUE_APP_REQUEST_BASE + 'flybox/editfly/' + this.$route.params.id)
         //   .then(response => {
         //     this.specificFly = response.data;
         //   })
@@ -91,7 +91,7 @@ export default {
         //   })
       } else {
         console.log('no user signed in')
-        window.location.href = "http://localhost:8080/";
+        this.$router.push('/')
       }
     })
   }

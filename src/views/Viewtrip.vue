@@ -83,7 +83,7 @@ export default {
     },
     deleteTrip() {
       //delete trip
-      axios.post('http://localhost:3000/deletetrip-trip', this.trips)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletetrip-trip', this.trips)
         .then((response) => {
           console.log(response);
         })
@@ -92,7 +92,7 @@ export default {
         });
 
       //delete all clients associated with trip
-      axios.post('http://localhost:3000/deletetrip-clients', this.trips)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletetrip-clients', this.trips)
         .then((response) => {
           console.log(response);
         })
@@ -101,7 +101,7 @@ export default {
         });
 
       //delete all reports associated with trip
-      axios.post('http://localhost:3000/deletetrip-reports', this.trips)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletetrip-reports', this.trips)
         .then((response) => {
           console.log(response);
         })
@@ -114,7 +114,7 @@ export default {
             console.log(this.reports[report]);
 
             //delete hotFlies associated with all reports associated with trip
-            axios.post('http://localhost:3000/deletetrip-hotflies', this.reports[report])
+            axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletetrip-hotflies', this.reports[report])
               .then((response) => {
                 console.log(response);
               })
@@ -123,7 +123,7 @@ export default {
               });
 
             //delete fishCaught associated with all report associated with trip
-            axios.post('http://localhost:3000/deletetrip-fishcaught', this.reports[report])
+            axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletetrip-fishcaught', this.reports[report])
               .then((response) => {
                 console.log(response);
               })
@@ -139,7 +139,7 @@ export default {
     pageLoad() {
 
       //bring in trip by tripId param
-      axios.get('http://localhost:3000/viewtrip/' + this.$route.params.id)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'viewtrip/' + this.$route.params.id)
         .then((response) => {
           this.trips = response.data[0];
 
@@ -165,7 +165,7 @@ export default {
         })
 
       //bring clients in by tripId param
-      axios.get('http://localhost:3000/viewtripclients/' + this.$route.params.id)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'viewtripclients/' + this.$route.params.id)
         .then((response) => {
           this.clients = response.data;
         })
@@ -183,7 +183,7 @@ export default {
         })
 
       //bring reports in by tripId param
-      axios.get('http://localhost:3000/viewtripreports/' + this.$route.params.id)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'viewtripreports/' + this.$route.params.id)
         .then((response) => {
           this.reports = response.data;
         })
@@ -191,7 +191,7 @@ export default {
           //'in' brings in the index of the report
           for (let report in this.reports) {
             //bring in hotFlies
-            axios.get('http://localhost:3000/hotflies/' + this.reports[report].reportId)
+            axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.reports[report].reportId)
               .then((response) => {
                 //creates hotflies array into report object
                 this.$set(this.reports[report], 'hotFlies', response.data)
@@ -200,7 +200,7 @@ export default {
                 console.log(error);
               })
             //bring in fishCaught
-            axios.get('http://localhost:3000/fishcaught/' + this.reports[report].reportId)
+            axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.reports[report].reportId)
               .then((response) => {
                 //creates hotflies array into report object
                 this.$set(this.reports[report], 'fishCaught', response.data)
@@ -209,7 +209,7 @@ export default {
                 console.log(error);
               })
             //bring in mySpots
-            axios.get('http://localhost:3000/myspotsviewtrip/' + this.reports[report].spotId)
+            axios.get(process.env.VUE_APP_REQUEST_BASE + 'myspotsviewtrip/' + this.reports[report].spotId)
               .then((response) => {
                 //creates hotflies array into report object
                 this.$set(this.reports[report], 'mySpots', response.data)
@@ -232,7 +232,7 @@ export default {
         this.pageLoad();
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   },

@@ -47,7 +47,7 @@ export default {
   methods: {
     addSpecies() {
       this.newSpecies.speciesName = jsStringEscape(this.newSpecies.speciesName);
-      axios.post('http://localhost:3000/addspecies', this.newSpecies)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addspecies', this.newSpecies)
         .then((response) => {
           console.log(response);
           this.$router.push('/targetspecies');
@@ -64,7 +64,7 @@ export default {
         this.newSpecies.uid = user.uid;
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }

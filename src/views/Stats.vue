@@ -67,7 +67,7 @@ export default {
     pageLoad() {
 
       //Top Flies
-      axios.get('http://localhost:3000/hotfliesstats/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotfliesstats/' + this.user.uid)
         .then((response) => {
           this.hotFlies = response.data;
         })
@@ -105,7 +105,7 @@ export default {
         })
 
       //Fish Caught
-      axios.get('http://localhost:3000/fishcaughtstats/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaughtstats/' + this.user.uid)
         .then((response) => {
           this.fishCaught = response.data;
         })
@@ -146,7 +146,7 @@ export default {
         this.pageLoad();
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }

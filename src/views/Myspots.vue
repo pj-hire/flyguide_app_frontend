@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     pageLoad() {
-      axios.get('http://localhost:3000/myspots/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'myspots/' + this.user.uid)
         .then((response) => {
           this.mySpots = response.data;
         })
@@ -50,7 +50,7 @@ export default {
         this.pageLoad();
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }

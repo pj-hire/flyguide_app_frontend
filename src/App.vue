@@ -69,6 +69,7 @@
       window.addEventListener('resize', this.onResize)
     },
     created() {
+      console.log(process.env.VUE_APP_REQUEST_BASE);
       if (this.$router.currentRoute.name === 'Login') {
         this.isNotLogin = false
       }

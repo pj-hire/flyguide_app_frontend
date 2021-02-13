@@ -44,7 +44,7 @@ export default {
   methods: {
     saveChanges() {
       this.newSpecies.speciesName = jsStringEscape(this.newSpecies.speciesName);
-      axios.put('http://localhost:3000/editspecies', this.newSpecies)
+      axios.put(process.env.VUE_APP_REQUEST_BASE + 'editspecies', this.newSpecies)
         .then((response) => {
           console.log(response);
           this.$router.push('/targetspecies');
@@ -54,7 +54,7 @@ export default {
         });
     },
     deleteSpecies() {
-      axios.post('http://localhost:3000/deletespecies', this.newSpecies)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletespecies', this.newSpecies)
         .then((response) => {
           console.log(response);
           this.$router.push('/targetspecies');
@@ -70,7 +70,7 @@ export default {
         this.user = user;
         this.newSpecies.uid = user.uid;
         //fetch current fly to edit below
-        axios.get('http://localhost:3000/targetspecies/editspecies/' + this.$route.params.id)
+        axios.get(process.env.VUE_APP_REQUEST_BASE + 'targetspecies/editspecies/' + this.$route.params.id)
           .then((response) => {
             this.newSpecies = response.data;
           })
@@ -79,7 +79,7 @@ export default {
           })
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }

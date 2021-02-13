@@ -2,7 +2,7 @@
   <div class="about">
     <h1>Account</h1>
     <b-card>
-      
+
       <h3>{{ this.user.displayName }}</h3>
       <p>{{ this.user.email }}</p>
 
@@ -108,7 +108,7 @@ export default {
         this.user = user;
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }

@@ -32,7 +32,7 @@ export default {
     saveChanges() {
       this.newSpot.locationName = jsStringEscape(this.newSpot.locationName);
       this.newSpot.subLocationName = jsStringEscape(this.newSpot.subLocationName);
-      axios.put('http://localhost:3000/editspot', this.newSpot)
+      axios.put(process.env.VUE_APP_REQUEST_BASE + 'editspot', this.newSpot)
         .then((response) => {
           console.log(response);
           this.$router.push('/myspots');
@@ -42,7 +42,7 @@ export default {
         });
     },
     deleteSpot() {
-      axios.post('http://localhost:3000/deletespot', this.newSpot)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletespot', this.newSpot)
         .then((response) => {
           console.log(response);
           this.$router.push('/myspots');
@@ -58,7 +58,7 @@ export default {
         this.user = user;
         this.newSpot.uid = user.uid;
         //fetch current spot to edit below
-        axios.get('http://localhost:3000/myspots/editspot/' + this.$route.params.id)
+        axios.get(process.env.VUE_APP_REQUEST_BASE + 'myspots/editspot/' + this.$route.params.id)
           .then((response) => {
             this.newSpot = response.data;
           })
@@ -67,7 +67,7 @@ export default {
           })
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }

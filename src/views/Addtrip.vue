@@ -454,10 +454,10 @@ export default {
   },
   methods: {
     changeFishCaughtQty(index) {
-      axios.post('http://localhost:3000/addfishcaughtqty', this.newTrip.newReport.fishCaught[index])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfishcaughtqty', this.newTrip.newReport.fishCaught[index])
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.newReport.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.newReport.reportId)
             .then((response) => {
               this.newTrip.newReport.fishCaught = response.data;
             })
@@ -479,10 +479,10 @@ export default {
         this.newTrip.newClient.email = jsStringEscape(this.newTrip.newClient.email);
         this.newTrip.newClient.phone = jsStringEscape(this.newTrip.newClient.phone);
         this.newTrip.newClient.notes = jsStringEscape(this.newTrip.newClient.notes);
-        axios.post('http://localhost:3000/addclient', this.newTrip.newClient)
+        axios.post(process.env.VUE_APP_REQUEST_BASE + 'addclient', this.newTrip.newClient)
           .then((response) => {
             console.log(response);
-            axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
+            axios.get(process.env.VUE_APP_REQUEST_BASE + 'clients/' + this.newTrip.tripId)
               .then((response) => {
                 this.newTrip.clients = response.data;
                 this.newTrip.newClient.firstName = '';
@@ -509,10 +509,10 @@ export default {
         this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail);
         this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone);
         this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes);
-        axios.put('http://localhost:3000/editclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
+        axios.put(process.env.VUE_APP_REQUEST_BASE + 'editclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
           .then((response) => {
             console.log(response);
-            axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
+            axios.get(process.env.VUE_APP_REQUEST_BASE + 'clients/' + this.newTrip.tripId)
               .then((response) => {
                 this.newTrip.clients = response.data;
               })
@@ -528,11 +528,11 @@ export default {
       }
     },
     deleteClient() {
-      axios.post('http://localhost:3000/deleteclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deleteclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
         .then((response) => {
           console.log(response);
           this.newTrip.selectedClientIndex = 0;
-          axios.get('http://localhost:3000/clients/' + this.newTrip.tripId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'clients/' + this.newTrip.tripId)
             .then((response) => {
               this.newTrip.clients = response.data;
             })
@@ -546,10 +546,10 @@ export default {
     },
     addHotFly() {
       this.newTrip.newReport.newHotFly.pattern = jsStringEscape(this.newTrip.newReport.newHotFly.pattern);
-      axios.post('http://localhost:3000/addhotfly', this.newTrip.newReport.newHotFly)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addhotfly', this.newTrip.newReport.newHotFly)
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/hotflies/' + this.newTrip.newReport.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.newReport.reportId)
             .then((response) => {
               this.newTrip.newReport.hotFlies = response.data;
               this.newTrip.newReport.newHotFly.size = '';
@@ -565,10 +565,10 @@ export default {
         });
     },
     deleteHotFly(index) {
-      axios.post('http://localhost:3000/deletehotfly', this.newTrip.newReport.hotFlies[index])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletehotfly', this.newTrip.newReport.hotFlies[index])
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/hotflies/' + this.newTrip.newReport.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.newReport.reportId)
             .then((response) => {
               this.newTrip.newReport.hotFlies = response.data;
             })
@@ -581,10 +581,10 @@ export default {
         });
     },
     addFishCaught() {
-      axios.post('http://localhost:3000/addfishCaught', this.newTrip.newReport.newFishCaught)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfishCaught', this.newTrip.newReport.newFishCaught)
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.newReport.newFishCaught.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.newReport.newFishCaught.reportId)
             .then((response) => {
               this.newTrip.newReport.fishCaught = response.data;
               this.newTrip.newReport.newFishCaught.speciesName = '';
@@ -598,10 +598,10 @@ export default {
         });
     },
     deleteFishCaught(index) {
-      axios.post('http://localhost:3000/deletefishcaught', this.newTrip.newReport.fishCaught[index])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletefishcaught', this.newTrip.newReport.fishCaught[index])
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.newReport.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.newReport.reportId)
             .then((response) => {
               this.newTrip.newReport.fishCaught = response.data;
             })
@@ -628,7 +628,7 @@ export default {
       this.newTrip.editReport.newFishCaught.uid = this.newTrip.reports[index].uid;
       this.newTrip.editReport.newFishCaught.reportId = this.newTrip.reports[index].reportId;
       // load in existing hotFlies:
-      axios.get('http://localhost:3000/hotflies/' + this.newTrip.reports[index].reportId)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.reports[index].reportId)
         .then((response) => {
           console.log(response.data);
           this.newTrip.editReport.hotFlies = response.data;
@@ -637,7 +637,7 @@ export default {
           console.log(error);
         })
       // load in fishCaught
-      axios.get('http://localhost:3000/fishcaught/' + this.newTrip.reports[index].reportId)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.reports[index].reportId)
         .then((response) => {
           console.log(response.data);
           this.newTrip.editReport.fishCaught = response.data;
@@ -648,10 +648,10 @@ export default {
     },
     editReportAddHotFly() {
       this.newTrip.editReport.newHotFly.pattern = jsStringEscape(this.newTrip.editReport.newHotFly.pattern);
-      axios.post('http://localhost:3000/addhotfly', this.newTrip.editReport.newHotFly)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addhotfly', this.newTrip.editReport.newHotFly)
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/hotflies/' + this.newTrip.editReport.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.editReport.reportId)
             .then((response) => {
               this.newTrip.editReport.hotFlies = response.data;
               this.newTrip.editReport.newHotFly.size = '';
@@ -667,10 +667,10 @@ export default {
         });
     },
     editReportDeleteHotFly(index) {
-      axios.post('http://localhost:3000/deletehotfly', this.newTrip.editReport.hotFlies[index])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletehotfly', this.newTrip.editReport.hotFlies[index])
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/hotflies/' + this.newTrip.editReport.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.editReport.reportId)
             .then((response) => {
               this.newTrip.editReport.hotFlies = response.data;
             })
@@ -683,10 +683,10 @@ export default {
         });
     },
     editReportAddFishCaught() {
-      axios.post('http://localhost:3000/addfishcaught', this.newTrip.editReport.newFishCaught)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfishcaught', this.newTrip.editReport.newFishCaught)
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.editReport.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.editReport.reportId)
             .then((response) => {
               this.newTrip.editReport.fishCaught = response.data;
               this.newTrip.editReport.newFishCaught.speciesName = '';
@@ -700,10 +700,10 @@ export default {
         });
     },
     editReportChangeFishCaughtQty(index) {
-      axios.post('http://localhost:3000/addfishcaughtqty', this.newTrip.editReport.fishCaught[index])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfishcaughtqty', this.newTrip.editReport.fishCaught[index])
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.editReport.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.editReport.reportId)
             .then((response) => {
               this.newTrip.editReport.fishCaught = response.data;
             })
@@ -716,10 +716,10 @@ export default {
         });
     },
     editReportDeleteFishCaught(index) {
-      axios.post('http://localhost:3000/deletefishcaught', this.newTrip.editReport.fishCaught[index])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletefishcaught', this.newTrip.editReport.fishCaught[index])
         .then((response) => {
           console.log(response);
-          axios.get('http://localhost:3000/fishcaught/' + this.newTrip.editReport.reportId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.editReport.reportId)
             .then((response) => {
               this.newTrip.editReport.fishCaught = response.data;
             })
@@ -734,7 +734,7 @@ export default {
     saveReport() {
       if (this.newTrip.newReport.spotId !== 0) {
         this.newTrip.newReport.notes = jsStringEscape(this.newTrip.newReport.notes);
-        axios.post('http://localhost:3000/savereport', this.newTrip.newReport)
+        axios.post(process.env.VUE_APP_REQUEST_BASE + 'savereport', this.newTrip.newReport)
           .then((response) => {
             console.log(response);
             this.pageLoad();
@@ -748,7 +748,7 @@ export default {
     },
     deleteReport() {
       //delete hotFlies associated with report
-      axios.post('http://localhost:3000/deletereporthotflies', this.newTrip.reports[this.newTrip.selectedReportIndex])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletereporthotflies', this.newTrip.reports[this.newTrip.selectedReportIndex])
         .then((response) => {
           console.log(response);
         })
@@ -756,7 +756,7 @@ export default {
           console.log(error);
         });
       //delete fishCaught associated with report
-      axios.post('http://localhost:3000/deletereportfishcaught', this.newTrip.reports[this.newTrip.selectedReportIndex])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletereportfishcaught', this.newTrip.reports[this.newTrip.selectedReportIndex])
         .then((response) => {
           console.log(response);
         })
@@ -764,12 +764,12 @@ export default {
           console.log(error);
         });
       //delete report
-      axios.post('http://localhost:3000/deletereport', this.newTrip.reports[this.newTrip.selectedReportIndex])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletereport', this.newTrip.reports[this.newTrip.selectedReportIndex])
         .then((response) => {
           console.log(response);
           this.newTrip.selectedReportIndex = 0;
           //reload trips
-          axios.get('http://localhost:3000/reports/' + this.newTrip.tripId)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'reports/' + this.newTrip.tripId)
             .then((response) => {
               this.newTrip.reports = response.data;
               this.pageLoad();
@@ -784,7 +784,7 @@ export default {
     },
     saveReportChanges() {
       this.newTrip.editReport.notes = jsStringEscape(this.newTrip.editReport.notes);
-      axios.put('http://localhost:3000/savereportchanges', this.newTrip.editReport)
+      axios.put(process.env.VUE_APP_REQUEST_BASE + 'savereportchanges', this.newTrip.editReport)
         .then((response) => {
           console.log(response);
           this.pageLoad()
@@ -796,7 +796,7 @@ export default {
     saveTrip() {
       if (this.newTrip.date !== '') {
         this.newTrip.tripNotes = jsStringEscape(this.newTrip.tripNotes);
-        axios.post('http://localhost:3000/savetrip', this.newTrip)
+        axios.post(process.env.VUE_APP_REQUEST_BASE + 'savetrip', this.newTrip)
           .then((response) => {
             console.log(response);
             this.$router.push('/mytrips');
@@ -811,13 +811,13 @@ export default {
     pageLoad() {
 
       //bring tripId in
-      axios.get('http://localhost:3000/aaidtrip')
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'aaidtrip')
         .then((response) => {
           this.newTrip.tripId = response.data[0].tripId + 1;
           this.newTrip.newClient.tripId = response.data[0].tripId + 1;
           this.newTrip.newReport.tripId = response.data[0].tripId + 1;
           //select all clients from current trip throught tripId
-          axios.get('http://localhost:3000/clients/' + (response.data[0].tripId + 1))
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'clients/' + (response.data[0].tripId + 1))
             .then((response) => {
               this.newTrip.clients = response.data;
             })
@@ -825,7 +825,7 @@ export default {
               console.log(error);
             })
           //select all reports from current trip throught tripId
-          axios.get('http://localhost:3000/reports/' + (response.data[0].tripId + 1))
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'reports/' + (response.data[0].tripId + 1))
             .then((response) => {
               this.newTrip.reports = response.data;
             })
@@ -838,7 +838,7 @@ export default {
         });
 
       //bring reportId in
-      axios.get('http://localhost:3000/aaidreport')
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'aaidreport')
         .then((response) => {
           this.newTrip.newReport.reportId = response.data[0].reportId + 1;
           this.newTrip.newReport.newHotFly.reportId = response.data[0].reportId + 1;
@@ -849,7 +849,7 @@ export default {
         });
 
       //bring mySpots in
-      axios.get('http://localhost:3000/myspots/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'myspots/' + this.user.uid)
         .then((response) => {
           this.newTrip.mySpots = response.data;
         })
@@ -858,7 +858,7 @@ export default {
         })
 
       //bring flies from flybox in
-      axios.get('http://localhost:3000/flybox/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'flybox/' + this.user.uid)
         .then((response) => {
           this.newTrip.flybox = response.data;
         })
@@ -867,7 +867,7 @@ export default {
         })
 
       //bring targetSpecies in
-      axios.get('http://localhost:3000/targetspecies/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'targetspecies/' + this.user.uid)
         .then((response) => {
           this.newTrip.targetSpecies = response.data;
         })
@@ -896,7 +896,7 @@ export default {
 
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }

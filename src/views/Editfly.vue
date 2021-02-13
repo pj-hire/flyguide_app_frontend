@@ -44,7 +44,7 @@ export default {
   methods: {
     saveChanges() {
       this.newFly.flyPattern = jsStringEscape(this.newFly.flyPattern);
-      axios.put('http://localhost:3000/editfly', this.newFly)
+      axios.put(process.env.VUE_APP_REQUEST_BASE + 'editfly', this.newFly)
         .then((response) => {
           console.log(response);
           this.$router.push('/flybox');
@@ -54,7 +54,7 @@ export default {
         });
     },
     deleteFly() {
-      axios.post('http://localhost:3000/deletefly', this.newFly)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletefly', this.newFly)
         .then((response) => {
           console.log(response);
           this.$router.push('/flybox');
@@ -70,7 +70,7 @@ export default {
         this.user = user;
         this.newFly.uid = user.uid;
         //fetch current fly to edit below
-        axios.get('http://localhost:3000/flybox/editfly/' + this.$route.params.id)
+        axios.get(process.env.VUE_APP_REQUEST_BASE + 'flybox/editfly/' + this.$route.params.id)
           .then((response) => {
             this.newFly = response.data;
           })
@@ -79,7 +79,7 @@ export default {
           })
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }

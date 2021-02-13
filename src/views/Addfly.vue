@@ -47,7 +47,7 @@ export default {
   methods: {
     addFly() {
       this.newFly.flyPattern = jsStringEscape(this.newFly.flyPattern);
-      axios.post('http://localhost:3000/addfly', this.newFly)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfly', this.newFly)
         .then((response) => {
           console.log(response);
           this.$router.push('/flybox');
@@ -64,7 +64,7 @@ export default {
         this.newFly.uid = user.uid;
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }

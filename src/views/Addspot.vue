@@ -35,7 +35,7 @@ export default {
     addSpot() {
       this.newSpot.locationName = jsStringEscape(this.newSpot.locationName);
       this.newSpot.subLocationName = jsStringEscape(this.newSpot.subLocationName);
-      axios.post('http://localhost:3000/addspot', this.newSpot)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addspot', this.newSpot)
         .then((response) => {
           console.log(response);
           this.$router.push('/myspots');
@@ -53,7 +53,7 @@ export default {
         this.newSpot.uid = user.uid;
       } else {
         console.log('no user signed in')
-        window.location.href = "http://127.0.0.1:8080/";
+        this.$router.push('/')
       }
     })
   }
