@@ -8,7 +8,7 @@
           <label id="checkbtn" class="checkbtn" :class="{checkbtn_hide: !isNotLogin}">
             <span @click="toggleNav"><i class="fas fa-bars"></i></span>
           </label>
-          <h2>FlyGuide App</h2>
+          <h2>Fly-Guide Log</h2>
         </div>
       </div>
       <div class="wrapper">
@@ -64,6 +64,13 @@
           }
         }
       },
+    },
+    watch: {
+      $route () {
+        if (this.$router.currentRoute.name === 'Login') {
+          this.isNotLogin = false
+        }
+      }
     },
     mounted() {
       window.addEventListener('resize', this.onResize)

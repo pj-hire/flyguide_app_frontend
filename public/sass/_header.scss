@@ -1,0 +1,29 @@
+.horizontal-menu-wrapper {
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  background-color: $primaryClr;
+  z-index: 1;
+}
+
+.horizontal-menu h2 {
+  color: white;
+  font-family: 'Nunito-Bold';
+  padding-top: 24px;
+  padding-left: 15px;
+  font-size: 1.3em;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+#check {
+  display: none;
+}
+
+.checkbtn {
+  display: none;
+}
+
+.checkbtn.checkbtn_hide {
+  display: none;
+}

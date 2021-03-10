@@ -1,6 +1,5 @@
 <template>
-  <!-- do I need to change the class below -->
-  <div class="home">  
+  <div>
     <div>Welcome to flyguide app</div>
     <div id="firebaseui-auth-container"></div>
   </div>
@@ -15,7 +14,7 @@ import 'firebaseui/dist/firebaseui.css';
 
 export default {
   name: 'Login',
-  created() {
+  mounted() {
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
 
     ui.start('#firebaseui-auth-container', {
@@ -23,7 +22,7 @@ export default {
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       ],
-      signInSuccessUrl: '/mytrips',
+      signInSuccessUrl: process.env.BASE_URL + 'mytrips',
     })
   }
 }
