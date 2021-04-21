@@ -98,7 +98,7 @@ export default {
       axios.get(process.env.VUE_APP_REQUEST_BASE + 'trips/' + this.user.uid)
         .then((response) => {
           this.trips = response.data;
-          axios.get(process.env.VUE_APP_REQUEST_BASE + 'mytripsclients/' + this.user.uid)
+          axios.get(process.env.VUE_APP_REQUEST_BASE + 'clients-uid/' + this.user.uid)
             .then((response) => {
               this.clients = response.data;
             })

@@ -44,7 +44,7 @@ export default {
   methods: {
     saveChanges() {
       this.newFly.flyPattern = jsStringEscape(this.newFly.flyPattern);
-      axios.put(process.env.VUE_APP_REQUEST_BASE + 'editfly', this.newFly)
+      axios.put(process.env.VUE_APP_REQUEST_BASE + 'flybox', this.newFly)
         .then((response) => {
           console.log(response);
           this.$router.push('/flybox');
@@ -54,7 +54,7 @@ export default {
         });
     },
     deleteFly() {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletefly', this.newFly)
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'flybox/' + this.newFly.flyId)
         .then((response) => {
           console.log(response);
           this.$router.push('/flybox');

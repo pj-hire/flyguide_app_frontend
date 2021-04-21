@@ -35,10 +35,10 @@ export default {
     addSpot() {
       this.newSpot.locationName = jsStringEscape(this.newSpot.locationName);
       this.newSpot.subLocationName = jsStringEscape(this.newSpot.subLocationName);
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addspot', this.newSpot)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'spots', this.newSpot)
         .then((response) => {
           console.log(response);
-          this.$router.push('/myspots');
+          this.$router.push('/spots');
         })
         .catch(function (error) {
           console.log(error);

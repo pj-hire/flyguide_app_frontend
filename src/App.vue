@@ -3,7 +3,6 @@
     <div class="about">
       <div class="horizontal-menu-wrapper">
         <div class="horizontal-menu">
-          <!-- <img class="invert" src="./assets/nymph-icon.png" alt="nymph-icon"> -->
           <input type="checkbox" id="check">
           <label id="checkbtn" class="checkbtn" :class="{checkbtn_hide: !isNotLogin}">
             <span @click="toggleNav"><i class="fas fa-bars"></i></span>
@@ -15,18 +14,13 @@
         <div class="sidebar" id="sidebar" v-if="isNotLogin">
           <ul>
             <li><a @click="toggleNav"><router-link to="/mytrips"><i class="fas fa-calendar-alt"></i>My Trips</router-link></a></li>
-            <li><a @click="toggleNav"><router-link to="/myspots"><i class="fas fa-map-marker-alt"></i>My Spots</router-link></a></li>
+            <li><a @click="toggleNav"><router-link to="/spots"><i class="fas fa-map-marker-alt"></i>My Spots</router-link></a></li>
             <li><a @click="toggleNav"><router-link to="/flybox"><i class="fas fa-book-open"></i>Flybox</router-link></a></li>
             <li><a @click="toggleNav"><router-link to="/targetspecies"><i class="fas fa-fish"></i>Target Species</router-link></a></li>
             <!-- <li><a><router-link to="/conditions"><i class="fas fa-cloud"></i>Conditions</router-link></a></li> -->
             <li><a @click="toggleNav"><router-link to="/stats"><i class="fas fa-chart-bar"></i>Stats</router-link></a></li>
             <li><a @click="toggleNav"><router-link to="/account"><i class="fas fa-user"></i>Account</router-link></a></li>
           </ul>
-          <!-- <div class="social_media">
-            <a href="#"><i class="fab fa-facebook-f"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-          </div> -->
         </div>
         <div class="main_content" :class="{login: !isNotLogin}">
           <div class="info">
@@ -78,7 +72,9 @@
     created() {
       console.log(process.env.VUE_APP_REQUEST_BASE);
       if (this.$router.currentRoute.name === 'Login') {
-        this.isNotLogin = false
+        this.isNotLogin = false;
+        // let menu = document.getElementByClass("horizontal-menu-wrapper");
+        // menu.style.textAlign = "center";
       }
     },
     beforeDestroy() {

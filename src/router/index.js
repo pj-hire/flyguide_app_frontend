@@ -4,7 +4,7 @@ import Login from '../views/Login.vue'
 import Addtrip from '../views/Addtrip.vue'
 import Mytrips from '../views/Mytrips.vue'
 import Viewtrip from '../views/Viewtrip.vue'
-import Myspots from '../views/Myspots.vue'
+import Spots from '../views/Spots.vue'
 import Addspot from '../views/Addspot.vue'
 import Editspot from '../views/Editspot.vue'
 import Targetspecies from '../views/Targetspecies.vue'
@@ -41,17 +41,17 @@ const routes = [
     component: Viewtrip
   },
   {
-    path: '/myspots',
-    name: 'Myspots',
-    component: Myspots
+    path: '/spots',
+    name: 'Spots',
+    component: Spots
   },
   {
-    path: '/myspots/addspot',
+    path: '/spots/addspot',
     name: 'Addspot',
     component: Addspot
   },
   {
-    path: '/myspots/editspot/:id',
+    path: '/spots/editspot/:id',
     name: 'Editspot',
     component: Editspot
   },

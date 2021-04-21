@@ -454,7 +454,7 @@ export default {
   },
   methods: {
     changeFishCaughtQty(index) {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfishcaughtqty', this.newTrip.newReport.fishCaught[index])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'fishcaughtqty', this.newTrip.newReport.fishCaught[index])
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.newReport.reportId)
@@ -479,7 +479,7 @@ export default {
         this.newTrip.newClient.email = jsStringEscape(this.newTrip.newClient.email);
         this.newTrip.newClient.phone = jsStringEscape(this.newTrip.newClient.phone);
         this.newTrip.newClient.notes = jsStringEscape(this.newTrip.newClient.notes);
-        axios.post(process.env.VUE_APP_REQUEST_BASE + 'addclient', this.newTrip.newClient)
+        axios.post(process.env.VUE_APP_REQUEST_BASE + 'clients', this.newTrip.newClient)
           .then((response) => {
             console.log(response);
             axios.get(process.env.VUE_APP_REQUEST_BASE + 'clients/' + this.newTrip.tripId)
@@ -503,13 +503,13 @@ export default {
       }
     },
     saveClientChanges() {
-      if (this.newTrip.newClient.firstName || this.newTrip.newClient.lastName !== '') {
+      if (this.newTrip.clients[this.newTrip.selectedClientIndex].clientFirstName || this.newTrip.clients[this.newTrip.selectedClientIndex].clientLastName !== '') {
         this.newTrip.clients[this.newTrip.selectedClientIndex].clientFirstName = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientFirstName);
         this.newTrip.clients[this.newTrip.selectedClientIndex].clientLastName = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientLastName);
         this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientEmail);
         this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientPhone);
         this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes = jsStringEscape(this.newTrip.clients[this.newTrip.selectedClientIndex].clientNotes);
-        axios.put(process.env.VUE_APP_REQUEST_BASE + 'editclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
+        axios.put(process.env.VUE_APP_REQUEST_BASE + 'clients', this.newTrip.clients[this.newTrip.selectedClientIndex])
           .then((response) => {
             console.log(response);
             axios.get(process.env.VUE_APP_REQUEST_BASE + 'clients/' + this.newTrip.tripId)
@@ -528,7 +528,7 @@ export default {
       }
     },
     deleteClient() {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deleteclient', this.newTrip.clients[this.newTrip.selectedClientIndex])
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'clients/' + this.newTrip.clients[this.newTrip.selectedClientIndex].clientId)
         .then((response) => {
           console.log(response);
           this.newTrip.selectedClientIndex = 0;
@@ -546,7 +546,7 @@ export default {
     },
     addHotFly() {
       this.newTrip.newReport.newHotFly.pattern = jsStringEscape(this.newTrip.newReport.newHotFly.pattern);
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addhotfly', this.newTrip.newReport.newHotFly)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'hotflies', this.newTrip.newReport.newHotFly)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.newReport.reportId)
@@ -565,7 +565,7 @@ export default {
         });
     },
     deleteHotFly(index) {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletehotfly', this.newTrip.newReport.hotFlies[index])
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'hotflies-flyId/' + this.newTrip.newReport.hotFlies[index].hotFliesId)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.newReport.reportId)
@@ -581,7 +581,7 @@ export default {
         });
     },
     addFishCaught() {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfishCaught', this.newTrip.newReport.newFishCaught)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'fishcaught', this.newTrip.newReport.newFishCaught)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.newReport.newFishCaught.reportId)
@@ -598,7 +598,7 @@ export default {
         });
     },
     deleteFishCaught(index) {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletefishcaught', this.newTrip.newReport.fishCaught[index])
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'fishcaught-id/' + this.newTrip.newReport.fishCaught[index].fishCaughtId)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.newReport.reportId)
@@ -614,6 +614,7 @@ export default {
         });
     },
     editReport(index) {
+      //set correct IDs for specified report based on index
       this.newTrip.selectedReportIndex = index;
       // main data:
       this.newTrip.editReport.uid = this.newTrip.reports[index].uid;
@@ -648,7 +649,7 @@ export default {
     },
     editReportAddHotFly() {
       this.newTrip.editReport.newHotFly.pattern = jsStringEscape(this.newTrip.editReport.newHotFly.pattern);
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addhotfly', this.newTrip.editReport.newHotFly)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'hotflies', this.newTrip.editReport.newHotFly)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.editReport.reportId)
@@ -667,7 +668,7 @@ export default {
         });
     },
     editReportDeleteHotFly(index) {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletehotfly', this.newTrip.editReport.hotFlies[index])
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'hotflies-flyId/' + this.newTrip.editReport.hotFlies[index].hotFliesId)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.editReport.reportId)
@@ -683,7 +684,7 @@ export default {
         });
     },
     editReportAddFishCaught() {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfishcaught', this.newTrip.editReport.newFishCaught)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'fishcaught', this.newTrip.editReport.newFishCaught)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.editReport.reportId)
@@ -716,7 +717,7 @@ export default {
         });
     },
     editReportDeleteFishCaught(index) {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletefishcaught', this.newTrip.editReport.fishCaught[index])
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'fishcaught-id/' + this.newTrip.editReport.fishCaught[index].fishCaughtId)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.editReport.reportId)
@@ -734,7 +735,7 @@ export default {
     saveReport() {
       if (this.newTrip.newReport.spotId !== 0) {
         this.newTrip.newReport.notes = jsStringEscape(this.newTrip.newReport.notes);
-        axios.post(process.env.VUE_APP_REQUEST_BASE + 'savereport', this.newTrip.newReport)
+        axios.post(process.env.VUE_APP_REQUEST_BASE + 'reports', this.newTrip.newReport)
           .then((response) => {
             console.log(response);
             this.pageLoad();
@@ -748,7 +749,7 @@ export default {
     },
     deleteReport() {
       //delete hotFlies associated with report
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletereporthotflies', this.newTrip.reports[this.newTrip.selectedReportIndex])
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.reports[this.newTrip.selectedReportIndex].reportId)
         .then((response) => {
           console.log(response);
         })
@@ -756,7 +757,7 @@ export default {
           console.log(error);
         });
       //delete fishCaught associated with report
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletereportfishcaught', this.newTrip.reports[this.newTrip.selectedReportIndex])
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.reports[this.newTrip.selectedReportIndex].reportId)
         .then((response) => {
           console.log(response);
         })
@@ -764,7 +765,7 @@ export default {
           console.log(error);
         });
       //delete report
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletereport', this.newTrip.reports[this.newTrip.selectedReportIndex])
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'reports/' + this.newTrip.reports[this.newTrip.selectedReportIndex].reportId)
         .then((response) => {
           console.log(response);
           this.newTrip.selectedReportIndex = 0;
@@ -784,7 +785,7 @@ export default {
     },
     saveReportChanges() {
       this.newTrip.editReport.notes = jsStringEscape(this.newTrip.editReport.notes);
-      axios.put(process.env.VUE_APP_REQUEST_BASE + 'savereportchanges', this.newTrip.editReport)
+      axios.put(process.env.VUE_APP_REQUEST_BASE + 'reports', this.newTrip.editReport)
         .then((response) => {
           console.log(response);
           this.pageLoad()
@@ -796,7 +797,7 @@ export default {
     saveTrip() {
       if (this.newTrip.date !== '') {
         this.newTrip.tripNotes = jsStringEscape(this.newTrip.tripNotes);
-        axios.post(process.env.VUE_APP_REQUEST_BASE + 'savetrip', this.newTrip)
+        axios.post(process.env.VUE_APP_REQUEST_BASE + 'trips', this.newTrip)
           .then((response) => {
             console.log(response);
             this.$router.push('/mytrips');
@@ -824,7 +825,7 @@ export default {
             .catch((error) => {
               console.log(error);
             })
-          //select all reports from current trip throught tripId
+          //select all reports from current trip through tripId
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'reports/' + (response.data[0].tripId + 1))
             .then((response) => {
               this.newTrip.reports = response.data;
@@ -849,7 +850,7 @@ export default {
         });
 
       //bring mySpots in
-      axios.get(process.env.VUE_APP_REQUEST_BASE + 'myspots/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'spots-uid/' + this.user.uid)
         .then((response) => {
           this.newTrip.mySpots = response.data;
         })

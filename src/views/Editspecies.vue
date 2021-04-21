@@ -44,7 +44,7 @@ export default {
   methods: {
     saveChanges() {
       this.newSpecies.speciesName = jsStringEscape(this.newSpecies.speciesName);
-      axios.put(process.env.VUE_APP_REQUEST_BASE + 'editspecies', this.newSpecies)
+      axios.put(process.env.VUE_APP_REQUEST_BASE + 'targetspecies', this.newSpecies)
         .then((response) => {
           console.log(response);
           this.$router.push('/targetspecies');
@@ -54,7 +54,7 @@ export default {
         });
     },
     deleteSpecies() {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'deletespecies', this.newSpecies)
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'targetspecies/' + this.newSpecies.fishSpeciesId)
         .then((response) => {
           console.log(response);
           this.$router.push('/targetspecies');

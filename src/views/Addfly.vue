@@ -47,7 +47,7 @@ export default {
   methods: {
     addFly() {
       this.newFly.flyPattern = jsStringEscape(this.newFly.flyPattern);
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfly', this.newFly)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'flybox', this.newFly)
         .then((response) => {
           console.log(response);
           this.$router.push('/flybox');

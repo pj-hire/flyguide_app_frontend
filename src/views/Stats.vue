@@ -67,7 +67,7 @@ export default {
     pageLoad() {
 
       //Top Flies
-      axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotfliesstats/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies-uid/' + this.user.uid)
         .then((response) => {
           this.hotFlies = response.data;
         })
@@ -105,7 +105,7 @@ export default {
         })
 
       //Fish Caught
-      axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaughtstats/' + this.user.uid)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught-uid/' + this.user.uid)
         .then((response) => {
           this.fishCaught = response.data;
         })

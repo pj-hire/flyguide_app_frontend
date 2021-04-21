@@ -47,7 +47,7 @@ export default {
   methods: {
     addSpecies() {
       this.newSpecies.speciesName = jsStringEscape(this.newSpecies.speciesName);
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addspecies', this.newSpecies)
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'targetspecies', this.newSpecies)
         .then((response) => {
           console.log(response);
           this.$router.push('/targetspecies');
