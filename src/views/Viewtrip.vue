@@ -139,7 +139,7 @@ export default {
     pageLoad() {
 
       //bring in trip by tripId param
-      axios.get(process.env.VUE_APP_REQUEST_BASE + 'trips-trip/' + this.$route.params.id)
+      axios.get(process.env.VUE_APP_REQUEST_BASE + 'trips/' + this.$route.params.id)
         .then((response) => {
           this.trips = response.data[0];
 

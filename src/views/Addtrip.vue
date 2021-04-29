@@ -565,7 +565,7 @@ export default {
         });
     },
     deleteHotFly(index) {
-      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'hotflies-flyId/' + this.newTrip.newReport.hotFlies[index].hotFliesId)
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'hotflies-fly/' + this.newTrip.newReport.hotFlies[index].hotFliesId)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.newReport.reportId)
@@ -668,7 +668,7 @@ export default {
         });
     },
     editReportDeleteHotFly(index) {
-      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'hotflies-flyId/' + this.newTrip.editReport.hotFlies[index].hotFliesId)
+      axios.delete(process.env.VUE_APP_REQUEST_BASE + 'hotflies-fly/' + this.newTrip.editReport.hotFlies[index].hotFliesId)
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'hotflies/' + this.newTrip.editReport.reportId)
@@ -701,7 +701,7 @@ export default {
         });
     },
     editReportChangeFishCaughtQty(index) {
-      axios.post(process.env.VUE_APP_REQUEST_BASE + 'addfishcaughtqty', this.newTrip.editReport.fishCaught[index])
+      axios.post(process.env.VUE_APP_REQUEST_BASE + 'fishcaughtqty', this.newTrip.editReport.fishCaught[index])
         .then((response) => {
           console.log(response);
           axios.get(process.env.VUE_APP_REQUEST_BASE + 'fishcaught/' + this.newTrip.editReport.reportId)
